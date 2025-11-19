@@ -7,14 +7,14 @@ public class Hospital {
 	private Administrador admin;
 	private ArrayList<Paciente> misPacientes;
 	private ArrayList<Secretaria> misMedicos;
-	private Arraylist<Cita> misCitas;
-	private Arraylist<Vacunas> controlVacunas;
-	private Arraylist<Enfermadades> misEnfermedades;
-	private Arraylist<Enfermedades> enfermedadesVigiladas;
+	private ArrayList<Cita> misCitas;
+	private ArrayList<Vacunas> controlVacunas;
+	private ArrayList<Enfermadades> misEnfermedades;
+	private ArrayList<Enfermedades> enfermedadesVigiladas;
 	
 	private Hospital(Administrador admin, ArrayList<Paciente> misPacientes, ArrayList<Secretaria> misMedicos,
-			Arraylist<Cita> misCitas, Arraylist<Vacunas> controlVacunas, Arraylist<Enfermadades> misEnfermedades,
-			Arraylist<Enfermedades> enfermedadesVigiladas) {
+			ArrayList<Cita> misCitas, ArrayList<Vacunas> controlVacunas, ArrayList<Enfermadades> misEnfermedades,
+			ArrayList<Enfermedades> enfermedadesVigiladas) {
 		super();
 		this.admin = admin;
 		this.misPacientes = misPacientes;
@@ -37,19 +37,19 @@ public class Hospital {
 		return misMedicos;
 	}
 
-	public Arraylist<Cita> getMisCitas() {
+	public ArrayList<Cita> getMisCitas() {
 		return misCitas;
 	}
 
-	public Arraylist<Vacunas> getControlVacunas() {
+	public ArrayList<Vacunas> getControlVacunas() {
 		return controlVacunas;
 	}
 
-	public Arraylist<Enfermadades> getMisEnfermedades() {
+	public ArrayList<Enfermadades> getMisEnfermedades() {
 		return misEnfermedades;
 	}
 
-	public Arraylist<Enfermedades> getEnfermedadesVigiladas() {
+	public ArrayList<Enfermedades> getEnfermedadesVigiladas() {
 		return enfermedadesVigiladas;
 	}
 
@@ -65,19 +65,19 @@ public class Hospital {
 		this.misMedicos = misMedicos;
 	}
 
-	public void setMisCitas(Arraylist<Cita> misCitas) {
+	public void setMisCitas(ArrayList<Cita> misCitas) {
 		this.misCitas = misCitas;
 	}
 
-	public void setControlVacunas(Arraylist<Vacunas> controlVacunas) {
+	public void setControlVacunas(ArrayList<Vacunas> controlVacunas) {
 		this.controlVacunas = controlVacunas;
 	}
 
-	public void setMisEnfermedades(Arraylist<Enfermadades> misEnfermedades) {
+	public void setMisEnfermedades(ArrayList<Enfermadades> misEnfermedades) {
 		this.misEnfermedades = misEnfermedades;
 	}
 
-	public void setEnfermedadesVigiladas(Arraylist<Enfermedades> enfermedadesVigiladas) {
+	public void setEnfermedadesVigiladas(ArrayList<Enfermedades> enfermedadesVigiladas) {
 		this.enfermedadesVigiladas = enfermedadesVigiladas;
 	}
 	
