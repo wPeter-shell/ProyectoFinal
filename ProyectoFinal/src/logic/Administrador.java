@@ -1,11 +1,11 @@
 package logic;
 
 public class Administrador {
-	
+
 	private String usuario;
 	private String password;
 	Hospital hospital;
-	
+
 	public Administrador(String usuario, String password, Hospital hospital) {
 		super();
 		this.usuario = usuario;
