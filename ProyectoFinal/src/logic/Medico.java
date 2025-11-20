@@ -87,8 +87,6 @@ public class Medico extends Persona {
 	        System.out.println("Error: Solo se pueden registrar objetos de tipo paciente.");
 	    }
 	}
-
-
 	
 	public int cantCitasDisp(String dia) {
 	    if (misCita == null) {
