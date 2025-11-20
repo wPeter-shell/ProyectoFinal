@@ -6,19 +6,21 @@ public class Hospital {
 	
 	private Administrador admin;
 	private ArrayList<Paciente> misPacientes;
-	private ArrayList<Secretaria> misMedicos;
+	private ArrayList<Medico> misMedicos;
+	private ArrayList<Secretaria> misSecretarias;
 	private ArrayList<Cita> misCitas;
 	private ArrayList<Vacuna> controlVacunas;
 	private ArrayList<Enfermedad> misEnfermedades;
 	private ArrayList<Enfermedad> enfermedadesVigiladas;
 	
-	private Hospital(Administrador admin, ArrayList<Paciente> misPacientes, ArrayList<Secretaria> misMedicos,
-			ArrayList<Cita> misCitas, ArrayList<Vacuna> controlVacunas, ArrayList<Enfermedad> misEnfermedades,
-			ArrayList<Enfermedad> enfermedadesVigiladas) {
+	private Hospital(Administrador admin, ArrayList<Paciente> misPacientes, ArrayList<Medico> misMedicos,
+			ArrayList<Secretaria> misSecretarias, ArrayList<Cita> misCitas, ArrayList<Vacuna> controlVacunas,
+			ArrayList<Enfermedad> misEnfermedades, ArrayList<Enfermedad> enfermedadesVigiladas) {
 		super();
 		this.admin = admin;
 		this.misPacientes = misPacientes;
 		this.misMedicos = misMedicos;
+		this.misSecretarias = misSecretarias;
 		this.misCitas = misCitas;
 		this.controlVacunas = controlVacunas;
 		this.misEnfermedades = misEnfermedades;
@@ -33,8 +35,12 @@ public class Hospital {
 		return misPacientes;
 	}
 
-	public ArrayList<Secretaria> getMisMedicos() {
+	public ArrayList<Medico> getMisMedicos() {
 		return misMedicos;
+	}
+
+	public ArrayList<Secretaria> getMisSecretarias() {
+		return misSecretarias;
 	}
 
 	public ArrayList<Cita> getMisCitas() {
@@ -61,8 +67,12 @@ public class Hospital {
 		this.misPacientes = misPacientes;
 	}
 
-	public void setMisMedicos(ArrayList<Secretaria> misMedicos) {
+	public void setMisMedicos(ArrayList<Medico> misMedicos) {
 		this.misMedicos = misMedicos;
+	}
+
+	public void setMisSecretarias(ArrayList<Secretaria> misSecretarias) {
+		this.misSecretarias = misSecretarias;
 	}
 
 	public void setMisCitas(ArrayList<Cita> misCitas) {
@@ -80,6 +90,5 @@ public class Hospital {
 	public void setEnfermedadesVigiladas(ArrayList<Enfermedad> enfermedadesVigiladas) {
 		this.enfermedadesVigiladas = enfermedadesVigiladas;
 	}
-	
-	
 }
+	
