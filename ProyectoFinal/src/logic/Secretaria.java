@@ -4,20 +4,21 @@ import java.util.ArrayList;
 
 public class Secretaria extends Persona {
 
-    private ArrayList<Medico> medico;
+    private ArrayList<Medico> medicos;
 
-    public Secretaria(String nombre, String apellido, String cedula, char genero, int edad, 
-    				  String direccion, ArrayList<Medico> medico) {
+	public Secretaria(String nombre, String apellido, String cedula, char genero, int edad, String telefono,
+			String direccion, ArrayList<Medico> medicos) {
+		super(nombre, apellido, cedula, genero, edad, telefono, direccion);
+		this.medicos = medicos;
+	}
 
-        super(nombre, apellido, cedula, genero, edad, direccion);
-        this.medico = medico;
-    }
+	public ArrayList<Medico> getMedicos() {
+		return medicos;
+	}
 
-    public ArrayList<Medico> getMedicos() {
-        return medico;
-    }
+	public void setMedicos(ArrayList<Medico> medicos) {
+		this.medicos = medicos;
+	}
 
-    public void setMedicos(ArrayList<Medico> medicos) {
-        this.medico = medicos;
-    }
+    
 }
