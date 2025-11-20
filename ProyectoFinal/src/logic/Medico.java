@@ -9,6 +9,7 @@ public class Medico extends Persona {
     private int citasPorDia;
     private ArrayList<Consulta> misConsulta;
     private ArrayList<Cita> misCita;
+    private Hospital hospital;
     
 	public Medico(String nombre, String apellido, String cedula, char genero, int edad, String telefono,
 			String direccion, Secretaria secretaria, String especialidad, int citasPorDia,
@@ -60,6 +61,53 @@ public class Medico extends Persona {
 	public void setMisCita(ArrayList<Cita> misCita) {
 		this.misCita = misCita;
 	}
+	
+	public Hospital getHospital() {
+		return hospital;
+	}
 
-    
+	public void setHospital(Hospital hospital) {
+		this.hospital = hospital;
+	}
+
+	public void registrarPaciente(Persona persona) {
+
+	    if (persona instanceof Paciente) {
+	        Paciente p = (Paciente) persona;
+
+	        if (hospital.getMisPacientes() == null) {
+	            hospital.setMisPacientes(new ArrayList<>());
+	        }
+
+	        if (!hospital.getMisPacientes().contains(p)) {
+	            hospital.getMisPacientes().add(p);
+	        }
+
+	    } else {
+	        System.out.println("Error: Solo se pueden registrar objetos de tipo Paciente.");
+	    }
+	}
+
+
+	
+	public int cantCitasDisp(String dia) {
+	    if (misCita == null) {
+	        return citasPorDia;
+	    }
+
+	    int ocupadas = 0;
+
+	    for (Cita c : misCita) {
+	        if (c.getDia().equalsIgnoreCase(dia) && 
+	            c.getMedico().equals(this) &&
+	            c.getEstado().equalsIgnoreCase("Pendiente")) 
+	        {
+	            ocupadas++;
+	        }
+	    }
+
+	    int disponibles = citasPorDia - ocupadas;
+	    return disponibles;
+	}
+
 }
