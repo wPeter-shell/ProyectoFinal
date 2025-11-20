@@ -9,6 +9,7 @@ public class Medico extends Persona {
     private int citasPorDia;
     private ArrayList<Consulta> misConsulta;
     private ArrayList<Cita> misCita;
+    
 	public Medico(String nombre, String apellido, String cedula, char genero, int edad, String telefono,
 			String direccion, Secretaria secretaria, String especialidad, int citasPorDia,
 			ArrayList<Consulta> misConsulta, ArrayList<Cita> misCita) {
