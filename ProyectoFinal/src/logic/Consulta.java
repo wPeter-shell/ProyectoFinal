@@ -7,8 +7,9 @@ public class Consulta {
     private Cita cita;
     private DatosConsulta datos;
 
-    public Consulta(Paciente paciente, Cita cita, DatosConsulta datos) {
+    public Consulta(Paciente paciente, Medico medico, Cita cita, DatosConsulta datos) {
         this.paciente = paciente;
+        this.medico = medico;
         this.cita = cita;
         this.datos = datos;
     }
@@ -20,6 +21,14 @@ public class Consulta {
     public void setPaciente(Paciente paciente) {
         this.paciente = paciente;
     }
+    
+	public Medico getMedico() {
+		return medico;
+	}
+
+	public void setMedico(Medico medico) {
+		this.medico = medico;
+	}
 
     public Cita getCita() {
         return cita;
@@ -37,11 +46,4 @@ public class Consulta {
         this.datos = datos;
     }
 
-	public Medico getMedico() {
-		return medico;
-	}
-
-	public void setMedico(Medico medico) {
-		this.medico = medico;
-	}
 }
