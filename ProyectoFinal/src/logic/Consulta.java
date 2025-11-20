@@ -3,6 +3,7 @@ package logic;
 public class Consulta {
 
     private Paciente paciente;
+    private Medico medico;
     private Cita cita;
     private DatosConsulta datos;
 
@@ -35,4 +36,12 @@ public class Consulta {
     public void setDatos(DatosConsulta datos) {
         this.datos = datos;
     }
+
+	public Medico getMedico() {
+		return medico;
+	}
+
+	public void setMedico(Medico medico) {
+		this.medico = medico;
+	}
 }
