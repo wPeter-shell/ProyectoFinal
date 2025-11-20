@@ -1,32 +1,23 @@
-package logic;
+ackage logic;
 
 import java.util.ArrayList;
 
 public class Secretaria extends Persona {
 
-    private ArrayList<Medico> medico;
-    private Hospital hospital;
+    private ArrayList<Medico> medicos;
 
 	public Secretaria(String nombre, String apellido, String cedula, char genero, int edad, String telefono,
-			String direccion, ArrayList<Medico> medico, Hospital hospital) {
+			String direccion, ArrayList<Medico> medicos) {
 		super(nombre, apellido, cedula, genero, edad, telefono, direccion);
-		this.medico = medico;
+		this.medicos = medicos;
 	}
 
-	public ArrayList<Medico> getMedico() {
-		return medico;
+	public ArrayList<Medico> getMedicos() {
+		return medicos;
 	}
 
 	public void setMedicos(ArrayList<Medico> medicos) {
-		this.medico = medicos;
-	}
-
-	public Hospital getHospital() {
-		return hospital;
-	}
-
-	public void setHospital(Hospital hospital) {
-		this.hospital = hospital;
+		this.medicos = medicos;
 	}
 
     

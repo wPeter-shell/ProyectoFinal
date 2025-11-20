@@ -100,7 +100,7 @@ public class Medico extends Persona {
 	    for (Cita c : misCita) {
 	        if (c.getDia().equalsIgnoreCase(dia) && 
 	            c.getMedico().equals(this) &&
-	            c.getEstado().equalsIgnoreCas("Pendiente")) 
+	            c.getEstado().equalsIgnoreCase("Pendiente")) 
 	        {
 	            ocupadas++;
 	        }
