@@ -2,30 +2,21 @@ package logic;
 
 public class Paciente extends Persona {
 	
-	private String telefono;
 	private float peso;
 	private float altura;
 	private String tipoSangre;
 	private String alergias;
 	private String defectoAlNacer;
 	
-	public Paciente(String telefono, String nombre, String apellido, String cedula, char genero, int edad, String direccion, float peso,
+	public Paciente(String nombre, String apellido, String cedula, char genero, int edad, String telefono, String direccion, float peso,
 			float altura, String tipoSangre, String alergias, String defectoAlNacer) {
-		super(nombre, apellido, cedula, genero, edad, direccion);
-		this.telefono = telefono;
+		super(nombre, apellido, cedula, genero, edad, telefono, direccion);
+
 		this.peso = peso;
 		this.altura = altura;
 		this.tipoSangre = tipoSangre;
 		this.alergias = alergias;
 		this.defectoAlNacer = defectoAlNacer;
-	}
-
-	public String getTelefono() {
-		return telefono;
-	}
-
-	public void setTelefono(String telefono) {
-		this.telefono = telefono;
 	}
 	
 	public float getPeso() {

@@ -6,11 +6,11 @@ public class Enfermedad {
 	private boolean bajoVigilancia;
 	private boolean tieneVacuna;
 	
-	private Enfermedad(String nombre, boolean bajoVigilancia, boolean tieneVacuna) {
+	private Enfermedad(String nombre, boolean bajoVigilancia) {
 		super();
 		this.nombre = nombre;
 		this.bajoVigilancia = bajoVigilancia;
-		this.tieneVacuna = tieneVacuna;
+		this.tieneVacuna = false;
 	}
 
 	public String getNombre() {

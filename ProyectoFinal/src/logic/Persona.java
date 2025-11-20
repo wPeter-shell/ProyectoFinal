@@ -2,15 +2,17 @@ package logic;
 
 public class Persona {
 	
+	
 	protected String nombre;
 	protected String apellido;
 	protected String cedula;
 	protected char genero;
 	protected int edad;
+	protected String telefono;
 	protected String direccion;
 
 	
-	public Persona(String nombre, String apellido, String cedula, char genero, int edad,
+	public Persona(String nombre, String apellido, String cedula, char genero, int edad, String telefono,
 			String direccion) {
 		super();
 		this.nombre = nombre;
@@ -18,6 +20,7 @@ public class Persona {
 		this.cedula = cedula;
 		this.genero = genero;
 		this.edad = edad;
+		this.telefono = telefono;
 		this.direccion = direccion;
 
 	}
@@ -60,6 +63,14 @@ public class Persona {
 
 	public void setEdad(int edad) {
 		this.edad = edad;
+	}
+	
+	public String getTelefono() {
+		return telefono;
+	}
+
+	public void setTelefono(String telefono) {
+		this.telefono = telefono;
 	}
 
 	public String getDireccion() {
