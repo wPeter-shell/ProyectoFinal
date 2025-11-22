@@ -1,16 +1,12 @@
 package logic;
 
-import java.util.ArrayList;
-
 public class Secretaria extends Persona {
 
 	private Hospital hospital;
-    private ArrayList<Medico> medicos;
 
 	public Secretaria(String nombre, String apellido, String cedula, char genero, int edad, String telefono,
-			String direccion, Hospital hospital, ArrayList<Medico> medicos) {
+			String direccion, Hospital hospital) {
 		super(nombre, apellido, cedula, genero, edad, telefono, direccion);
-		this.medicos = medicos;
 	}
 	
 	public Hospital getHospital() {
@@ -19,14 +15,6 @@ public class Secretaria extends Persona {
 
 	public void setHospital(Hospital hospital) {
 		this.hospital = hospital;
-	}
-
-	public ArrayList<Medico> getMedicos() {
-		return medicos;
-	}
-
-	public void setMedicos(ArrayList<Medico> medicos) {
-		this.medicos = medicos;
 	}
 	
     public Cita registrarCita(Persona persona, Medico medico, String dia) {
@@ -88,6 +76,8 @@ public class Secretaria extends Persona {
         medico.getMisCita().remove(cita);
         
         return true;
+        
+   
     }
 
     public boolean verificarDisponibilidad(Medico m, String dia) {
@@ -107,5 +97,3 @@ public class Secretaria extends Persona {
     }
 
 }
-
-    
