@@ -91,7 +91,15 @@ public class Hospital {
 		this.enfermedadesVigiladas = enfermedadesVigiladas;
 	}
 	
-	
+	public boolean buscarPacientePorCedula(String cedula) {
+		for(Paciente p : misPacientes) {
+			if(p.getCedula().equals(cedula)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 	
 }
 	
