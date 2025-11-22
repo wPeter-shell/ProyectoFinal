@@ -4,12 +4,21 @@ import java.util.ArrayList;
 
 public class Secretaria extends Persona {
 
+	private Hospital hospital;
     private ArrayList<Medico> medicos;
 
 	public Secretaria(String nombre, String apellido, String cedula, char genero, int edad, String telefono,
-			String direccion, ArrayList<Medico> medicos) {
+			String direccion, Hospital hospital, ArrayList<Medico> medicos) {
 		super(nombre, apellido, cedula, genero, edad, telefono, direccion);
 		this.medicos = medicos;
+	}
+	
+	public Hospital getHospital() {
+		return hospital;
+	}
+
+	public void setHospital(Hospital hospital) {
+		this.hospital = hospital;
 	}
 
 	public ArrayList<Medico> getMedicos() {
@@ -20,60 +29,56 @@ public class Secretaria extends Persona {
 		this.medicos = medicos;
 	}
 	
-    public void registrarCita(Persona persona) {
+    public Cita registrarCita(Persona persona, Medico medico, String dia) {
 
-        if (!(persona instanceof Paciente)) {
-            System.out.println("Error: Solo se pueden registrar citas para pacientes.");
-            return;
+    	if (persona == null) {
+            throw new IllegalArgumentException("Debe proporcionar los datos de la persona.");
         }
 
-        Paciente p = (Paciente) persona;
-
-        if (medicos == null || medicos.isEmpty()) {
-            System.out.println("Error: No hay m√©dicos asignados a esta secretaria.");
-            return;
+        if (medico == null) {
+            throw new IllegalArgumentException("Debe seleccionar un mÈdico.");
         }
 
-        Medico medicoAsignado = medicos.get(0);
-
-        String dia = "Hoy";
-
-        if (!verificarDisponibilidad(medicoAsignado, dia)) {
-            System.out.println("El m√©dico no tiene disponibilidad ese d√≠a.");
-            return;
+        if (dia == null) { 
+            throw new IllegalArgumentException("Debe seleccionar un dÌa.");
         }
 
-        Cita cita = new Cita(p, medicoAsignado, dia, "Pendiente");
+        if (!verificarDisponibilidad(medico, dia)) {
+            throw new IllegalStateException("El mÈdico no tiene disponibilidad ese dÌa.");
+        }
+        
+        Cita cita = new Cita(persona, medico, dia );
 
-        medicoAsignado.getMisCita().add(cita);
+        medico.getMisCita().add(cita);
 
-        System.out.println("Cita registrada exitosamente para " + p.getNombre());
+        return cita;
     }
 
-    public void modificarCita(Cita cita, String nuevoDia) {
+    public boolean modificarCita(Cita cita, String nuevoDia) {
 
         if (cita == null) {
-            System.out.println("Error: La cita no existe.");
-            return;
+            throw new IllegalArgumentException("Debe seleccionar una cita");
+        }
+        
+        if(nuevoDia == null) {
+        	throw new IllegalArgumentException("Debe seleccionar un dia");
         }
 
         Medico medico = cita.getMedico();
 
         if (!verificarDisponibilidad(medico, nuevoDia)) {
-            System.out.println("El m√©dico no tiene disponibilidad en ese d√≠a.");
-            return;
+        	throw new IllegalStateException("El medico no tiene disponibiladad ese dia");
         }
-
+        
         cita.setDia(nuevoDia);
-
-        System.out.println("Cita modificada exitosamente a " + nuevoDia);
+        
+        return true;
     }
 
-    public void cancelarCita(Cita cita) {
-
+    public boolean cancelarCita(Cita cita) {
+    	
         if (cita == null) {
-            System.out.println("Error: La cita no existe.");
-            return;
+        	throw new IllegalArgumentException("Debe seleccionar una cita");
         }
 
         Medico medico = cita.getMedico();
@@ -81,13 +86,14 @@ public class Secretaria extends Persona {
         cita.setEstado("Cancelada");
 
         medico.getMisCita().remove(cita);
-
-        System.out.println("Cita cancelada exitosamente.");
+        
+        return true;
     }
 
     public boolean verificarDisponibilidad(Medico m, String dia) {
 
-        if (m == null) return false;
+        if (m == null)
+        	return false;
 
         int ocupadas = 0;
 

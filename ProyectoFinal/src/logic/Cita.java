@@ -2,25 +2,25 @@ package logic;
 
 public class Cita {
 
-    private Paciente paciente;
+    private Persona persona;
     private Medico medico;
     private String dia;
     private String estado;
 
-    public Cita(Paciente paciente, Medico medico, String dia, String estado) {
-        this.paciente = paciente;
+    public Cita(Persona persona, Medico medico, String dia) {
+        this.persona = persona;
         this.medico = medico;
         this.dia = dia;
-        this.estado = estado;
+        this.estado = "Pendiente";
     }
 
-    public Paciente getPaciente() {
-        return paciente;
-    }
+	public Persona getPersona() {
+		return persona;
+	}
 
-    public void setPaciente(Paciente paciente) {
-        this.paciente = paciente;
-    }
+	public void setPersona(Persona persona) {
+		this.persona = persona;
+	}
 
     public Medico getMedico() {
         return medico;
@@ -45,4 +45,5 @@ public class Cita {
     public void setEstado(String estado) {
         this.estado = estado;
     }
+
 }
