@@ -76,6 +76,8 @@ public class Secretaria extends Persona {
         medico.getMisCita().remove(cita);
         
         return true;
+        
+   
     }
 
     public boolean verificarDisponibilidad(Medico m, String dia) {
