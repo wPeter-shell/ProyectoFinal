@@ -2,45 +2,33 @@ package logic;
 
 public class Secretaria extends Persona {
 
-	private Hospital hospital;
-
 	public Secretaria(String nombre, String apellido, String cedula, char genero, int edad, String telefono,
-			String direccion, Hospital hospital) {
+			String direccion) {
 		super(nombre, apellido, cedula, genero, edad, telefono, direccion);
 	}
 	
-	public Hospital getHospital() {
-		return hospital;
-	}
+	 public Cita registrarCita(Paciente paciente, Medico medico, String dia) {
 
-	public void setHospital(Hospital hospital) {
-		this.hospital = hospital;
-	}
-	
-    public Cita registrarCita(Persona persona, Medico medico, String dia) {
+	        if (paciente == null)
+	            throw new IllegalArgumentException("Debe proporcionar un paciente.");
 
-    	if (persona == null) {
-            throw new IllegalArgumentException("Debe proporcionar los datos de la persona.");
-        }
+	        if (medico == null)
+	            throw new IllegalArgumentException("Debe seleccionar un médico.");
 
-        if (medico == null) {
-            throw new IllegalArgumentException("Debe seleccionar un médico.");
-        }
+	        if (dia == null)
+	            throw new IllegalArgumentException("Debe seleccionar un día.");
 
-        if (dia == null) { 
-            throw new IllegalArgumentException("Debe seleccionar un día.");
-        }
+	        if (!verificarDisponibilidad(medico, dia))
+	            throw new IllegalStateException("El médico no tiene disponibilidad ese día.");
 
-        if (!verificarDisponibilidad(medico, dia)) {
-            throw new IllegalStateException("El médico no tiene disponibilidad ese día.");
-        }
-        
-        Cita cita = new Cita(persona, medico, dia );
+	        Cita cita = new Cita(paciente, medico, dia);
 
-        medico.getMisCita().add(cita);
+	        Hospital.getInstancia().agregarCita(cita);
 
-        return cita;
-    }
+	        medico.getMisCita().add(cita);
+
+	        return cita;
+	    }
 
     public boolean modificarCita(Cita cita, String nuevoDia) {
 
@@ -69,15 +57,9 @@ public class Secretaria extends Persona {
         	throw new IllegalArgumentException("Debe seleccionar una cita");
         }
 
-        Medico medico = cita.getMedico();
-
         cita.setEstado("Cancelada");
-
-        medico.getMisCita().remove(cita);
         
         return true;
-        
-   
     }
 
     public boolean verificarDisponibilidad(Medico m, String dia) {
