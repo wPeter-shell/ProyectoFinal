@@ -13,7 +13,7 @@ public class Hospital {
 	private ArrayList<Enfermedad> misEnfermedades;
 	private ArrayList<Enfermedad> enfermedadesVigiladas;
 	
-	private Hospital(Administrador admin, ArrayList<Paciente> misPacientes, ArrayList<Medico> misMedicos,
+	public Hospital(Administrador admin, ArrayList<Paciente> misPacientes, ArrayList<Medico> misMedicos,
 			ArrayList<Secretaria> misSecretarias, ArrayList<Cita> misCitas, ArrayList<Vacuna> controlVacunas,
 			ArrayList<Enfermedad> misEnfermedades, ArrayList<Enfermedad> enfermedadesVigiladas) {
 		super();
@@ -90,5 +90,8 @@ public class Hospital {
 	public void setEnfermedadesVigiladas(ArrayList<Enfermedad> enfermedadesVigiladas) {
 		this.enfermedadesVigiladas = enfermedadesVigiladas;
 	}
+	
+	
+	
 }
 	
