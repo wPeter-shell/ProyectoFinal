@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class Hospital {
 	
-	private Administrador admin;
+	private static Hospital instancia;
 	private ArrayList<Paciente> misPacientes;
 	private ArrayList<Medico> misMedicos;
 	private ArrayList<Secretaria> misSecretarias;
@@ -13,11 +13,10 @@ public class Hospital {
 	private ArrayList<Enfermedad> misEnfermedades;
 	private ArrayList<Enfermedad> enfermedadesVigiladas;
 	
-	public Hospital(Administrador admin, ArrayList<Paciente> misPacientes, ArrayList<Medico> misMedicos,
+	private Hospital(ArrayList<Paciente> misPacientes, ArrayList<Medico> misMedicos,
 			ArrayList<Secretaria> misSecretarias, ArrayList<Cita> misCitas, ArrayList<Vacuna> controlVacunas,
 			ArrayList<Enfermedad> misEnfermedades, ArrayList<Enfermedad> enfermedadesVigiladas) {
 		super();
-		this.admin = admin;
 		this.misPacientes = misPacientes;
 		this.misMedicos = misMedicos;
 		this.misSecretarias = misSecretarias;
@@ -27,8 +26,8 @@ public class Hospital {
 		this.enfermedadesVigiladas = enfermedadesVigiladas;
 	}
 
-	public Administrador getAdmin() {
-		return admin;
+	public static Hospital getInstancia() {
+		return instancia;
 	}
 
 	public ArrayList<Paciente> getMisPacientes() {
@@ -59,8 +58,8 @@ public class Hospital {
 		return enfermedadesVigiladas;
 	}
 
-	public void setAdmin(Administrador admin) {
-		this.admin = admin;
+	public static void setInstancia(Hospital instancia) {
+		Hospital.instancia = instancia;
 	}
 
 	public void setMisPacientes(ArrayList<Paciente> misPacientes) {
@@ -91,7 +90,37 @@ public class Hospital {
 		this.enfermedadesVigiladas = enfermedadesVigiladas;
 	}
 	
+	public void agregarPaciente(Paciente p) {
+	    misPacientes.add(p);
+	}
+
+	public void agregarMedico(Medico m) {
+	    misMedicos.add(m);
+	}
 	
+	public void agregarSecretaria(Secretaria s) {
+	    misSecretarias.add(s);
+	}
 	
+	public void agregarCita(Cita cita) {
+	    misCitas.add(cita);
+	}
+	
+	public void agregarControlVacuna(Vacuna vacuna) {
+	    controlVacunas.add(vacuna);
+	}
+	
+	public void agregarEnfermedad(Enfermedad enfermedad) {
+	    misEnfermedades.add(enfermedad);
+	}
+	
+	public void agregarEnfermedadVigilada(Enfermedad enfermedad) {
+	    enfermedadesVigiladas.add(enfermedad);
+	}
+
 }
+	
+	
+	
+
 	
