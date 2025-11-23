@@ -7,7 +7,7 @@ public class Hospital {
 	private static Hospital instancia;
 	private ArrayList<Paciente> misPacientes;
 	private ArrayList<Medico> misMedicos;
-	private ArrayList<Secretaria> misSecretarias;
+	private Secretaria secretaria;
 	private ArrayList<Cita> misCitas;
 	private ArrayList<Vacuna> controlVacunas;
 	private ArrayList<Enfermedad> misEnfermedades;
@@ -16,7 +16,7 @@ public class Hospital {
 	private Hospital() {
         misPacientes = new ArrayList<>();
         misMedicos = new ArrayList<>();
-        misSecretarias = new ArrayList<>();
+        secretaria = null;   // Se le asigna despues
         misCitas = new ArrayList<>();
         controlVacunas = new ArrayList<>();
         misEnfermedades = new ArrayList<>();
@@ -38,9 +38,9 @@ public class Hospital {
 		return misMedicos;
 	}
 
-	public ArrayList<Secretaria> getMisSecretarias() {
-		return misSecretarias;
-	}
+	public Secretaria getSecretaria() { 
+        return secretaria;
+    }
 
 	public ArrayList<Cita> getMisCitas() {
 		return misCitas;
@@ -70,10 +70,6 @@ public class Hospital {
 		this.misMedicos = misMedicos;
 	}
 
-	public void setMisSecretarias(ArrayList<Secretaria> misSecretarias) {
-		this.misSecretarias = misSecretarias;
-	}
-
 	public void setMisCitas(ArrayList<Cita> misCitas) {
 		this.misCitas = misCitas;
 	}
@@ -96,10 +92,6 @@ public class Hospital {
 
 	public void agregarMedico(Medico m) {
 	    misMedicos.add(m);
-	}
-	
-	public void agregarSecretaria(Secretaria s) {
-	    misSecretarias.add(s);
 	}
 	
 	public void agregarCita(Cita cita) {
@@ -125,8 +117,24 @@ public class Hospital {
 			}
 		}
 		return null;
-	}
+	}	
 	
+	public void registrarSecretaria(Secretaria s) {
+	    if (s == null) {
+	        throw new IllegalArgumentException("La secretaria no puede ser null.");
+	    }
+	    if (this.secretaria != null) {
+	        throw new IllegalStateException("Ya hay una secretaria registrada en el hospital.");
+	    }
+	    this.secretaria = s;
+	}
+
+	public void reemplazarSecretaria(Secretaria nueva) {
+	    if (nueva == null) {
+	        throw new IllegalArgumentException("La secretaria no puede ser null.");
+	    }
+	    this.secretaria = nueva;
+	}
 
 }
 	

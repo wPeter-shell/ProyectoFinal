@@ -10,7 +10,7 @@ public class Administrador {
 		super();
 		this.usuario = usuario;
 		this.password = password;
-		this.hospital = hospital;
+		this.hospital =hospital;
 	}
 
 	public String getUsuario() {
@@ -58,13 +58,13 @@ public class Administrador {
 	}
 	
 	// REGISTRAR SECRETARIA
-	public void registrarSecretaria(Secretaria secretaria) {
-	    hospital.getMisSecretarias().add(secretaria);
-	}
+	public void registrarSecretaria(Secretaria s) {
+		Hospital.getInstancia().registrarSecretaria(s);
+    }
 
-	// ELIMINAR SECRETARIA
-	public void eliminarSecretaria(Secretaria secretaria) {
-	    hospital.getMisSecretarias().remove(secretaria);
+	// REEMPLAZAR SECRETARIA
+	public void reemplazarSecretaria(Secretaria secretaria) {
+	    Hospital.getInstancia().reemplazarSecretaria(secretaria);
 	}
 
 	// AGREGAR VACUNA AL CONTROL DEL HOSPITAL
