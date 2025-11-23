@@ -25,6 +25,14 @@ public class Paciente extends Persona {
 		this.defectoAlNacer = defectoAlNacer;
 	}
 
+	public Paciente(Persona p) {
+		super(p.getNombre(), p.getApellido(), p.getCedula(), p.getGenero(),
+		      p.getEdad(), p.getTelefono(), p.getDireccion());
+		
+		this.historial = new HistorialClinico();
+		this.misVacunas = new ArrayList<>();
+	}
+	
 	public HistorialClinico getHistorial() {
 		return historial;
 	}

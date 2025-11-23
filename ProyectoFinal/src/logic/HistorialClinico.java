@@ -6,9 +6,9 @@ public class HistorialClinico {
 
 	private ArrayList<Consulta> misConsultas;
 
-	private HistorialClinico(ArrayList<Consulta> misConsultas) {
+	public HistorialClinico() {
 		super();
-		this.misConsultas = misConsultas;
+		this.misConsultas = new ArrayList<>();
 	}
 
 	public ArrayList<Consulta> getMisConsultas() {
@@ -18,4 +18,8 @@ public class HistorialClinico {
 	public void setMisConsultas(ArrayList<Consulta> misConsultas) {
 		this.misConsultas = misConsultas;
 	}
+
+	public void agregarConsulta(Consulta consulta) {
+        misConsultas.add(consulta);
+    }
 }
