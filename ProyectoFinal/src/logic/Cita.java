@@ -2,27 +2,29 @@ package logic;
 
 public class Cita {
 
-    private Persona persona;
+    private Paciente paciente;
     private Medico medico;
     private String dia;
     private String estado;
 
-    public Cita(Persona persona, Medico medico, String dia) {
-        this.persona = persona;
+    public Cita(Paciente paciente, Medico medico, String dia) {
+        this.paciente = paciente;
         this.medico = medico;
         this.dia = dia;
         this.estado = "Pendiente";
     }
 
-	public Persona getPersona() {
-		return persona;
+    public Paciente getPaciente() {
+		return paciente;
 	}
 
-	public void setPersona(Persona persona) {
-		this.persona = persona;
+
+	public void setPaciente(Paciente paciente) {
+		this.paciente = paciente;
 	}
 
-    public Medico getMedico() {
+
+	public Medico getMedico() {
         return medico;
     }
 

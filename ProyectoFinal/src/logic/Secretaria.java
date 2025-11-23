@@ -25,7 +25,7 @@ public class Secretaria extends Persona {
 
 	        Hospital.getInstancia().agregarCita(cita);
 
-	        medico.getMisCita().add(cita);
+	        medico.getMisCitas().add(cita);
 
 	        return cita;
 	    }
@@ -69,7 +69,7 @@ public class Secretaria extends Persona {
 
         int ocupadas = 0;
 
-        for (Cita c : m.getMisCita()) {
+        for (Cita c : m.getMisCitas()) {
             if (c.getDia().equalsIgnoreCase(dia) && !c.getEstado().equals("Cancelada")) {
                 ocupadas++;
             }

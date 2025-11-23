@@ -4,110 +4,95 @@ import java.util.ArrayList;
 
 public class Medico extends Persona {
 
-    private Secretaria secretaria;
     private String especialidad;
     private int citasPorDia;
-    private ArrayList<Paciente>misPacientes;
-    private ArrayList<Consulta> misConsulta;
-    private ArrayList<Cita> misCita;
-    private Hospital hospital;
+    private ArrayList<Consulta> misConsultas;
+    private ArrayList<Cita> misCitas;
     
-    public Medico(String nombre, String apellido, String cedula, char genero, int edad, String telefono,
-			String direccion, Secretaria secretaria, String especialidad, int citasPorDia,
-			ArrayList<Paciente> misPacientes, ArrayList<Consulta> misConsulta, ArrayList<Cita> misCita,
-			Hospital hospital) {
+
+	public Medico(String nombre, String apellido, String cedula, char genero, int edad, String telefono,
+			String direccion, String especialidad, int citasPorDia) {
 		super(nombre, apellido, cedula, genero, edad, telefono, direccion);
-		this.secretaria = secretaria;
 		this.especialidad = especialidad;
 		this.citasPorDia = citasPorDia;
-		this.misPacientes = misPacientes;
-		this.misConsulta = misConsulta;
-		this.misCita = misCita;
-		this.hospital = hospital;
-	}
-
-	public Secretaria getSecretaria() {
-		return secretaria;
-	}
-
-	public void setSecretaria(Secretaria secretaria) {
-		this.secretaria = secretaria;
+		this.misConsultas = new ArrayList<>();
+		this.misCitas = new ArrayList<>();
 	}
 
 	public String getEspecialidad() {
 		return especialidad;
 	}
 
-	public void setEspecialidad(String especialidad) {
-		this.especialidad = especialidad;
-	}
-
 	public int getCitasPorDia() {
 		return citasPorDia;
+	}
+
+	public ArrayList<Consulta> getMisConsultas() {
+		return misConsultas;
+	}
+
+	public ArrayList<Cita> getMisCitas() {
+		return misCitas;
+	}
+
+	public void setEspecialidad(String especialidad) {
+		this.especialidad = especialidad;
 	}
 
 	public void setCitasPorDia(int citasPorDia) {
 		this.citasPorDia = citasPorDia;
 	}
 
-	public ArrayList<Paciente> getMisPacientes() {
-		return misPacientes;
-	}
-
-	public void setMisPacientes(ArrayList<Paciente> misPacientes) {
-		this.misPacientes = misPacientes;
-	}
-
-	public ArrayList<Consulta> getMisConsulta() {
-		return misConsulta;
-	}
-
-	public void setMisConsulta(ArrayList<Consulta> misConsulta) {
-		this.misConsulta = misConsulta;
-	}
-
-	public ArrayList<Cita> getMisCita() {
-		return misCita;
-	}
-
-	public void setMisCita(ArrayList<Cita> misCita) {
-		this.misCita = misCita;
-	}
-
-	public Hospital getHospital() {
-		return hospital;
-	}
-
-	public void setHospital(Hospital hospital) {
-		this.hospital = hospital;
-	}
-
-	public void registrarPaciente(Persona persona) {
-		
-	    if (persona instanceof Paciente) {
-	        Paciente p = (Paciente) persona;
-
-	        if (hospital.getMisPacientes() == null) {
-	            hospital.setMisPacientes(new ArrayList<>());
-	        }
-
-	        if (!hospital.getMisPacientes().contains(p)) {
-	            hospital.getMisPacientes().add(p);
-	        }
-
-	    } else {
-	        System.out.println("Error: Solo se pueden registrar objetos de tipo paciente.");
-	    }
+	public void agregarCita(Cita cita) {
+	    misCitas.add(cita);
 	}
 	
+	public void agregarConsulta(Consulta consulta) {
+	    misConsultas.add(consulta);
+	}
+
+	public boolean tieneDisponibilidad(String dia) {
+	    int ocupadas = 0;
+
+	    for (Cita c : misCitas) {
+	        if (c.getDia().equalsIgnoreCase(dia)
+	            && !c.getEstado().equalsIgnoreCase("Cancelada")) {
+	            ocupadas++;
+	        }
+	    }
+
+	    return ocupadas < citasPorDia;
+	}
+	
+	public ArrayList<Paciente> getMisPacientes() {
+
+	    ArrayList<Paciente> pacientes = new ArrayList<>();
+
+	    for (Cita c : misCitas) {
+	        Paciente p = c.getPaciente();
+	        if (!pacientes.contains(p)) {
+	            pacientes.add(p);
+	        }
+	    }
+
+	    for (Consulta consulta : misConsultas) {
+	        Paciente p = consulta.getCita().getPaciente();
+	        if (!pacientes.contains(p)) {
+	            pacientes.add(p);
+	        }
+	    }
+
+	    return pacientes;
+	}
+
 	public int cantCitasDisp(String dia) {
-	    if (misCita == null) {
+	    if (misCitas == null) {
 	        return citasPorDia;
 	    }
 
 	    int ocupadas = 0;
 
-	    for (Cita c : misCita) {
+	    for (Cita c : misCitas) {
 	        if (c.getDia().equalsIgnoreCase(dia) && 
 	            c.getMedico().equals(this) &&
 	            c.getEstado().equalsIgnoreCase("Pendiente")) 
