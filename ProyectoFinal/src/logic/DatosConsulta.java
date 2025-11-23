@@ -79,5 +79,7 @@ public class DatosConsulta {
 
     public void setVacunasAplicadas(ArrayList<Vacuna> vacunasAplicadas) {
         this.vacunasAplicadas = vacunasAplicadas;
-    }
+    }    
+    
+    
 }

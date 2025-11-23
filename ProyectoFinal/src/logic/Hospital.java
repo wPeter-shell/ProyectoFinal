@@ -13,22 +13,22 @@ public class Hospital {
 	private ArrayList<Enfermedad> misEnfermedades;
 	private ArrayList<Enfermedad> enfermedadesVigiladas;
 	
-	private Hospital(ArrayList<Paciente> misPacientes, ArrayList<Medico> misMedicos,
-			ArrayList<Secretaria> misSecretarias, ArrayList<Cita> misCitas, ArrayList<Vacuna> controlVacunas,
-			ArrayList<Enfermedad> misEnfermedades, ArrayList<Enfermedad> enfermedadesVigiladas) {
-		super();
-		this.misPacientes = misPacientes;
-		this.misMedicos = misMedicos;
-		this.misSecretarias = misSecretarias;
-		this.misCitas = misCitas;
-		this.controlVacunas = controlVacunas;
-		this.misEnfermedades = misEnfermedades;
-		this.enfermedadesVigiladas = enfermedadesVigiladas;
-	}
+	private Hospital() {
+        misPacientes = new ArrayList<>();
+        misMedicos = new ArrayList<>();
+        misSecretarias = new ArrayList<>();
+        misCitas = new ArrayList<>();
+        controlVacunas = new ArrayList<>();
+        misEnfermedades = new ArrayList<>();
+        enfermedadesVigiladas = new ArrayList<>();
+    }
 
 	public static Hospital getInstancia() {
-		return instancia;
-	}
+        if (instancia == null) {
+            instancia = new Hospital();
+        }
+        return instancia;
+    }
 
 	public ArrayList<Paciente> getMisPacientes() {
 		return misPacientes;
@@ -89,15 +89,6 @@ public class Hospital {
 	public void setEnfermedadesVigiladas(ArrayList<Enfermedad> enfermedadesVigiladas) {
 		this.enfermedadesVigiladas = enfermedadesVigiladas;
 	}
-	
-	public boolean buscarPacientePorCedula(String cedula) {
-		for(Paciente p : misPacientes) {
-			if(p.getCedula().equals(cedula)) {
-				return true;
-			}
-		}
-		return false;
-	}
 
 	public void agregarPaciente(Paciente p) {
 	    misPacientes.add(p);
@@ -126,6 +117,16 @@ public class Hospital {
 	public void agregarEnfermedadVigilada(Enfermedad enfermedad) {
 	    enfermedadesVigiladas.add(enfermedad);
 	}
+	
+	public Paciente buscarPacientePorCedula(String cedula) {
+		for(Paciente p : misPacientes) {
+			if(p.getCedula().equals(cedula)) {
+				return p;
+			}
+		}
+		return null;
+	}
+	
 
 }
 	
