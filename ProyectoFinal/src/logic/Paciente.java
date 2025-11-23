@@ -13,11 +13,11 @@ public class Paciente extends Persona {
 	private String defectoAlNacer;
 	
 	public Paciente(String nombre, String apellido, String cedula, char genero, int edad, String telefono,
-			String direccion, HistorialClinico historial, ArrayList<Vacuna> misVacunas, float peso, float altura,
+			String direccion, float peso, float altura,
 			String tipoSangre, String alergias, String defectoAlNacer) {
 		super(nombre, apellido, cedula, genero, edad, telefono, direccion);
-		this.historial = historial;
-		this.misVacunas = misVacunas;
+		this.historial = new HistorialClinico();
+		this.misVacunas = new  ArrayList<>();
 		this.peso = peso;
 		this.altura = altura;
 		this.tipoSangre = tipoSangre;
@@ -37,16 +37,8 @@ public class Paciente extends Persona {
 		return historial;
 	}
 
-	public void setHistorial(HistorialClinico historial) {
-		this.historial = historial;
-	}
-
 	public ArrayList<Vacuna> getMisVacunas() {
 		return misVacunas;
-	}
-
-	public void setMisVacunas(ArrayList<Vacuna> misVacunas) {
-		this.misVacunas = misVacunas;
 	}
 
 	public float getPeso() {

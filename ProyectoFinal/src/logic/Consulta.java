@@ -19,9 +19,7 @@ public class Consulta {
 	public DatosConsulta getDatos() {
 		return datos;
 	}
-	public void setCita(Cita cita) {
-		this.cita = cita;
-	}
+
 	public void setDatos(DatosConsulta datos) {
 		this.datos = datos;
 	}
