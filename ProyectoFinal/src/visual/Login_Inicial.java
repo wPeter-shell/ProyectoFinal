@@ -53,7 +53,7 @@ public class Login_Inicial extends JFrame {
       setResizable(false);
       setTitle("Log-In - Sistema Hospital");
       setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-      setSize(500, 400);
+      setSize(600, 400);
       setLocationRelativeTo(null); 
 
       contentPane = new JPanel();
@@ -91,7 +91,7 @@ public class Login_Inicial extends JFrame {
       panelForm.add(txtUser);
       txtUser.setColumns(10);
 
-      JLabel lblPassword = new JLabel("Contraseña:");
+      JLabel lblPassword = new JLabel("Contrase�a:");
       lblPassword.setFont(new Font("Segoe UI", Font.PLAIN, 16));
       lblPassword.setBounds(70, 120, 100, 25);
       panelForm.add(lblPassword);
@@ -113,7 +113,7 @@ public class Login_Inicial extends JFrame {
                fieldPassword.setEchoChar((char) 0); // muestra texto
                tglShowPass.setText("Ocultar");
             } else {
-               fieldPassword.setEchoChar('•'); // oculta texto
+               fieldPassword.setEchoChar('*'); // oculta texto
                tglShowPass.setText("Mostrar");
             }
          }
@@ -146,7 +146,7 @@ public class Login_Inicial extends JFrame {
                javax.swing.JOptionPane.showMessageDialog(
                      Login_Inicial.this,
                      "Usuario o contraseña incorrectos",
-                     "Error de autenticación",
+                     "Error de autenticacion",
                      javax.swing.JOptionPane.ERROR_MESSAGE
                );
                return;
