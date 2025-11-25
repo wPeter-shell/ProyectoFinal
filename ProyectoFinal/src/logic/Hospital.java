@@ -148,16 +148,16 @@ public class Hospital {
 			throw new IllegalArgumentException("Usuario y/o Contraseña no pueden ser nulos");
 		}
 		
-		if(user.equalsIgnoreCase(administrador.getUsuario()) && password == administrador.getPassword() ) {
+		if(user.equalsIgnoreCase(administrador.getUsuario()) && password.equals(administrador.getPassword()) ) {
 			return administrador;
 		}
 		
-		if(user.equalsIgnoreCase(secretaria.getUsuario()) && password == secretaria.getPassword() ) {
-			return administrador;
+		if(user.equalsIgnoreCase(secretaria.getUsuario()) && password.equals(secretaria.getPassword()) ) {
+			return secretaria;
 		}
 		
 		for(Medico m : misMedicos) {
-			if(user.equalsIgnoreCase(m.getUsuario() ) && password == m.getPassword() ) {
+			if(user.equalsIgnoreCase(m.getUsuario() ) && password.equals(m.getPassword()) ) {
 				return m;
 			}
 		}
