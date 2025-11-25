@@ -7,15 +7,22 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import logic.Administrador;
+import logic.Hospital;
+import logic.Medico;
+import logic.Secretaria;
+
 import javax.swing.JLabel;
 import java.awt.Font;
 import javax.swing.JTextField;
 import javax.swing.JButton;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class Login_Inicial extends JFrame {
 
 	private JPanel contentPane;
-	private Dimension dim;
 	private JTextField txtUser;
 	private JTextField txtPassword;
 
@@ -68,11 +75,37 @@ public class Login_Inicial extends JFrame {
 		getContentPane().add(txtPassword);
 		
 		JButton btnEnter = new JButton("Enter");
+		btnEnter.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String userVisual = txtUser.getText();
+				String passwordVisual = txtPassword.getText();
+				
+				Object objeto = Hospital.getInstancia().LogIn(userVisual, passwordVisual);
+				if(objeto instanceof Administrador) {
+					dispose();
+					
+				}else if(objeto instanceof Secretaria) {
+					
+					
+				}else if(objeto instanceof Medico) {
+					
+					
+				}
+				
+			}
+		});
 		btnEnter.setBounds(275, 327, 97, 25);
 		getContentPane().add(btnEnter);
 		
 		JButton btnClose = new JButton("Close");
+		btnClose.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				dispose();
+			}
+		});
 		btnClose.setBounds(385, 327, 97, 25);
 		getContentPane().add(btnClose);
 	}
+	
+	
 }

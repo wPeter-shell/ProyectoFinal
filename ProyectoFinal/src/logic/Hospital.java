@@ -22,8 +22,11 @@ public class Hospital {
         controlVacunas = new ArrayList<>();
         misEnfermedades = new ArrayList<>();
         enfermedadesVigiladas = new ArrayList<>();
-    }
+        
+        administrador = new Administrador("Admin", "123", instancia);
 
+    }
+	
 	public static Hospital getInstancia() {
         if (instancia == null) {
             instancia = new Hospital();
