@@ -36,4 +36,6 @@ public class Enfermedad {
 	public void setTieneVacuna(boolean tieneVacuna) {
 		this.tieneVacuna = tieneVacuna;
 	}
+	
+	
 }

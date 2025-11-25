@@ -101,6 +101,4 @@ public class Administrador {
 	    this.password = nuevaPassword;
 	}
 
-	
-	
 }

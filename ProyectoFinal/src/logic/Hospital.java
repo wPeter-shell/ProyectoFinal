@@ -7,6 +7,7 @@ public class Hospital {
 	private static Hospital instancia;
 	private ArrayList<Paciente> misPacientes;
 	private ArrayList<Medico> misMedicos;
+	private Administrador administrador;
 	private Secretaria secretaria;
 	private ArrayList<Cita> misCitas;
 	private ArrayList<Vacuna> controlVacunas;
@@ -36,6 +37,10 @@ public class Hospital {
 
 	public ArrayList<Medico> getMisMedicos() {
 		return misMedicos;
+	}
+	
+	public Administrador getAdministrador() {
+		return administrador;
 	}
 
 	public Secretaria getSecretaria() { 
@@ -135,6 +140,31 @@ public class Hospital {
 	    }
 	    this.secretaria = nueva;
 	}
+	
+	
+	public Object LogIn(String user, String password) {
+		
+		if(user == null || password == null) {
+			throw new IllegalArgumentException("Usuario y/o Contraseña no pueden ser nulos");
+		}
+		
+		if(user.equalsIgnoreCase(administrador.getUsuario()) && password == administrador.getPassword() ) {
+			return administrador;
+		}
+		
+		if(user.equalsIgnoreCase(secretaria.getUsuario()) && password == secretaria.getPassword() ) {
+			return administrador;
+		}
+		
+		for(Medico m : misMedicos) {
+			if(user.equalsIgnoreCase(m.getUsuario() ) && password == m.getPassword() ) {
+				return m;
+			}
+		}
+		
+		return null;
+	}
+	
 
 }
 	

@@ -1,13 +1,26 @@
 package logic;
 
 public class Secretaria extends Persona {
+	
+	private String usuario;
+	private String password;
 
-	public Secretaria(String nombre, String apellido, String cedula, char genero, int edad, String telefono,
+	public Secretaria(String usuario, String password, String nombre, String apellido, String cedula, char genero, int edad, String telefono,
 			String direccion) {
 		super(nombre, apellido, cedula, genero, edad, telefono, direccion);
+		this.usuario = usuario;
+		this.password = password;
 	}
 	
-	 public Cita registrarCita(Paciente paciente, Medico medico, String dia) {
+	 public String getUsuario() {
+		return usuario;
+	}
+	 
+	public String getPassword() {
+		return password;
+	}
+
+	public Cita registrarCita(Paciente paciente, Medico medico, String dia) {
 
 	        if (paciente == null)
 	            throw new IllegalArgumentException("Debe proporcionar un paciente.");

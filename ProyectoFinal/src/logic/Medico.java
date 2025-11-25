@@ -4,19 +4,39 @@ import java.util.ArrayList;
 
 public class Medico extends Persona {
 
+	private String usuario;
+	private String password;
     private String especialidad;
     private int citasPorDia;
     private ArrayList<Consulta> misConsultas;
     private ArrayList<Cita> misCitas;
     
 
-	public Medico(String nombre, String apellido, String cedula, char genero, int edad, String telefono,
+	public Medico(String usuario, String password, String nombre, String apellido, String cedula, char genero, int edad, String telefono,
 			String direccion, String especialidad, int citasPorDia) {
 		super(nombre, apellido, cedula, genero, edad, telefono, direccion);
+		this.usuario = usuario;
+		this.password = password;
 		this.especialidad = especialidad;
 		this.citasPorDia = citasPorDia;
 		this.misConsultas = new ArrayList<>();
 		this.misCitas = new ArrayList<>();
+	}
+
+	public String getUsuario() {
+		return usuario;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setMisConsultas(ArrayList<Consulta> misConsultas) {
+		this.misConsultas = misConsultas;
+	}
+
+	public void setMisCitas(ArrayList<Cita> misCitas) {
+		this.misCitas = misCitas;
 	}
 
 	public String getEspecialidad() {
