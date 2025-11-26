@@ -1,5 +1,7 @@
 package visual;
 
+import javax.swing.JOptionPane;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.EventQueue;
@@ -15,6 +17,7 @@ import javax.swing.JToggleButton;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.BorderFactory;
+import javax.swing.JOptionPane; 
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -25,6 +28,7 @@ import logic.Medico;
 import logic.Secretaria;
 
 public class Login_Inicial extends JFrame {
+
 
    private JPanel contentPane;
    private JTextField txtUser;
@@ -61,7 +65,6 @@ public class Login_Inicial extends JFrame {
       contentPane.setLayout(new BorderLayout(10, 10));
       setContentPane(contentPane);
 
-      // PANEL SUPERIOR (HEADER) 
       JPanel panelHeader = new JPanel();
       panelHeader.setBackground(new Color(46, 139, 192));
       panelHeader.setLayout(new BorderLayout());
@@ -74,7 +77,6 @@ public class Login_Inicial extends JFrame {
 
       contentPane.add(panelHeader, BorderLayout.NORTH);
 
-      // PANEL CENTRAL (FORMULARIO) 
       JPanel panelForm = new JPanel();
       panelForm.setLayout(null);
       panelForm.setBorder(BorderFactory.createTitledBorder("Credenciales de acceso"));
@@ -101,7 +103,6 @@ public class Login_Inicial extends JFrame {
       fieldPassword.setBounds(170, 120, 220, 25);
       panelForm.add(fieldPassword);
 
-      // Toggle opcional para mostrar/ocultar contraseña
       JToggleButton tglShowPass = new JToggleButton("Mostrar");
       tglShowPass.setBounds(400, 120, 80, 25);
       panelForm.add(tglShowPass);
@@ -110,16 +111,15 @@ public class Login_Inicial extends JFrame {
          @Override
          public void actionPerformed(ActionEvent e) {
             if (tglShowPass.isSelected()) {
-               fieldPassword.setEchoChar((char) 0); // muestra texto
+               fieldPassword.setEchoChar((char) 0); 
                tglShowPass.setText("Ocultar");
             } else {
-               fieldPassword.setEchoChar('*'); // oculta texto
+               fieldPassword.setEchoChar('*'); 
                tglShowPass.setText("Mostrar");
             }
          }
       });
 
-      // ───── PANEL INFERIOR (BOTONES) ─────
       JPanel panelBotones = new JPanel();
       panelBotones.setBorder(new EmptyBorder(5, 5, 5, 5));
       contentPane.add(panelBotones, BorderLayout.SOUTH);
@@ -132,40 +132,55 @@ public class Login_Inicial extends JFrame {
       btnClose.setFont(new Font("Segoe UI", Font.PLAIN, 14));
       panelBotones.add(btnClose);
 
-      // ───── LÓGICA DE LOS BOTONES ─────
       btnEnter.addActionListener(new ActionListener() {
          @Override
          public void actionPerformed(ActionEvent e) {
 
             String userVisual = txtUser.getText();
             String passwordVisual = new String(fieldPassword.getPassword());
+            
+            if (userVisual.isEmpty() || passwordVisual.isEmpty()) {
+                javax.swing.JOptionPane.showMessageDialog(
+                      Login_Inicial.this,
+                      "Debe ingresar usuario y contrase�a.",
+                      "Campos requeridos",
+                      javax.swing.JOptionPane.WARNING_MESSAGE
+                );
+                return;
+             }
 
-            Object objeto = Hospital.getInstancia().LogIn(userVisual, passwordVisual);
+            
+            Object objeto = null;
+            
+            try {
+            	   objeto = Hospital.getInstancia().LogIn(userVisual, passwordVisual);
+            	} catch (IllegalArgumentException ex) {
+            	   JOptionPane.showMessageDialog(
+            	      Login_Inicial.this,     
+            	      ex.getMessage(),
+            	      "Error",
+            	      JOptionPane.ERROR_MESSAGE
+            	   );
+            	   return;
+            	}
 
             if (objeto == null) {
-               javax.swing.JOptionPane.showMessageDialog(
-                     Login_Inicial.this,
-                     "Usuario o contraseña incorrectos",
-                     "Error de autenticacion",
-                     javax.swing.JOptionPane.ERROR_MESSAGE
-               );
-               return;
-            }
+                JOptionPane.showMessageDialog(
+                   Login_Inicial.this,
+                   "Usuario o contrase�a incorrectos.",
+                   "Acceso denegado",
+                   JOptionPane.ERROR_MESSAGE
+                );
+                return;
+             }
 
-            if (objeto instanceof Administrador) {
-               // TODO: abrir ventana de administrador
-               // new VentanaAdmin((Administrador) objeto).setVisible(true);
-               dispose();
 
-            } else if (objeto instanceof Secretaria) {
-               // TODO: abrir ventana de secretaria
-               // new VentanaSecretaria((Secretaria) objeto).setVisible(true);
-               dispose();
+            if (objeto instanceof Administrador || objeto instanceof Secretaria || objeto instanceof Medico) {
 
-            } else if (objeto instanceof Medico) {
-               // TODO: abrir ventana de médico
-               // new VentanaMedico((Medico) objeto).setVisible(true);
-               dispose();
+	        	Principal ventanaPrincipal = new Principal(objeto);
+	        	ventanaPrincipal.setVisible(true);
+	        	dispose();
+
             }
          }
       });

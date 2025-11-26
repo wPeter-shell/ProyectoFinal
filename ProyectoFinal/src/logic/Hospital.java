@@ -155,7 +155,7 @@ public class Hospital {
 			return administrador;
 		}
 		
-		if(user.equalsIgnoreCase(secretaria.getUsuario()) && password.equals(secretaria.getPassword()) ) {
+		if (secretaria != null && user.equalsIgnoreCase(secretaria.getUsuario()) && password.equals(secretaria.getPassword())) {
 			return secretaria;
 		}
 		
