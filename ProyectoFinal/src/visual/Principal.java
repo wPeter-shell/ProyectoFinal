@@ -154,7 +154,7 @@ public class Principal extends JFrame {
 	   contentPane.add(panelFondo, BorderLayout.CENTER);
 
 	   JPanel header = new JPanel();
-	   header.setBackground(new Color(46, 139, 192));
+	   header.setBackground(new Color(0, 128, 128));
 	   header.setLayout(new BorderLayout());
 	   header.setBorder(new EmptyBorder(12, 20, 12, 20));
 
@@ -171,7 +171,7 @@ public class Principal extends JFrame {
 	   panelTitulos.setOpaque(false);
 	   panelTitulos.setLayout(new BorderLayout());
 
-	   JLabel lblTitulo = new JLabel("Hospital San Pedro");
+	   JLabel lblTitulo = new JLabel("Hospital Plus+");
 	   lblTitulo.setForeground(Color.WHITE);
 	   lblTitulo.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 26));
 	   lblTitulo.setHorizontalAlignment(SwingConstants.LEFT);

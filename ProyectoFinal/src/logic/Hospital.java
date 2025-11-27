@@ -13,6 +13,7 @@ public class Hospital {
 	private ArrayList<Vacuna> controlVacunas;
 	private ArrayList<Enfermedad> misEnfermedades;
 	private ArrayList<Enfermedad> enfermedadesVigiladas;
+	private ArrayList<String> especialidades;
 	
 	private Hospital() {
         misPacientes = new ArrayList<>();
@@ -22,6 +23,7 @@ public class Hospital {
         controlVacunas = new ArrayList<>();
         misEnfermedades = new ArrayList<>();
         enfermedadesVigiladas = new ArrayList<>();
+        especialidades = new ArrayList<>();
         
         administrador = new Administrador("Admin", "123", instancia);
 
@@ -64,6 +66,10 @@ public class Hospital {
 
 	public ArrayList<Enfermedad> getEnfermedadesVigiladas() {
 		return enfermedadesVigiladas;
+	}
+	
+	public ArrayList<String> especialidades() {
+		return especialidades;
 	}
 
 	public static void setInstancia(Hospital instancia) {
@@ -167,6 +173,37 @@ public class Hospital {
 		
 		return null;
 	}
+	
+	
+	
+	public String crearUsuarioMedico() {
+		
+		String usuario = null;
+		
+		return usuario;
+	}
+	
+	public String crearPasswordMedico() {
+		
+		String password = null;
+		
+		return password;
+	}
+	
+	public String crearUsuarioSecretaria() {
+		
+		String usuario = null;
+		
+		return usuario;
+	}
+	
+	public String crearPasswordSecretaria() {
+		
+		String password = null;
+		
+		return password;
+	}
+	
 	
 
 }

@@ -69,7 +69,7 @@ public class Login_Inicial extends JFrame {
       panelHeader.setBackground(new Color(46, 139, 192));
       panelHeader.setLayout(new BorderLayout());
 
-      JLabel lblTitulo = new JLabel("Hospital San Pedro");
+      JLabel lblTitulo = new JLabel("Hospital Plus+");
       lblTitulo.setHorizontalAlignment(SwingConstants.CENTER);
       lblTitulo.setForeground(Color.WHITE);
       lblTitulo.setFont(new Font("Segoe UI", Font.BOLD, 22));
@@ -93,7 +93,7 @@ public class Login_Inicial extends JFrame {
       panelForm.add(txtUser);
       txtUser.setColumns(10);
 
-      JLabel lblPassword = new JLabel("Contraseï¿½a:");
+      JLabel lblPassword = new JLabel("Contraseña:");
       lblPassword.setFont(new Font("Segoe UI", Font.PLAIN, 16));
       lblPassword.setBounds(70, 120, 100, 25);
       panelForm.add(lblPassword);
@@ -142,7 +142,7 @@ public class Login_Inicial extends JFrame {
             if (userVisual.isEmpty() || passwordVisual.isEmpty()) {
                 javax.swing.JOptionPane.showMessageDialog(
                       Login_Inicial.this,
-                      "Debe ingresar usuario y contraseï¿½a.",
+                      "Debe ingresar usuario y contraseña.",
                       "Campos requeridos",
                       javax.swing.JOptionPane.WARNING_MESSAGE
                 );
@@ -167,7 +167,7 @@ public class Login_Inicial extends JFrame {
             if (objeto == null) {
                 JOptionPane.showMessageDialog(
                    Login_Inicial.this,
-                   "Usuario o contraseï¿½a incorrectos.",
+                   "Usuario o contraseña incorrectos.",
                    "Acceso denegado",
                    JOptionPane.ERROR_MESSAGE
                 );
