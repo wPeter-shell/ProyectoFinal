@@ -35,9 +35,6 @@ public class RegistrarMedico extends JDialog {
    private JTextField txtCitasPorDia;
    private JComboBox<Character> cmbGenero;
 
-   /**
-    * Launch the application.
-    */
    public static void main(String[] args) {
       try {
          RegistrarMedico dialog = new RegistrarMedico();
@@ -48,40 +45,31 @@ public class RegistrarMedico extends JDialog {
       }
    }
 
-   /**
-    * Create the dialog.
-    */
    public RegistrarMedico() {
-      setTitle("Registrar Médico");
-      setModal(true); // opcional, para que bloquee hasta terminar
+      setTitle("Registrar MÃ©dico");
+      setModal(true);
       setSize(500, 450);
       setLocationRelativeTo(null);
       getContentPane().setLayout(new BorderLayout(0, 0));
 
-      // =========================
-      // HEADER LINDO ARRIBA
-      // =========================
       JPanel headerPanel = new JPanel();
       headerPanel.setBackground(new Color(0, 128, 128));
       headerPanel.setBorder(new EmptyBorder(12, 18, 12, 18));
       headerPanel.setLayout(new BorderLayout());
       getContentPane().add(headerPanel, BorderLayout.NORTH);
 
-      JLabel lblTitulo = new JLabel("Registro de médico");
+      JLabel lblTitulo = new JLabel("Registro de mÃ©dico");
       lblTitulo.setForeground(Color.WHITE);
       lblTitulo.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 20));
       lblTitulo.setHorizontalAlignment(SwingConstants.LEFT);
       headerPanel.add(lblTitulo, BorderLayout.WEST);
 
-      JLabel lblSubtitulo = new JLabel("Complete los datos para agregar un nuevo médico");
+      JLabel lblSubtitulo = new JLabel("Complete los datos para agregar un nuevo mÃ©dico");
       lblSubtitulo.setForeground(new Color(225, 240, 250));
       lblSubtitulo.setFont(new Font("Segoe UI", Font.PLAIN, 12));
       lblSubtitulo.setHorizontalAlignment(SwingConstants.LEFT);
       headerPanel.add(lblSubtitulo, BorderLayout.SOUTH);
 
-      // =========================
-      // PANEL CENTRAL CON FORM
-      // =========================
       contentPanel.setBorder(new EmptyBorder(20, 30, 10, 30));
       contentPanel.setBackground(new Color(245, 247, 250));
       getContentPane().add(contentPanel, BorderLayout.CENTER);
@@ -89,29 +77,25 @@ public class RegistrarMedico extends JDialog {
 
       Font labelFont = new Font("Segoe UI", Font.PLAIN, 13);
 
-      // Nombre
       JLabel lblNombre = new JLabel("Nombre:");
       lblNombre.setFont(labelFont);
       contentPanel.add(lblNombre);
       txtNombre = new JTextField();
       contentPanel.add(txtNombre);
 
-      // Apellido
       JLabel lblApellido = new JLabel("Apellido:");
       lblApellido.setFont(labelFont);
       contentPanel.add(lblApellido);
       txtApellido = new JTextField();
       contentPanel.add(txtApellido);
 
-      // Cédula
-      JLabel lblCedula = new JLabel("Cédula:");
+      JLabel lblCedula = new JLabel("CÃ©dula:");
       lblCedula.setFont(labelFont);
       contentPanel.add(lblCedula);
       txtCedula = new JTextField();
       contentPanel.add(txtCedula);
 
-      // Género
-      JLabel lblGenero = new JLabel("Género:");
+      JLabel lblGenero = new JLabel("GÃ©nero:");
       lblGenero.setFont(labelFont);
       contentPanel.add(lblGenero);
       cmbGenero = new JComboBox<Character>();
@@ -119,44 +103,36 @@ public class RegistrarMedico extends JDialog {
       cmbGenero.addItem('F');
       contentPanel.add(cmbGenero);
 
-      // Edad
       JLabel lblEdad = new JLabel("Edad:");
       lblEdad.setFont(labelFont);
       contentPanel.add(lblEdad);
       txtEdad = new JTextField();
       contentPanel.add(txtEdad);
 
-      // Teléfono
-      JLabel lblTelefono = new JLabel("Teléfono:");
+      JLabel lblTelefono = new JLabel("TelÃ©fono:");
       lblTelefono.setFont(labelFont);
       contentPanel.add(lblTelefono);
       txtTelefono = new JTextField();
       contentPanel.add(txtTelefono);
 
-      // Dirección
-      JLabel lblDireccion = new JLabel("Dirección:");
+      JLabel lblDireccion = new JLabel("DirecciÃ³n:");
       lblDireccion.setFont(labelFont);
       contentPanel.add(lblDireccion);
       txtDireccion = new JTextField();
       contentPanel.add(txtDireccion);
 
-      // Especialidad
       JLabel lblEspecialidad = new JLabel("Especialidad:");
       lblEspecialidad.setFont(labelFont);
       contentPanel.add(lblEspecialidad);
       txtEspecialidad = new JTextField();
       contentPanel.add(txtEspecialidad);
 
-      // Citas por día
-      JLabel lblCitas = new JLabel("Citas por día:");
+      JLabel lblCitas = new JLabel("Citas por dÃ­a:");
       lblCitas.setFont(labelFont);
       contentPanel.add(lblCitas);
       txtCitasPorDia = new JTextField();
       contentPanel.add(txtCitasPorDia);
 
-      // =========================
-      // PANEL DE BOTONES ABAJO
-      // =========================
       JPanel buttonPane = new JPanel();
       buttonPane.setBorder(new EmptyBorder(10, 18, 10, 18));
       buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT, 10, 5));
@@ -182,36 +158,30 @@ public class RegistrarMedico extends JDialog {
       buttonPane.add(cancelButton);
    }
 
-   /**
-    * Método para registrar un médico en el sistema
-    */
    private void registrarMedico() {
       try {
-         // Validar campos obligatorios
          if (txtNombre.getText().isEmpty() || txtApellido.getText().isEmpty() ||
              txtCedula.getText().isEmpty() || txtEspecialidad.getText().isEmpty() ||
              txtCitasPorDia.getText().isEmpty() || txtDireccion.getText().isEmpty() || txtEdad.getText().isEmpty() || txtTelefono.getText().isEmpty()) {
 
             JOptionPane.showMessageDialog(this,
                   "Todos los campos son obligatorios",
-                  "Error de validación",
+                  "Error de validaciÃ³n",
                   JOptionPane.ERROR_MESSAGE);
             return;
          }
 
-         // Validar que no exista un médico con la misma cédula
          String cedula = txtCedula.getText();
          for (Medico medicoExistente : Hospital.getInstancia().getMisMedicos()) {
             if (medicoExistente.getCedula().equals(cedula)) {
                JOptionPane.showMessageDialog(this,
-                     "Ya existe un médico con esta cédula",
+                     "Ya existe un mÃ©dico con esta cÃ©dula",
                      "Error de registro",
                      JOptionPane.ERROR_MESSAGE);
                return;
             }
          }
 
-         // Obtener valores de los campos
          String nombre = txtNombre.getText();
          String apellido = txtApellido.getText();
          char genero = (Character) cmbGenero.getSelectedItem();
@@ -221,25 +191,22 @@ public class RegistrarMedico extends JDialog {
          String especialidad = txtEspecialidad.getText();
          int citasPorDia = Integer.parseInt(txtCitasPorDia.getText());
 
-         // Validar edad
          if (edad < 18 || edad > 70) {
             JOptionPane.showMessageDialog(this,
-                  "La edad debe estar entre 18 y 70 años",
-                  "Error de validación",
+                  "La edad debe estar entre 18 y 70 aÃ±os",
+                  "Error de validaciÃ³n",
                   JOptionPane.ERROR_MESSAGE);
             return;
          }
 
-         // Validar citas por día
          if (citasPorDia <= 0 || citasPorDia > 20) {
             JOptionPane.showMessageDialog(this,
-                  "Las citas por día deben estar entre 1 y 20",
-                  "Error de validación",
+                  "Las citas por dÃ­a deben estar entre 1 y 20",
+                  "Error de validaciÃ³n",
                   JOptionPane.ERROR_MESSAGE);
             return;
          }
 
-         // Crear médico con usuario y contraseña generados por el sistema
          Medico nuevoMedico = new Medico(
                Hospital.getInstancia().crearUsuarioMedico(),
                Hospital.getInstancia().crearPasswordMedico(),
@@ -252,11 +219,12 @@ public class RegistrarMedico extends JDialog {
          admin.registrarMedico(nuevoMedico);
 
          JOptionPane.showMessageDialog(this,
-               "Médico registrado exitosamente:\n" +
+               "MÃ©dico registrado exitosamente:\n" +
                "Nombre: " + nombre + " " + apellido + "\n" +
                "Especialidad: " + especialidad + "\n" +
-               "Cédula: " + cedula + "\n" +
-               "Usuario: " + nuevoMedico.getUsuario(),
+               "CÃ©dula: " + cedula + "\n" +
+               "Usuario: " + nuevoMedico.getUsuario() + "\n" +
+               "ContraseÃ±a: " + nuevoMedico.getPassword(),
                "Registro Exitoso",
                JOptionPane.INFORMATION_MESSAGE);
 
@@ -265,22 +233,19 @@ public class RegistrarMedico extends JDialog {
 
       } catch (NumberFormatException e) {
          JOptionPane.showMessageDialog(this,
-               "Error en formato numérico:\n" +
-               "Edad y Citas por día deben ser números válidos",
+               "Error en formato numÃ©rico:\n" +
+               "Edad y Citas por dÃ­a deben ser nÃºmeros vÃ¡lidos",
                "Error de formato",
                JOptionPane.ERROR_MESSAGE);
       } catch (Exception e) {
          JOptionPane.showMessageDialog(this,
-               "Error al registrar médico: " + e.getMessage(),
+               "Error al registrar mÃ©dico: " + e.getMessage(),
                "Error del sistema",
                JOptionPane.ERROR_MESSAGE);
          e.printStackTrace();
       }
    }
 
-   /**
-    * Método para limpiar todos los campos del formulario
-    */
    private void limpiarCampos() {
       txtNombre.setText("");
       txtApellido.setText("");

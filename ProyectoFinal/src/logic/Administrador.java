@@ -10,7 +10,7 @@ public class Administrador {
 		super();
 		this.usuario = usuario;
 		this.password = password;
-		this.hospital =hospital;
+		this.hospital = hospital;
 	}
 
 	public String getUsuario() {
@@ -37,12 +37,12 @@ public class Administrador {
 		this.hospital = hospital;
 	}
 	
-	// REGISTRAR MÉDICO
+	// REGISTRAR Mï¿½DICO
 	public void registrarMedico(Medico medico) {
 	    hospital.getMisMedicos().add(medico);
 	}
 
-	// ELIMINAR MÉDICO
+	// ELIMINAR Mï¿½DICO
 	public void eliminarMedico(Medico medico) {
 	    hospital.getMisMedicos().remove(medico);
 	}
@@ -52,7 +52,7 @@ public class Administrador {
 	    medico.setEspecialidad(nuevaEspecialidad);
 	}
 
-	// DEFINIR CUÁNTAS CITAS POR DÍA PUEDE ATENDER UN MÉDICO
+	// DEFINIR CUï¿½NTAS CITAS POR Dï¿½A PUEDE ATENDER UN Mï¿½DICO
 	public void definirCantCitas(Medico medico, int cantCitas) {
 	    medico.setCitasPorDia(cantCitas);
 	}
