@@ -10,7 +10,11 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.net.Socket;
+import java.rmi.UnknownHostException;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -19,6 +23,7 @@ import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
@@ -26,7 +31,9 @@ import javax.swing.border.EmptyBorder;
 import logic.Administrador;
 import logic.Medico;
 import logic.Secretaria;
-import logic.Hospital; 
+import logic.Hospital;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent; 
 
 public class Principal extends JFrame {
 
@@ -52,6 +59,8 @@ public class Principal extends JFrame {
    static Socket sfd = null;
    static DataInputStream EntradaSocket;
    static DataOutputStream SalidaSocket;
+   private JMenu menuConsulta;
+   private JMenuItem itemAtenderConsultas;
    
    
 
@@ -144,7 +153,7 @@ public class Principal extends JFrame {
       });
       menuAdmin.add(itemAgregarVacuna);
 
-      itemDefinirNumCitas = new JMenuItem("Definir nº de citas por día");
+      itemDefinirNumCitas = new JMenuItem("Modificar nº de citas por día");
       itemDefinirNumCitas.addActionListener(e -> {
          new DefinirNumCitas().setVisible(true);
       });
@@ -156,6 +165,13 @@ public class Principal extends JFrame {
 
       itemHacerCita = new JMenuItem("Registrar cita");
       menuCitas.add(itemHacerCita);
+      
+      menuConsulta = new JMenu("Consultas");
+      menuConsulta.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+      menuBar.add(menuConsulta);
+      
+      itemAtenderConsultas = new JMenuItem("Atender Consultas");
+      menuConsulta.add(itemAtenderConsultas);
       
       menuListar = new JMenu("Listar");
       menuListar.setFont(new Font("Segoe UI", Font.PLAIN, 14));
@@ -169,9 +185,39 @@ public class Principal extends JFrame {
       menuBar.add(menuArchivos);
       
       itemGuardarArchivos = new JMenuItem("Guardar Archivos");
+      itemGuardarArchivos.addActionListener(new ActionListener() {
+      	public void actionPerformed(ActionEvent e) {
+      		Hospital.getInstancia().guardarDatos();
+      		JOptionPane.showMessageDialog(null, "Guardado Correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+      	}
+      });
       menuArchivos.add(itemGuardarArchivos);
       
       itemRespaldo = new JMenuItem("Respaldo");
+      itemRespaldo.addActionListener(new ActionListener() {
+      	public void actionPerformed(ActionEvent e) {
+      		try {
+      			sfd = new Socket("127.0.0.1", 7000);
+      			DataInputStream aux = new DataInputStream(new FileInputStream(new File("hospital_respaldo.dat")));
+      			SalidaSocket = new DataOutputStream((sfd.getOutputStream()));
+      			int unByte;
+      			try {
+      				while((unByte = aux.read()) != - 1) {
+      					SalidaSocket.write(unByte);
+      					SalidaSocket.flush();
+      				}
+      			}catch(IOException ioe) {
+      				System.out.println("Error: "+ioe);
+      			}
+      		}catch(UnknownHostException uhe) {
+      			System.out.println("No se puede acceder al servidor.");
+      			System.exit(1);
+      		}catch(IOException ioe) {
+      			System.out.println("Comunicación rechazada.");
+      			System.exit(1);
+      		}
+      	}
+      });
       menuArchivos.add(itemRespaldo);
    }
 
@@ -345,8 +391,9 @@ public class Principal extends JFrame {
       itemAgregarVacuna.setEnabled(false);
       itemDefinirNumCitas.setEnabled(false);
       itemHacerCita.setEnabled(false);
-      menuListar.setEnabled(false);
-      menuArchivos.setEnabled(false);
+      itemListarPacientes.setEnabled(false);
+      itemGuardarArchivos.setEnabled(false);
+      itemRespaldo.setEnabled(false);
       
 
       if (usuarioLogueado instanceof Administrador) {
@@ -356,16 +403,17 @@ public class Principal extends JFrame {
          itemAgregarVacuna.setEnabled(true);
          itemDefinirNumCitas.setEnabled(true);
          itemHacerCita.setEnabled(true);
-         menuListar.setEnabled(true);
-         menuArchivos.setEnabled(true);
+         itemGuardarArchivos.setEnabled(true);
+         itemListarPacientes.setEnabled(true);
+         itemRespaldo.setEnabled(true);
 
       } else if (usuarioLogueado instanceof Secretaria) {
 
          itemHacerCita.setEnabled(true);
-         menuListar.setEnabled(true);
+         itemListarPacientes.setEnabled(true);
 
       } else if (usuarioLogueado instanceof Medico) {
-    	  menuListar.setEnabled(true);
+    	  itemListarPacientes.setEnabled(true);
       }
    }
 }

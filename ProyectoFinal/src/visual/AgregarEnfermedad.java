@@ -55,7 +55,7 @@ public class AgregarEnfermedad extends JDialog {
 		contentPanel.add(txtNombre);
 		
 		contentPanel.add(new JLabel("Bajo vigilancia:"));
-		chkVigilancia = new JCheckBox("Marcar como enfermedad bajo vigilancia");
+		chkVigilancia = new JCheckBox("Marcar bajo vigilancia");
 		contentPanel.add(chkVigilancia);
 		
 		// Panel de botones
