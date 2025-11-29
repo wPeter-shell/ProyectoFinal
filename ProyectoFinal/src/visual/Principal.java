@@ -38,6 +38,7 @@ public class Principal extends JFrame {
    private JMenuItem itemAgregarVacuna;
    private JMenuItem itemDefinirNumCitas;
    private JMenuItem itemHacerCita;
+   private JMenuItem menuListar;
 
 
    public static void main(String[] args) {
@@ -141,6 +142,20 @@ public class Principal extends JFrame {
 
       itemHacerCita = new JMenuItem("Registrar cita");
       menuCitas.add(itemHacerCita);
+      
+      menuListar = new JMenu("Listar");
+      menuListar.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+      menuBar.add(menuListar);
+      
+      JMenuItem itemListarPacientes = new JMenuItem("ListarPacientes");
+      menuListar.add(itemListarPacientes);
+      
+      JMenu menuArchivos = new JMenu("Archivos");
+      menuArchivos.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+      menuBar.add(menuArchivos);
+      
+      JMenuItem itemGuardarArchivos = new JMenuItem("Guardar Archivos");
+      menuArchivos.add(itemGuardarArchivos);
    }
 
 

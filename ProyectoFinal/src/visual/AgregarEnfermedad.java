@@ -98,7 +98,7 @@ public class AgregarEnfermedad extends JDialog {
 			if (nombre.isEmpty()) {
 				JOptionPane.showMessageDialog(this, 
 					"El nombre de la enfermedad es obligatorio", 
-					"Error de validaciÃ³n", 
+					"Error de validación", 
 					JOptionPane.ERROR_MESSAGE);
 				return;
 			}
@@ -127,11 +127,11 @@ public class AgregarEnfermedad extends JDialog {
 
 			String mensaje = "Enfermedad agregada exitosamente:\n" +
 							"Nombre: " + nombre + "\n" +
-							"Bajo vigilancia: " + (bajoVigilancia ? "SÃ­" : "No");
+							"Bajo vigilancia: " + (bajoVigilancia ? "Sí" : "No");
 			
 			JOptionPane.showMessageDialog(this, 
 				mensaje,
-				"Registro Exitoso", 
+				"Registro Éxitoso", 
 				JOptionPane.INFORMATION_MESSAGE);
 
 			limpiarCampos();

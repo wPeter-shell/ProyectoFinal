@@ -25,7 +25,7 @@ public class Hospital {
         enfermedadesVigiladas = new ArrayList<>();
         especialidades = new ArrayList<>();
         
-        administrador = new Administrador("Admin", "123", instancia);
+        administrador = new Administrador("Admin", "123", this);
 
     }
 	

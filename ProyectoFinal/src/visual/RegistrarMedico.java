@@ -58,13 +58,13 @@ public class RegistrarMedico extends JDialog {
       headerPanel.setLayout(new BorderLayout());
       getContentPane().add(headerPanel, BorderLayout.NORTH);
 
-      JLabel lblTitulo = new JLabel("Registro de m√©dico");
+      JLabel lblTitulo = new JLabel("Registro de medico");
       lblTitulo.setForeground(Color.WHITE);
       lblTitulo.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 20));
       lblTitulo.setHorizontalAlignment(SwingConstants.LEFT);
       headerPanel.add(lblTitulo, BorderLayout.WEST);
 
-      JLabel lblSubtitulo = new JLabel("Complete los datos para agregar un nuevo m√©dico");
+      JLabel lblSubtitulo = new JLabel("Complete los datos para agregar un nuevo medico");
       lblSubtitulo.setForeground(new Color(225, 240, 250));
       lblSubtitulo.setFont(new Font("Segoe UI", Font.PLAIN, 12));
       lblSubtitulo.setHorizontalAlignment(SwingConstants.LEFT);
@@ -89,13 +89,13 @@ public class RegistrarMedico extends JDialog {
       txtApellido = new JTextField();
       contentPanel.add(txtApellido);
 
-      JLabel lblCedula = new JLabel("C√©dula:");
+      JLabel lblCedula = new JLabel("CÈdula:");
       lblCedula.setFont(labelFont);
       contentPanel.add(lblCedula);
       txtCedula = new JTextField();
       contentPanel.add(txtCedula);
 
-      JLabel lblGenero = new JLabel("G√©nero:");
+      JLabel lblGenero = new JLabel("GÈnero:");
       lblGenero.setFont(labelFont);
       contentPanel.add(lblGenero);
       cmbGenero = new JComboBox<Character>();
@@ -109,13 +109,13 @@ public class RegistrarMedico extends JDialog {
       txtEdad = new JTextField();
       contentPanel.add(txtEdad);
 
-      JLabel lblTelefono = new JLabel("Tel√©fono:");
+      JLabel lblTelefono = new JLabel("TelÈfono:");
       lblTelefono.setFont(labelFont);
       contentPanel.add(lblTelefono);
       txtTelefono = new JTextField();
       contentPanel.add(txtTelefono);
 
-      JLabel lblDireccion = new JLabel("Direcci√≥n:");
+      JLabel lblDireccion = new JLabel("DirecciÛn:");
       lblDireccion.setFont(labelFont);
       contentPanel.add(lblDireccion);
       txtDireccion = new JTextField();
@@ -127,7 +127,7 @@ public class RegistrarMedico extends JDialog {
       txtEspecialidad = new JTextField();
       contentPanel.add(txtEspecialidad);
 
-      JLabel lblCitas = new JLabel("Citas por d√≠a:");
+      JLabel lblCitas = new JLabel("Citas por dÌa:");
       lblCitas.setFont(labelFont);
       contentPanel.add(lblCitas);
       txtCitasPorDia = new JTextField();
@@ -166,7 +166,7 @@ public class RegistrarMedico extends JDialog {
 
             JOptionPane.showMessageDialog(this,
                   "Todos los campos son obligatorios",
-                  "Error de validaci√≥n",
+                  "Error de validaciÛn",
                   JOptionPane.ERROR_MESSAGE);
             return;
          }
@@ -175,7 +175,7 @@ public class RegistrarMedico extends JDialog {
          for (Medico medicoExistente : Hospital.getInstancia().getMisMedicos()) {
             if (medicoExistente.getCedula().equals(cedula)) {
                JOptionPane.showMessageDialog(this,
-                     "Ya existe un m√©dico con esta c√©dula",
+                     "Ya existe un medico con esta cÈdula",
                      "Error de registro",
                      JOptionPane.ERROR_MESSAGE);
                return;
@@ -193,16 +193,16 @@ public class RegistrarMedico extends JDialog {
 
          if (edad < 18 || edad > 70) {
             JOptionPane.showMessageDialog(this,
-                  "La edad debe estar entre 18 y 70 a√±os",
-                  "Error de validaci√≥n",
+                  "La edad debe estar entre 18 y 70 aÒos",
+                  "Error de validaciÛn",
                   JOptionPane.ERROR_MESSAGE);
             return;
          }
 
          if (citasPorDia <= 0 || citasPorDia > 20) {
             JOptionPane.showMessageDialog(this,
-                  "Las citas por d√≠a deben estar entre 1 y 20",
-                  "Error de validaci√≥n",
+                  "Las citas por dÌa deben estar entre 1 y 20",
+                  "Error de validaciÛn",
                   JOptionPane.ERROR_MESSAGE);
             return;
          }
@@ -215,16 +215,15 @@ public class RegistrarMedico extends JDialog {
                especialidad, citasPorDia
          );
 
-         Administrador admin = Hospital.getInstancia().getAdministrador();
-         admin.registrarMedico(nuevoMedico);
+         Hospital.getInstancia().getAdministrador().registrarMedico(nuevoMedico);;
 
          JOptionPane.showMessageDialog(this,
-               "M√©dico registrado exitosamente:\n" +
+               "Meddico registrado exitosamente:\n" +
                "Nombre: " + nombre + " " + apellido + "\n" +
                "Especialidad: " + especialidad + "\n" +
-               "C√©dula: " + cedula + "\n" +
+               "CÈdula: " + cedula + "\n" +
                "Usuario: " + nuevoMedico.getUsuario() + "\n" +
-               "Contrase√±a: " + nuevoMedico.getPassword(),
+               "ContraseÒa: " + nuevoMedico.getPassword(),
                "Registro Exitoso",
                JOptionPane.INFORMATION_MESSAGE);
 
@@ -233,13 +232,13 @@ public class RegistrarMedico extends JDialog {
 
       } catch (NumberFormatException e) {
          JOptionPane.showMessageDialog(this,
-               "Error en formato num√©rico:\n" +
-               "Edad y Citas por d√≠a deben ser n√∫meros v√°lidos",
+               "Error en formato numÈrico:\n" +
+               "Edad y Citas por dia deben ser n˙meros validos",
                "Error de formato",
                JOptionPane.ERROR_MESSAGE);
       } catch (Exception e) {
          JOptionPane.showMessageDialog(this,
-               "Error al registrar m√©dico: " + e.getMessage(),
+               "Error al registrar medico: " + e.getMessage(),
                "Error del sistema",
                JOptionPane.ERROR_MESSAGE);
          e.printStackTrace();
