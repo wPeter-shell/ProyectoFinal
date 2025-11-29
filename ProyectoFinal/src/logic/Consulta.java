@@ -1,6 +1,8 @@
 package logic;
 
-public class Consulta {
+import java.io.Serializable;
+
+public class Consulta implements Serializable{
 
     private Cita cita;
     private DatosConsulta datos;

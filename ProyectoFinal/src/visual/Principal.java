@@ -8,6 +8,9 @@ import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.net.Socket;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -39,7 +42,18 @@ public class Principal extends JFrame {
    private JMenuItem itemDefinirNumCitas;
    private JMenuItem itemHacerCita;
    private JMenuItem menuListar;
-
+   private JMenuItem menuArchivos;
+   private JMenuItem itemListarPacientes;
+   private JMenuItem itemGuardarArchivos;
+   private JMenuItem itemRespaldo;
+   private JMenu menuCitas;
+   private JMenu menuAdmin;
+   private JMenu menuSistema;
+   static Socket sfd = null;
+   static DataInputStream EntradaSocket;
+   static DataOutputStream SalidaSocket;
+   
+   
 
    public static void main(String[] args) {
       EventQueue.invokeLater(new Runnable() {
@@ -86,7 +100,7 @@ public class Principal extends JFrame {
       menuBar.setBorder(new EmptyBorder(2, 10, 2, 10));
       setJMenuBar(menuBar);
 
-      JMenu menuSistema = new JMenu("Sistema");
+      menuSistema = new JMenu("Sistema");
       menuSistema.setFont(new Font("Segoe UI", Font.PLAIN, 14));
       menuBar.add(menuSistema);
 
@@ -102,7 +116,7 @@ public class Principal extends JFrame {
       itemSalir.addActionListener(e -> System.exit(0));
       menuSistema.add(itemSalir);
 
-      JMenu menuAdmin = new JMenu("Administración");
+      menuAdmin = new JMenu("Administración");
       menuAdmin.setFont(new Font("Segoe UI", Font.PLAIN, 14));
       menuBar.add(menuAdmin);
 
@@ -112,12 +126,12 @@ public class Principal extends JFrame {
       });
       menuAdmin.add(itemRegistrarMedico);
 
-      itemRegistrarSecretaria = new JMenuItem("Registrar / reemplazar secretaria");
+      itemRegistrarSecretaria = new JMenuItem("Registrar secretaria");
       itemRegistrarSecretaria.addActionListener(e -> {
          new RegistrarSecretaria().setVisible(true);
       });
       menuAdmin.add(itemRegistrarSecretaria);
-
+      
       itemAgregarEnfermedad = new JMenuItem("Agregar enfermedad");
       itemAgregarEnfermedad.addActionListener(e -> {
          new AgregarEnfermedad().setVisible(true);
@@ -136,7 +150,7 @@ public class Principal extends JFrame {
       });
       menuAdmin.add(itemDefinirNumCitas);
 
-      JMenu menuCitas = new JMenu("Citas");
+      menuCitas = new JMenu("Citas");
       menuCitas.setFont(new Font("Segoe UI", Font.PLAIN, 14));
       menuBar.add(menuCitas);
 
@@ -147,15 +161,18 @@ public class Principal extends JFrame {
       menuListar.setFont(new Font("Segoe UI", Font.PLAIN, 14));
       menuBar.add(menuListar);
       
-      JMenuItem itemListarPacientes = new JMenuItem("ListarPacientes");
+      itemListarPacientes = new JMenuItem("ListarPacientes");
       menuListar.add(itemListarPacientes);
       
-      JMenu menuArchivos = new JMenu("Archivos");
+      menuArchivos = new JMenu("Archivos");
       menuArchivos.setFont(new Font("Segoe UI", Font.PLAIN, 14));
       menuBar.add(menuArchivos);
       
-      JMenuItem itemGuardarArchivos = new JMenuItem("Guardar Archivos");
+      itemGuardarArchivos = new JMenuItem("Guardar Archivos");
       menuArchivos.add(itemGuardarArchivos);
+      
+      itemRespaldo = new JMenuItem("Respaldo");
+      menuArchivos.add(itemRespaldo);
    }
 
 
@@ -328,6 +345,9 @@ public class Principal extends JFrame {
       itemAgregarVacuna.setEnabled(false);
       itemDefinirNumCitas.setEnabled(false);
       itemHacerCita.setEnabled(false);
+      menuListar.setEnabled(false);
+      menuArchivos.setEnabled(false);
+      
 
       if (usuarioLogueado instanceof Administrador) {
          itemRegistrarMedico.setEnabled(true);
@@ -336,13 +356,16 @@ public class Principal extends JFrame {
          itemAgregarVacuna.setEnabled(true);
          itemDefinirNumCitas.setEnabled(true);
          itemHacerCita.setEnabled(true);
+         menuListar.setEnabled(true);
+         menuArchivos.setEnabled(true);
 
       } else if (usuarioLogueado instanceof Secretaria) {
 
          itemHacerCita.setEnabled(true);
+         menuListar.setEnabled(true);
 
       } else if (usuarioLogueado instanceof Medico) {
-
+    	  menuListar.setEnabled(true);
       }
    }
 }

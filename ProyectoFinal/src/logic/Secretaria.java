@@ -1,6 +1,8 @@
 package logic;
 
-public class Secretaria extends Persona {
+import java.io.Serializable;
+
+public class Secretaria extends Persona implements Serializable {
 	
 	private String usuario;
 	private String password;

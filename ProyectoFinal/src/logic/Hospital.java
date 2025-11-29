@@ -1,8 +1,13 @@
 package logic;
 
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Hospital {
+public class Hospital implements Serializable {
 	
 	private static Hospital instancia;
 	private ArrayList<Paciente> misPacientes;
@@ -30,8 +35,18 @@ public class Hospital {
     }
 	
 	public static Hospital getInstancia() {
+		
         if (instancia == null) {
-            instancia = new Hospital();
+        	
+        	Hospital h = cargarDatos();
+        	
+        	if(h != null) {
+        		
+        		instancia = h;
+        	}else {
+        		
+        		instancia = new Hospital();
+        	}
         }
         return instancia;
     }
@@ -202,5 +217,28 @@ public class Hospital {
 	public String crearPasswordSecretaria() {
 		return generarPasswordAleatoria();
 	}
+	
+	
+	public void guardarDatos() {
+		try {
+			ObjectOutputStream datos = new ObjectOutputStream(new FileOutputStream("hospital.dat"));
+			datos.writeObject(this);
+			datos.close();
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public static Hospital cargarDatos() {
+		try {
+			ObjectInputStream datos = new ObjectInputStream(new FileInputStream("hospital.dat"));
+			Hospital h = (Hospital) datos.readObject();
+			datos.close();
+			return h;
+		}catch(Exception e) {
+			return null;
+		}
+	}
+	
 	
 }

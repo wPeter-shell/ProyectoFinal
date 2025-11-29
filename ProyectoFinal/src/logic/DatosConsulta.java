@@ -1,8 +1,9 @@
 package logic;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class DatosConsulta {
+public class DatosConsulta implements Serializable {
 
     private String sintomas;
     private String analisisHistorial;

@@ -1,6 +1,8 @@
 package logic;
 
-public class Administrador {
+import java.io.Serializable;
+
+public class Administrador implements Serializable {
 
 	private String usuario;
 	private String password;

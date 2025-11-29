@@ -1,6 +1,8 @@
 package logic;
 
-public class Enfermedad {
+import java.io.Serializable;
+
+public class Enfermedad implements Serializable {
 
 	private String nombre;
 	private boolean bajoVigilancia;

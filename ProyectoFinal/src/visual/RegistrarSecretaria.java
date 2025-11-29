@@ -218,7 +218,8 @@ public class RegistrarSecretaria extends JDialog {
          );
 
          // Registrar secretaria
-         Hospital.getInstancia().getAdministrador().registrarSecretaria(nuevaSecretaria);;
+         Hospital.getInstancia().getAdministrador().registrarSecretaria(nuevaSecretaria);
+         Hospital.getInstancia().guardarDatos();
 
          // Mensaje final
          JOptionPane.showMessageDialog(this,

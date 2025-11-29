@@ -1,6 +1,8 @@
 package logic;
 
-public class Cita {
+import java.io.Serializable;
+
+public class Cita implements Serializable {
 
     private Paciente paciente;
     private Medico medico;

@@ -215,7 +215,8 @@ public class RegistrarMedico extends JDialog {
                especialidad, citasPorDia
          );
 
-         Hospital.getInstancia().getAdministrador().registrarMedico(nuevoMedico);;
+         Hospital.getInstancia().getAdministrador().registrarMedico(nuevoMedico);
+         Hospital.getInstancia().guardarDatos();
 
          JOptionPane.showMessageDialog(this,
                "Meddico registrado exitosamente:\n" +
@@ -226,7 +227,7 @@ public class RegistrarMedico extends JDialog {
                "Contraseña: " + nuevoMedico.getPassword(),
                "Registro Exitoso",
                JOptionPane.INFORMATION_MESSAGE);
-
+         
          limpiarCampos();
          dispose();
 
