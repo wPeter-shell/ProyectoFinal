@@ -46,7 +46,6 @@ public class RegistrarMedico extends JDialog {
    }
 
    public RegistrarMedico() {
-      setTitle("Registrar Médico");
       setModal(true);
       setSize(500, 450);
       setLocationRelativeTo(null);

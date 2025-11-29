@@ -47,7 +47,7 @@ public class RegistrarSecretaria extends JDialog {
    }
 
    /**
-    * Constructor: crea el diálogo y la interfaz.
+    * Constructor: crea el dialogo y la interfaz.
     */
    public RegistrarSecretaria() {
       setTitle("Registrar Secretaria/o");
@@ -101,15 +101,15 @@ public class RegistrarSecretaria extends JDialog {
       txtApellido = new JTextField();
       contentPanel.add(txtApellido);
 
-      // Cédula
-      JLabel lblCedula = new JLabel("Cédula:");
+      // Cedula
+      JLabel lblCedula = new JLabel("Cedula:");
       lblCedula.setFont(labelFont);
       contentPanel.add(lblCedula);
       txtCedula = new JTextField();
       contentPanel.add(txtCedula);
 
-      // Género
-      JLabel lblGenero = new JLabel("Género:");
+      // Genero
+      JLabel lblGenero = new JLabel("Genero:");
       lblGenero.setFont(labelFont);
       contentPanel.add(lblGenero);
       cmbGenero = new JComboBox<Character>();
@@ -124,15 +124,15 @@ public class RegistrarSecretaria extends JDialog {
       txtEdad = new JTextField();
       contentPanel.add(txtEdad);
 
-      // Teléfono
-      JLabel lblTelefono = new JLabel("Teléfono:");
+      // Telefono
+      JLabel lblTelefono = new JLabel("Telefono:");
       lblTelefono.setFont(labelFont);
       contentPanel.add(lblTelefono);
       txtTelefono = new JTextField();
       contentPanel.add(txtTelefono);
 
-      // Dirección
-      JLabel lblDireccion = new JLabel("Dirección:");
+      // Direccion
+      JLabel lblDireccion = new JLabel("Direccion:");
       lblDireccion.setFont(labelFont);
       contentPanel.add(lblDireccion);
       txtDireccion = new JTextField();
@@ -167,7 +167,7 @@ public class RegistrarSecretaria extends JDialog {
    }
 
    /**
-    * Método para registrar una secretaria en el sistema
+    * Metodo para registrar una secretaria en el sistema
     */
    private void registrarSecretaria() {
       try {
@@ -178,7 +178,7 @@ public class RegistrarSecretaria extends JDialog {
 
             JOptionPane.showMessageDialog(this,
                     "Todos los campos son obligatorios",
-                    "Error de validación",
+                    "Error de validacion",
                     JOptionPane.ERROR_MESSAGE);
             return;
          }
@@ -204,8 +204,8 @@ public class RegistrarSecretaria extends JDialog {
          // Validar edad
          if (edad < 18 || edad > 70) {
             JOptionPane.showMessageDialog(this,
-                    "La edad debe estar entre 18 y 70 años",
-                    "Error de validación",
+                    "La edad debe estar entre 18 y 70 a�os",
+                    "Error de validacion",
                     JOptionPane.ERROR_MESSAGE);
             return;
          }
@@ -225,7 +225,7 @@ public class RegistrarSecretaria extends JDialog {
          JOptionPane.showMessageDialog(this,
                "Secretaria/o registrada exitosamente:\n" +
                "Nombre: " + nombre + " " + apellido + "\n" +
-               "Cédula: " + cedula + "\n" +
+               "Cedula: " + cedula + "\n" +
                "Usuario: " + nuevaSecretaria.getUsuario() + "\n" +
                "Password: " + nuevaSecretaria.getPassword(),
                "Registro Exitoso",
@@ -236,7 +236,7 @@ public class RegistrarSecretaria extends JDialog {
 
       } catch (NumberFormatException e) {
          JOptionPane.showMessageDialog(this,
-               "Edad debe ser un número válido.",
+               "Edad debe ser un numero valido.",
                "Error de formato",
                JOptionPane.ERROR_MESSAGE);
       } catch (Exception e) {
@@ -249,7 +249,7 @@ public class RegistrarSecretaria extends JDialog {
    }
 
    /**
-    * Método para limpiar todos los campos del formulario
+    * Metodo para limpiar todos los campos del formulario
     */
    private void limpiarCampos() {
       txtNombre.setText("");

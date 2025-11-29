@@ -88,7 +88,7 @@ public class AgregarEnfermedad extends JDialog {
 	}
 
 	/**
-	 * Método para agregar una enfermedad al sistema
+	 * Metodo para agregar una enfermedad al sistema
 	 */
 	private void agregarEnfermedad() {
 		try {
@@ -120,7 +120,7 @@ public class AgregarEnfermedad extends JDialog {
 			Administrador admin = Hospital.getInstancia().getAdministrador();
 			admin.agregarEnfermedad(nuevaEnfermedad);
 
-			// Si está marcada como bajo vigilancia, agregarla a enfermedades vigiladas
+			// Si esta marcada como bajo vigilancia, agregarla a enfermedades vigiladas
 			if (bajoVigilancia) {
 				admin.marcarComoVigilada(nuevaEnfermedad);
 			}
@@ -147,7 +147,7 @@ public class AgregarEnfermedad extends JDialog {
 	}
 
 	/**
-	 * Método para limpiar todos los campos del formulario
+	 * Metodo para limpiar todos los campos del formulario
 	 */
 	private void limpiarCampos() {
 		txtNombre.setText("");
