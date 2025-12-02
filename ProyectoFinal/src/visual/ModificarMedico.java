@@ -11,6 +11,9 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.List;
+import logic.Cita;
+import logic.Validaciones;
+
 
 public class ModificarMedico extends JDialog {
 
@@ -22,14 +25,14 @@ public class ModificarMedico extends JDialog {
    private JComboBox<String> cmbCriterio;
 
    private Medico m;
-   private List<Medico> listaMedicos;   // lista original de mÈdicos
+   private List<Medico> listaMedicos;   // lista original de m√©dicos
    private Principal principal;         // referencia al principal (para actualizar cards si quieres)
 
    // Constructor principal (lo usas desde Principal)
    public ModificarMedico(Principal principal) {
       this.principal = principal;
 
-      setTitle("Definir n˙mero de citas por dÌa");
+      setTitle("Definir n√∫mero de citas por d√≠a");
       setModal(true);
       setSize(750, 450);
       setLocationRelativeTo(null);
@@ -55,20 +58,20 @@ public class ModificarMedico extends JDialog {
       });
    }
 
-   // ====== HEADER TURQUESA (tÌtulo bonito) ======
+   // ====== HEADER TURQUESA (t√≠tulo bonito) ======
    private void crearHeader() {
       JPanel header = new JPanel();
       header.setBackground(new Color(0, 128, 128));
       header.setLayout(new BorderLayout());
       header.setBorder(new EmptyBorder(12, 18, 12, 18));
 
-      JLabel lblTitulo = new JLabel("Definir n˙mero de citas por dÌa");
+      JLabel lblTitulo = new JLabel("Definir n√∫mero de citas por d√≠a");
       lblTitulo.setForeground(Color.WHITE);
       lblTitulo.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 20));
       lblTitulo.setHorizontalAlignment(SwingConstants.LEFT);
       header.add(lblTitulo, BorderLayout.NORTH);
 
-      JLabel lblSub = new JLabel("Seleccione un mÈdico y modifique su cantidad m·xima de citas diarias");
+      JLabel lblSub = new JLabel("Seleccione un m√©dico y modifique su cantidad m√°xima de citas diarias");
       lblSub.setForeground(new Color(225, 240, 250));
       lblSub.setFont(new Font("Segoe UI", Font.PLAIN, 12));
       lblSub.setHorizontalAlignment(SwingConstants.LEFT);
@@ -125,8 +128,8 @@ public class ModificarMedico extends JDialog {
 
       panelCentro.add(panelFiltro, BorderLayout.NORTH);
 
-      // -------- TABLA DE M…DICOS --------
-      String[] columnas = { "Nombre", "Apellido", "CÈdula", "Especialidad", "Citas por dÌa" };
+      // -------- TABLA DE M√âDICOS --------
+      String[] columnas = { "Nombre", "Apellido", "C√©dula", "Especialidad", "Citas por d√≠a" };
       modeloTabla = new DefaultTableModel(columnas, 0) {
          @Override
          public boolean isCellEditable(int row, int column) {
@@ -162,19 +165,112 @@ public class ModificarMedico extends JDialog {
       btnCerrar.addActionListener(e -> dispose());
       
       JButton btnDesabilitar = new JButton("Inhabilitar");
-      btnDesabilitar.addActionListener(e -> inhabilitarMedico());
-   
       btnDesabilitar.setFont(new Font("Segoe UI", Font.PLAIN, 13));
+
+      btnDesabilitar.addActionListener(new ActionListener() {
+         @Override
+         public void actionPerformed(ActionEvent e) {
+
+            int fila = tableMedicos.getSelectedRow();
+            if (fila == -1) {
+               JOptionPane.showMessageDialog(ModificarMedico.this,
+                     "Debe seleccionar un m√©dico.",
+                     "Sin selecci√≥n",
+                     JOptionPane.WARNING_MESSAGE);
+               return;
+            }
+
+            String cedulaSeleccionada = (String) tableMedicos.getValueAt(fila, 2);
+
+            Medico medicoSeleccionado = null;
+            for (Medico x : listaMedicos) {
+               if (x.getCedula().equals(cedulaSeleccionada)) {
+                  medicoSeleccionado = x;
+                  break;
+               }
+            }
+
+            if (medicoSeleccionado == null) {
+               JOptionPane.showMessageDialog(ModificarMedico.this,
+                     "No se pudo obtener el m√©dico.",
+                     "Error",
+                     JOptionPane.ERROR_MESSAGE);
+               return;
+            }
+
+            // üîÅ Si YA est√° INHABILITADO ‚Üí ahora lo habilitamos
+            if (medicoSeleccionado.getInhabilitado()) {
+
+               medicoSeleccionado.habilitar();
+
+               Hospital.getInstancia().guardarDatos();
+               cargarMedicos();          // recarga lista + colores
+               if (principal != null) {
+                  principal.actualizarCards();
+               }
+
+               JOptionPane.showMessageDialog(ModificarMedico.this,
+                     "El Dr. " + medicoSeleccionado.getApellido() +
+                     " ha sido habilitado nuevamente.",
+                     "Cambio exitoso",
+                     JOptionPane.INFORMATION_MESSAGE);
+
+               btnDesabilitar.setText("Inhabilitar");
+               return;
+            }
+
+            // üßÆ Si est√° HABILITADO ‚Üí verificar si tiene citas pendientes
+            int pendientes = 0;
+            if (medicoSeleccionado.getMisCitas() != null) {
+               for (Cita c : medicoSeleccionado.getMisCitas()) {
+                  if ("Pendiente".equalsIgnoreCase(c.getEstado())) {
+                     pendientes++;
+                  }
+               }
+            }
+
+            if (pendientes > 0) {
+               JOptionPane.showMessageDialog(ModificarMedico.this,
+                     "No se puede inhabilitar al Dr. " + medicoSeleccionado.getApellido() +
+                     ". Tiene " + pendientes + " cita(s) pendiente(s).",
+                     "Acci√≥n no permitida",
+                     JOptionPane.ERROR_MESSAGE);
+               return;
+            }
+
+            // ‚úÖ No tiene citas pendientes ‚Üí se puede inhabilitar
+            medicoSeleccionado.inhabilitar();
+
+            Hospital.getInstancia().guardarDatos();
+            cargarMedicos();
+            if (principal != null) {
+               principal.actualizarCards();
+            }
+
+            JOptionPane.showMessageDialog(ModificarMedico.this,
+                  "El Dr. " + medicoSeleccionado.getApellido() +
+                  " ha sido inhabilitado.",
+                  "Cambio exitoso",
+                  JOptionPane.INFORMATION_MESSAGE);
+
+            btnDesabilitar.setText("Habilitar");
+         }
+      });
+
       panelBotones.add(btnDesabilitar);
+
+
       panelBotones.add(btnCerrar);
 
       contentPane.add(panelBotones, BorderLayout.SOUTH);
    }
 
-   // ====== Cargar mÈdicos desde Hospital ======
+   // ====== Cargar m√©dicos desde Hospital ======
    private void cargarMedicos() {
       listaMedicos = new ArrayList<>(Hospital.getInstancia().getMisMedicos());
       cargarTabla(listaMedicos);
+      aplicarColoresTabla();
+
    }
 
    private void cargarTabla(List<Medico> datos) {
@@ -192,7 +288,7 @@ public class ModificarMedico extends JDialog {
       }
    }
 
-   // ====== Filtro por nombre / cÈdula / especialidad ======
+   // ====== Filtro por nombre / c√©dula / especialidad ======
    private void aplicarFiltro() {
       if (listaMedicos == null) return;
 
@@ -210,7 +306,7 @@ public class ModificarMedico extends JDialog {
 
          if ("Nombre".equals(criterio)) {
             valor = (m.getNombre() + " " + m.getApellido()).toLowerCase();
-         } else if ("CÈdula".equals(criterio)) {
+         } else if ("C√©dula".equals(criterio)) {
             valor = m.getCedula() != null ? m.getCedula().toLowerCase() : "";
          } else if ("Especialidad".equals(criterio)) {
             valor = m.getEspecialidad() != null ? m.getEspecialidad().toLowerCase() : "";
@@ -224,123 +320,171 @@ public class ModificarMedico extends JDialog {
       cargarTabla(filtrados);
    }
 
-   // ====== AcciÛn del botÛn MODIFICAR ======
-   private void modificarCitas() {
-      int fila = tableMedicos.getSelectedRow();
-      if (fila == -1) {
-         JOptionPane.showMessageDialog(this,
-               "Debe seleccionar un mÈdico de la tabla.",
-               "Sin selecciÛn",
-               JOptionPane.WARNING_MESSAGE);
-         return;
-      }
-
-      // Identificar el mÈdico seg˙n su cÈdula
-      String cedulaSeleccionada = (String) tableMedicos.getValueAt(fila, 2);
-      Medico medicoSeleccionado = m;
-      for (Medico m : listaMedicos) {
-         if (m.getCedula().equals(cedulaSeleccionada)) {
-            medicoSeleccionado = m;
-            break;
-         }
-      }
-
-      if (medicoSeleccionado == null) {
-         JOptionPane.showMessageDialog(this,
-               "No se pudo identificar el mÈdico seleccionado.",
-               "Error",
-               JOptionPane.ERROR_MESSAGE);
-         return;
-      }
-
-      String actual = String.valueOf(medicoSeleccionado.getCitasPorDia());
-
-      // Pedir nuevo valor
-      String input = JOptionPane.showInputDialog(
-            this,
-            "Ingrese el nuevo n˙mero de citas por dÌa para:\n" +
-            medicoSeleccionado.getNombre() + " " + medicoSeleccionado.getApellido() +
-            "\nActual: " + actual,
-            actual
-      );
-
-      if (input == null) {
-         return; // cancelado
-      }
-
-      input = input.trim();
-
-      // Validar que sea numÈrico
-      if (!input.matches("\\d+")) {
-         JOptionPane.showMessageDialog(this,
-               "Debe ingresar un n˙mero v·lido.",
-               "Error de formato",
-               JOptionPane.ERROR_MESSAGE);
-         return;
-      }
-
-      int nuevoValor = Integer.parseInt(input);
-
-      // Validar rango (ajusta si quieres otro)
-      if (nuevoValor <= 0 || nuevoValor > 20) {
-         JOptionPane.showMessageDialog(this,
-               "Las citas por dÌa deben estar entre 1 y 20.",
-               "Valor fuera de rango",
-               JOptionPane.ERROR_MESSAGE);
-         return;
-      }
-
-      // Actualizar el mÈdico
-      medicoSeleccionado.setCitasPorDia(nuevoValor);
-
-      // Guardar
-      Hospital.getInstancia().guardarDatos();
-
-      // Refrescar tabla
-      cargarMedicos();
-
-      // Refrescar cards del dashboard (si quieres)
-      if (principal != null) {
-         principal.actualizarCards();
-      }
-
-      JOptionPane.showMessageDialog(this,
-            "Citas por dÌa actualizadas correctamente.",
-            "ActualizaciÛn exitosa",
-            JOptionPane.INFORMATION_MESSAGE);
-   }
-   
-   private void inhabilitarMedico() {
-	   
+   // ====== Acci√≥n del bot√≥n MODIFICAR ======
+// ====== Acci√≥n del bot√≥n MODIFICAR ======
+	private void modificarCitas() {
 	   int fila = tableMedicos.getSelectedRow();
-	      if (fila == -1) {
-	         JOptionPane.showMessageDialog(this,
-	               "Debe seleccionar un mÈdico de la tabla.",
-	               "Sin selecciÛn",
-	               JOptionPane.WARNING_MESSAGE);
-	         return;
+	   if (fila == -1) {
+	      JOptionPane.showMessageDialog(this,
+	            "Debe seleccionar un m√©dico de la tabla.",
+	            "Sin selecci√≥n",
+	            JOptionPane.WARNING_MESSAGE);
+	      return;
+	   }
+	
+	   // Identificar el m√©dico seg√∫n su c√©dula
+	   String cedulaSeleccionada = (String) tableMedicos.getValueAt(fila, 2);
+	
+	   Medico medicoSeleccionado = null;
+	   for (Medico med : listaMedicos) {
+	      if (med.getCedula().equals(cedulaSeleccionada)) {
+	         medicoSeleccionado = med;
+	         break;
 	      }
-	   
-	   
-	   if(m.saberCantCitas() == 0) {
- 			m.setDisponible(true);
- 			JOptionPane.showMessageDialog(
- 	               ModificarMedico.this,
- 	               "El Dr. " + m.getApellido() + " ha sido inhabilitado.",
- 	               "Cambio Exitoso",
- 	               JOptionPane.INFORMATION_MESSAGE
- 	         );
+	   }
+	
+	   if (medicoSeleccionado == null) {
+	      JOptionPane.showMessageDialog(this,
+	            "No se pudo identificar el m√©dico seleccionado.",
+	            "Error",
+	            JOptionPane.ERROR_MESSAGE);
+	      return;
+	   }
+	
+	   // ================== CAMBIAR EDAD ==================
+	   String edadActual = String.valueOf(medicoSeleccionado.getEdad());
+	
+	   String inputEdad = JOptionPane.showInputDialog(
+	         this,
+	         "Ingrese la nueva edad para:\n" +
+	         medicoSeleccionado.getNombre() + " " + medicoSeleccionado.getApellido() +
+	         "\nEdad actual: " + edadActual,
+	         edadActual
+	   );
+	
+	   if (inputEdad == null) {
+	      return; // cancelado
+	   }
+	
+	   inputEdad = inputEdad.trim();
+	
+	   if (!inputEdad.matches("\\d+")) {
+	      JOptionPane.showMessageDialog(this,
+	            "La edad debe ser un n√∫mero v√°lido.",
+	            "Error de formato",
+	            JOptionPane.ERROR_MESSAGE);
+	      return;
+	   }
+	
+	   int nuevaEdad = Integer.parseInt(inputEdad);
+	
+	   if (nuevaEdad < 18 || nuevaEdad > 100) { // ajusta el rango si quieres
+	      JOptionPane.showMessageDialog(this,
+	            "La edad debe estar entre 18 y 100 a√±os.",
+	            "Edad fuera de rango",
+	            JOptionPane.ERROR_MESSAGE);
+	      return;
+	   }
+	
+	   // ================== CAMBIAR CITAS POR D√çA ==================
+	   String actualCitas = String.valueOf(medicoSeleccionado.getCitasPorDia());
+	
+	   String inputCitas = JOptionPane.showInputDialog(
+	         this,
+	         "Ingrese el nuevo n√∫mero de citas por d√≠a para:\n" +
+	         medicoSeleccionado.getNombre() + " " + medicoSeleccionado.getApellido() +
+	         "\nActual: " + actualCitas,
+	         actualCitas
+	   );
+	
+	   if (inputCitas == null) {
+	      return; // cancelado
+	   }
+	
+	   inputCitas = inputCitas.trim();
+	
+	   if (Validaciones.tieneLetra(inputCitas)) {
+	      JOptionPane.showMessageDialog(this,
+	            "Las citas por d√≠a deben ser un n√∫mero v√°lido.",
+	            "Error de formato",
+	            JOptionPane.ERROR_MESSAGE);
+	      return;
+	   }
+	
+	   int nuevoValor = Integer.parseInt(inputCitas);
+	
+	   if (nuevoValor < 1 || nuevoValor > 20) { // el rango que ya usabas
+	      JOptionPane.showMessageDialog(this,
+	            "Las citas por d√≠a deben estar entre 1 y 20.",
+	            "Valor fuera de rango",
+	            JOptionPane.ERROR_MESSAGE);
+	      return;
+	   }
+	
+	   // ================== APLICAR CAMBIOS ==================
+	   medicoSeleccionado.setEdad(nuevaEdad);
+	   medicoSeleccionado.setCitasPorDia(nuevoValor);
+	
+	   // Guardar
+	   Hospital.getInstancia().guardarDatos();
+	
+	   // Refrescar tabla
+	   cargarMedicos();
+	
+	   // Refrescar cards del dashboard (si quieres)
+	   if (principal != null) {
+	      principal.actualizarCards();
+	   }
+	
+	   JOptionPane.showMessageDialog(this,
+	         "Edad y citas por d√≠a actualizadas correctamente.",
+	         "Actualizaci√≥n exitosa",
+	         JOptionPane.INFORMATION_MESSAGE);
+	}
+	
+	private void aplicarColoresTabla() {
+		   tableMedicos.setDefaultRenderer(Object.class, new javax.swing.table.DefaultTableCellRenderer() {
+		      @Override
+		      public java.awt.Component getTableCellRendererComponent(
+		            javax.swing.JTable table,
+		            Object value,
+		            boolean isSelected,
+		            boolean hasFocus,
+		            int row,
+		            int column) {
 
-             return;
- 		}
- 		else {
- 			JOptionPane.showMessageDialog(
- 				   ModificarMedico.this,
- 	               "El Dr. "+m.getApellido()+"tiene citas pendientes",
- 	               "Error de formato",
- 	               JOptionPane.ERROR_MESSAGE);
- 		}
-   }
-   
-   
+		         java.awt.Component comp = super.getTableCellRendererComponent(
+		               table, value, isSelected, hasFocus, row, column);
+
+		         String cedula = (String) table.getValueAt(row, 2);
+
+		         Medico med = null;
+		         for (Medico x : listaMedicos) {
+		            if (x.getCedula().equals(cedula)) {
+		               med = x;
+		               break;
+		            }
+		         }
+
+		         if (med != null && med.getInhabilitado()) {
+		            // Fila sombreada si est√° inhabilitado
+		            comp.setBackground(new java.awt.Color(220, 220, 220));
+		            comp.setForeground(java.awt.Color.DARK_GRAY);
+		         } else {
+		            comp.setBackground(java.awt.Color.WHITE);
+		            comp.setForeground(java.awt.Color.BLACK);
+		         }
+
+		         if (isSelected) {
+		            comp.setBackground(new java.awt.Color(153, 204, 255));
+		            comp.setForeground(java.awt.Color.BLACK);
+		         }
+
+		         return comp;
+		      }
+		   });
+
+		   tableMedicos.repaint();
+		}
+
 }

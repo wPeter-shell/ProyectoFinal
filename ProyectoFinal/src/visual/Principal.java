@@ -446,7 +446,7 @@ public class Principal extends JFrame {
       Hospital h = Hospital.getInstancia();
       
       for(Medico m : h.getMisMedicos()) {
-    	  if( !m.getDisponible() ) {
+    	  if( !m.getInhabilitado()) {
     		  cantMeds++;
     	  }
       }
