@@ -61,6 +61,7 @@ public class Principal extends JFrame {
    static DataOutputStream SalidaSocket;
    private JMenu menuConsulta;
    private JMenuItem itemAtenderConsultas;
+   private JMenuItem itemVerCuentas;
    
    
 
@@ -113,7 +114,7 @@ public class Principal extends JFrame {
       menuSistema.setFont(new Font("Segoe UI", Font.PLAIN, 14));
       menuBar.add(menuSistema);
 
-      JMenuItem itemCerrarSesion = new JMenuItem("Cerrar sesión");
+      JMenuItem itemCerrarSesion = new JMenuItem("Cerrar sesiÃ³n");
       itemCerrarSesion.addActionListener(e -> {
          Login_Inicial login = new Login_Inicial();
          login.setVisible(true);
@@ -125,11 +126,11 @@ public class Principal extends JFrame {
       itemSalir.addActionListener(e -> System.exit(0));
       menuSistema.add(itemSalir);
 
-      menuAdmin = new JMenu("Administración");
+      menuAdmin = new JMenu("AdministraciÃ³n");
       menuAdmin.setFont(new Font("Segoe UI", Font.PLAIN, 14));
       menuBar.add(menuAdmin);
 
-      itemRegistrarMedico = new JMenuItem("Registrar médico");
+      itemRegistrarMedico = new JMenuItem("Registrar mÃ©dico");
       itemRegistrarMedico.addActionListener(e -> {
          new RegistrarMedico().setVisible(true);
       });
@@ -153,11 +154,17 @@ public class Principal extends JFrame {
       });
       menuAdmin.add(itemAgregarVacuna);
 
-      itemDefinirNumCitas = new JMenuItem("Modificar nº de citas por día");
+      itemDefinirNumCitas = new JMenuItem("Modificar nÅŸ de citas por dÃ­a");
       itemDefinirNumCitas.addActionListener(e -> {
          new DefinirNumCitas().setVisible(true);
       });
       menuAdmin.add(itemDefinirNumCitas);
+
+      itemVerCuentas = new JMenuItem("Ver cuentas");
+      itemVerCuentas.addActionListener(e -> {
+         new VerCuentas().setVisible(true);
+      });
+      menuAdmin.add(itemVerCuentas);
 
       menuCitas = new JMenu("Citas");
       menuCitas.setFont(new Font("Segoe UI", Font.PLAIN, 14));
@@ -188,7 +195,7 @@ public class Principal extends JFrame {
       itemGuardarArchivos.addActionListener(new ActionListener() {
       	public void actionPerformed(ActionEvent e) {
       		Hospital.getInstancia().guardarDatos();
-      		JOptionPane.showMessageDialog(null, "Guardado Correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+      		JOptionPane.showMessageDialog(null, "Guardado Correctamente.", "Ã‰xito", JOptionPane.INFORMATION_MESSAGE);
       	}
       });
       menuArchivos.add(itemGuardarArchivos);
@@ -196,6 +203,7 @@ public class Principal extends JFrame {
       itemRespaldo = new JMenuItem("Respaldo");
       itemRespaldo.addActionListener(new ActionListener() {
     	   public void actionPerformed(ActionEvent e) {
+
     	      Socket sfd = null;
     	      DataInputStream inFile = null;
     	      DataOutputStream outSocket = null;
@@ -252,9 +260,30 @@ public class Principal extends JFrame {
     	   }
     	});
 
-      menuArchivos.add(itemRespaldo);
-   }
 
+   }
+      	public void actionPerformed(ActionEvent e) {
+      		try {
+      			sfd = new Socket("127.0.0.1", 7000);
+      			DataInputStream aux = new DataInputStream(new FileInputStream(new File("hospital_respaldo.dat")));
+      			SalidaSocket = new DataOutputStream((sfd.getOutputStream()));
+      			int unByte;
+      			try {
+      				while((unByte = aux.read()) != - 1) {
+      					SalidaSocket.write(unByte);
+      					SalidaSocket.flush();
+      				}
+      			}catch(IOException ioe) {
+      				System.out.println("Error: "+ioe);
+      			}
+      		}catch(UnknownHostException uhe) {
+      			System.out.println("No se puede acceder al servidor.");
+      			System.exit(1);
+      		}catch(IOException ioe) {
+      			System.out.println("ComunicaciÃ³n rechazada.");
+      			System.exit(1);
+      		}
+      	}
 
    //   DASHBOARD
 
@@ -289,7 +318,7 @@ public class Principal extends JFrame {
 	   lblTitulo.setHorizontalAlignment(SwingConstants.LEFT);
 	   panelTitulos.add(lblTitulo, BorderLayout.NORTH);
 
-	   JLabel lblSubtitulo = new JLabel("Sistema de gestión clínica");
+	   JLabel lblSubtitulo = new JLabel("Sistema de gestiÃ³n clÃ­nica");
 	   lblSubtitulo.setForeground(new Color(230, 240, 250));
 	   lblSubtitulo.setFont(new Font("Segoe UI", Font.PLAIN, 14));
 	   lblSubtitulo.setHorizontalAlignment(SwingConstants.LEFT);
@@ -327,16 +356,16 @@ public class Principal extends JFrame {
 	   JPanel cardPacientes = crearCardEstadistica(
 	      "Pacientes",
 	      cantPacientes,
-	      new Color(76, 175, 80) // verde
+	      new Color(76, 175, 80)
 	   );
 	   gbc.gridx = 0;
 	   gbc.gridy = 0;
 	   panelCentro.add(cardPacientes, gbc);
 
 	   JPanel cardMedicos = crearCardEstadistica(
-	      "Médicos",
+	      "MÃ©dicos",
 	      cantMedicos,
-	      new Color(33, 150, 243) // azul
+	      new Color(33, 150, 243)
 	   );
 	   gbc.gridx = 1;
 	   gbc.gridy = 0;
@@ -345,7 +374,7 @@ public class Principal extends JFrame {
 	   JPanel cardEnfermedades = crearCardEstadistica(
 	      "Enfermedades",
 	      cantEnfermedades,
-	      new Color(255, 152, 0) // naranja
+	      new Color(255, 152, 0)
 	   );
 	   gbc.gridx = 0;
 	   gbc.gridy = 1;
@@ -354,16 +383,13 @@ public class Principal extends JFrame {
 	   JPanel cardVacunas = crearCardEstadistica(
 	      "Vacunas",
 	      cantVacunas,
-	      new Color(156, 39, 176) // morado
+	      new Color(156, 39, 176)
 	   );
 	   gbc.gridx = 1;
 	   gbc.gridy = 1;
 	   panelCentro.add(cardVacunas, gbc);
 	}
 
-   /**
-    * Crea una tarjeta blanca con borde suave y título + texto.
-    */
    private JPanel crearCardEstadistica(String titulo, int cantidad, Color colorSuperior) {
 	   JPanel card = new JPanel();
 	   card.setBackground(Color.WHITE);
@@ -375,7 +401,6 @@ public class Principal extends JFrame {
 	   barraColor.setPreferredSize(new Dimension(10, 6));
 	   card.add(barraColor, BorderLayout.NORTH);
 
-	   // Título
 	   JLabel lblTitulo = new JLabel(titulo);
 	   lblTitulo.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 16));
 	   lblTitulo.setForeground(new Color(60, 60, 60));
@@ -394,28 +419,26 @@ public class Principal extends JFrame {
    
    private String obtenerTextoUsuario() {
       if (usuarioLogueado == null) {
-         return "Modo demostración";
+         return "Modo demostraciÃ³n";
       }
 
       if (usuarioLogueado instanceof Administrador) {
-         return "Sesión: Administrador";
+         return "SesiÃ³n: Administrador";
       }
 
       if (usuarioLogueado instanceof Secretaria) {
          Secretaria s = (Secretaria) usuarioLogueado;
-         return "Sesión: Secretaria - " + s.getNombre() + " " + s.getApellido();
+         return "SesiÃ³n: Secretaria - " + s.getNombre() + " " + s.getApellido();
       }
 
       if (usuarioLogueado instanceof Medico) {
          Medico m = (Medico) usuarioLogueado;
-         return "Sesión: Médico - " + m.getNombre() + " " + m.getApellido();
+         return "SesiÃ³n: MÃ©dico - " + m.getNombre() + " " + m.getApellido();
       }
 
-      return "Sesión activa";
+      return "SesiÃ³n activa";
    }
 
-
-   //   PERMISOS POR ROL
 
    private void configurarPermisos() {
 
@@ -428,6 +451,8 @@ public class Principal extends JFrame {
       itemListarPacientes.setEnabled(false);
       itemGuardarArchivos.setEnabled(false);
       itemRespaldo.setEnabled(false);
+      itemVerCuentas.setEnabled(false);
+      
       
 
       if (usuarioLogueado instanceof Administrador) {
@@ -436,10 +461,10 @@ public class Principal extends JFrame {
          itemAgregarEnfermedad.setEnabled(true);
          itemAgregarVacuna.setEnabled(true);
          itemDefinirNumCitas.setEnabled(true);
-         itemHacerCita.setEnabled(true);
          itemGuardarArchivos.setEnabled(true);
          itemListarPacientes.setEnabled(true);
          itemRespaldo.setEnabled(true);
+         itemVerCuentas.setEnabled(true);
 
       } else if (usuarioLogueado instanceof Secretaria) {
 
@@ -448,6 +473,7 @@ public class Principal extends JFrame {
 
       } else if (usuarioLogueado instanceof Medico) {
     	  itemListarPacientes.setEnabled(true);
+    	  itemAtenderConsultas.setEnabled(true);
       }
    }
 }

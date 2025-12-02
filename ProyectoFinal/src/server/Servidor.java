@@ -23,25 +23,27 @@ public class Servidor {
 		
 		while(true)
 		{
-			try {
-				Socket nsfd = sfd.accept();
-				System.out.println("Conexión aceptada de: "+nsfd.getInetAddress());
-				DataInputStream oos = new DataInputStream(nsfd.getInputStream());
-				DataOutputStream escritor = new DataOutputStream(new FileOutputStream(new File("hospital_respaldo.dat")));
-				int unByte;
-				try {
-					while((unByte = oos.read()) != -1) {
-						escritor.write(unByte);
-					}
-					oos.close();
-					escritor.close();
-				}catch(IOException e) {
-					e.printStackTrace();
-				}
-			}catch(IOException ioe) {
-				System.out.println("Error: "+ioe);
-			}
+		   try {
+		      Socket nsfd = sfd.accept();
+		      System.out.println("Conexión aceptada de: "+nsfd.getInetAddress());
+		      DataInputStream oos = new DataInputStream(nsfd.getInputStream());
+		      DataOutputStream escritor = new DataOutputStream(
+		            new FileOutputStream(new File("hospital_respaldo.dat")));
+		      int unByte;
+		      try {
+		         while((unByte = oos.read()) != -1) {
+		            escritor.write(unByte);
+		         }
+		         oos.close();
+		         escritor.close();
+		      }catch(IOException e) {
+		         e.printStackTrace();
+		      }
+		   }catch(IOException ioe) {
+		      System.out.println("Error: "+ioe);
+		   }
 		}
+
 	}
 
 }

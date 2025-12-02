@@ -39,5 +39,11 @@ public class Enfermedad implements Serializable {
 		this.tieneVacuna = tieneVacuna;
 	}
 	
+	@Override
+	public String toString() {
+	   return nombre;   // o como se llame tu atributo de nombre
+	}
+
+	
 	
 }

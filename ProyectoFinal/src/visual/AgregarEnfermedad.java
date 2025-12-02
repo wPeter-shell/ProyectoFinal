@@ -43,6 +43,7 @@ public class AgregarEnfermedad extends JDialog {
 	 */
 	public AgregarEnfermedad() {
 		setTitle("Agregar Enfermedad");
+		setModal(true);
 		setBounds(100, 100, 400, 200);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(10, 10, 10, 10));

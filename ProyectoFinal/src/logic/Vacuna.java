@@ -7,7 +7,7 @@ public class Vacuna implements Serializable{
 	private String nombre;
 	private Enfermedad enfermedadPrevenida;
 	
-	private Vacuna(String nombre, Enfermedad enfermedadPrevenida) {
+	public Vacuna(String nombre, Enfermedad enfermedadPrevenida) {
 		super();
 		this.nombre = nombre;
 		this.enfermedadPrevenida = enfermedadPrevenida;
