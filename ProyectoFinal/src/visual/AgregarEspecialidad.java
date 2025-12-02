@@ -7,6 +7,7 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.Normalizer;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -28,12 +29,24 @@ public class AgregarEspecialidad extends JDialog {
    private JTextField txtNombre;
    private Principal principal;
 
+   private String normalizarNombreEspecialidad(String texto) {
+      if (texto == null) {
+         return "";
+      }
+
+      String resultado = texto.trim().toLowerCase();
+      resultado = Normalizer.normalize(resultado, Normalizer.Form.NFD);
+      resultado = resultado.replaceAll("\\p{M}+", "");
+
+      return resultado;
+   }
+
    /**
     * Launch the application.
     */
    public static void main(String[] args) {
       try {
-    	  AgregarEspecialidad dialog = new AgregarEspecialidad(null);
+         AgregarEspecialidad dialog = new AgregarEspecialidad();
          dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
          dialog.setVisible(true);
       } catch (Exception e) {
@@ -41,19 +54,23 @@ public class AgregarEspecialidad extends JDialog {
       }
    }
 
+   public void setPrincipal(Principal principal) {
+      this.principal = principal;
+   }
+
    /**
     * Create the dialog.
     */
-   public AgregarEspecialidad(Principal principal) {
-      this.principal = principal;
+   public AgregarEspecialidad() {
+      //this.principal = principal;
 
-      setTitle("Agregar Enfermedad");
+      setTitle("Agregar Especialidad");
       setModal(true);
       setSize(540, 249);
       setLocationRelativeTo(null);
       getContentPane().setLayout(new BorderLayout(0, 0));
 
-      // ====== HEADER LINDO ARRIBA (igual estilo que AgregarVacuna) ======
+      // ====== HEADER LINDO ARRIBA ======
       JPanel headerPanel = new JPanel();
       headerPanel.setBackground(new Color(0, 128, 128));
       headerPanel.setBorder(new EmptyBorder(12, 18, 12, 18));
@@ -82,6 +99,13 @@ public class AgregarEspecialidad extends JDialog {
       txtNombre = new JTextField();
       contentPanel.add(txtNombre);
 
+      // Espacio de relleno
+      JLabel lblDummy1 = new JLabel("");
+      contentPanel.add(lblDummy1);
+
+      JLabel lblDummy2 = new JLabel("");
+      contentPanel.add(lblDummy2);
+
       // ====== PANEL DE BOTONES ======
       JPanel buttonPane = new JPanel();
       buttonPane.setBorder(new EmptyBorder(10, 10, 10, 10));
@@ -109,7 +133,7 @@ public class AgregarEspecialidad extends JDialog {
    }
 
    /**
-    * Método para agregar una enfermedad al sistema
+    * Método para agregar una especialidad al sistema
     */
    private void agregarEnfermedad() {
       try {
@@ -118,15 +142,20 @@ public class AgregarEspecialidad extends JDialog {
          // Validar campo obligatorio
          if (nombre.isEmpty()) {
             JOptionPane.showMessageDialog(this,
-                  "El nombre de la enfermedad es obligatorio.",
+                  "El nombre de la especialidad es obligatorio.",
                   "Error de validación",
                   JOptionPane.ERROR_MESSAGE);
             return;
          }
 
-         // Validar que no exista una enfermedad con el mismo nombre
+         // Normalizar el nombre para comparar sin acentos ni mayúsculas
+         String nombreNormalizado = normalizarNombreEspecialidad(nombre);
+
+         // Validar que no exista una especialidad con el mismo nombre (ignorando acentos)
          for (String esp : Hospital.getInstancia().getEspecialidades()) {
-            if (esp.equalsIgnoreCase(nombre)) {
+            String espNormalizada = normalizarNombreEspecialidad(esp);
+
+            if (espNormalizada.equals(nombreNormalizado)) {
                JOptionPane.showMessageDialog(this,
                      "Ya existe una especialidad con este nombre.",
                      "Error de registro",
@@ -135,11 +164,8 @@ public class AgregarEspecialidad extends JDialog {
             }
          }
 
-
          Administrador admin = Hospital.getInstancia().getAdministrador();
          admin.registrarEspecialidad(nombre);
-
-         
 
          // Guardar cambios en archivo
          Hospital.getInstancia().guardarDatos();
@@ -151,7 +177,7 @@ public class AgregarEspecialidad extends JDialog {
 
          String mensaje = "Especialidad agregada exitosamente:\n" +
                "Nombre: " + nombre + "\n";
-               
+
          JOptionPane.showMessageDialog(this,
                mensaje,
                "Registro exitoso",
@@ -162,7 +188,7 @@ public class AgregarEspecialidad extends JDialog {
 
       } catch (Exception e) {
          JOptionPane.showMessageDialog(this,
-               "Error al agregar enfermedad: " + e.getMessage(),
+               "Error al agregar especialidad: " + e.getMessage(),
                "Error del sistema",
                JOptionPane.ERROR_MESSAGE);
          e.printStackTrace();

@@ -19,6 +19,7 @@ public class Hospital implements Serializable {
 	private ArrayList<Enfermedad> misEnfermedades;
 	private ArrayList<Enfermedad> enfermedadesVigiladas;
 	private ArrayList<String> especialidades;
+
 	
 	private Hospital() {
         misPacientes = new ArrayList<>();
@@ -29,6 +30,7 @@ public class Hospital implements Serializable {
         misEnfermedades = new ArrayList<>();
         enfermedadesVigiladas = new ArrayList<>();
         especialidades = new ArrayList<>();
+        cargarEspecialidadesPredeterminadas();
         
         administrador = new Administrador("Admin", "123", this);
 
@@ -118,6 +120,35 @@ public class Hospital implements Serializable {
 	public void setAgregarEspecialidad(ArrayList<String> especialidades) {
 	    this.especialidades = especialidades;
 	}
+	
+	public void cargarEspecialidadesPredeterminadas() {
+		String[] lista = {
+		        "Cardiología", "Pediatría", "Dermatología", "Ginecología",
+		        "Obstetricia", "Neurología", "Psiquiatría", "Oftalmología",
+		        "Otorrinolaringología", "Neumología", "Gastroenterología",
+		        "Endocrinología", "Urología", "Nefrología", "Hematología",
+		        "Oncología", "Reumatología", "Traumatología", "Ortopedia",
+		        "Medicina Interna", "Medicina General", "Cirugía General",
+		        "Cirugía Plástica", "Cirugía Cardiovascular",
+		        "Cirugía Pediátrica", "Cirugía Oncológica",
+		        "Cirugía Maxilofacial", "Anestesiología", "Radiología",
+		        "Medicina Nuclear", "Rehabilitación y Fisiatría",
+		        "Nutrición Clínica", "Infectología", "Alergología",
+		        "Inmunología", "Geriatría", "Neonatología",
+		        "Genética Médica", "Urgencias Médicas",
+		        "Terapia Intensiva", "Medicina Familiar",
+		        "Neurocirugía", "Proctología",
+		        "Coloproctología", "Angiología",
+		        "Podología Médica", "Sexología Clínica",
+		        "Toxicología", "Medicina del Trabajo"
+		    };
+
+		    for (String esp : lista) {
+		        this.especialidades.add(esp);
+		    }
+
+	}
+
 
 	public void agregarPaciente(Paciente p) {
 	    misPacientes.add(p);

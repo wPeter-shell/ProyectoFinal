@@ -11,6 +11,7 @@ public class Medico extends Persona implements Serializable {
     private int citasPorDia;
     private ArrayList<Consulta> misConsultas;
     private ArrayList<Cita> misCitas;
+    private boolean disponible;
     
 
 	public Medico(String usuario, String password, String nombre, String apellido, String cedula, char genero, int edad, String telefono,
@@ -22,6 +23,7 @@ public class Medico extends Persona implements Serializable {
 		this.citasPorDia = citasPorDia;
 		this.misConsultas = new ArrayList<>();
 		this.misCitas = new ArrayList<>();
+		this.disponible = true;
 	}
 
 	public String getUsuario() {
@@ -31,6 +33,15 @@ public class Medico extends Persona implements Serializable {
 	public String getPassword() {
 		return password;
 	}
+	
+	public boolean getDisponible() {
+		return disponible;
+	}
+	
+	public void setDisponible(boolean disponible) {
+		this.disponible = disponible;
+	}
+	
 
 	public void setMisConsultas(ArrayList<Consulta> misConsultas) {
 		this.misConsultas = misConsultas;
@@ -124,6 +135,10 @@ public class Medico extends Persona implements Serializable {
 
 	    int disponibles = citasPorDia - ocupadas;
 	    return disponibles;
+	}
+	
+	public int saberCantCitas() {
+		return this.getMisCitas().size();
 	}
 
 

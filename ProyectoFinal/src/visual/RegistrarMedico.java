@@ -34,7 +34,7 @@ public class RegistrarMedico extends JDialog {
    private JTextField txtEdad;
    private JTextField txtTelefono;
    private JTextField txtDireccion;
-   private JTextField txtEspecialidad;
+   private JComboBox<String> cmbEspecialidad;
    private JTextField txtCitasPorDia;
    private JComboBox<Character> cmbGenero;
    private Principal principal;
@@ -130,8 +130,11 @@ public class RegistrarMedico extends JDialog {
       JLabel lblEspecialidad = new JLabel("Especialidad:");
       lblEspecialidad.setFont(labelFont);
       contentPanel.add(lblEspecialidad);
-      txtEspecialidad = new JTextField();
-      contentPanel.add(txtEspecialidad);
+      cmbEspecialidad = new JComboBox<>(
+    		    Hospital.getInstancia().getEspecialidades().toArray(new String[0])
+      );
+      contentPanel.add(cmbEspecialidad);
+;
 
       JLabel lblCitasPorDia = new JLabel("Citas por día:");
       lblCitasPorDia.setFont(labelFont);
@@ -165,7 +168,7 @@ public class RegistrarMedico extends JDialog {
    private void registrarMedico() {
       try {
          if (txtNombre.getText().isEmpty() || txtApellido.getText().isEmpty()
-               || txtCedula.getText().isEmpty() || txtEspecialidad.getText().isEmpty()
+               || txtCedula.getText().isEmpty() || cmbEspecialidad.getSelectedIndex() == -1
                || txtCitasPorDia.getText().isEmpty()) {
 
             JOptionPane.showMessageDialog(this,
@@ -203,7 +206,7 @@ public class RegistrarMedico extends JDialog {
          int edad = Integer.parseInt(txtEdad.getText());
          String telefono = txtTelefono.getText();
          String direccion = txtDireccion.getText();
-         String especialidad = txtEspecialidad.getText();
+         String especialidad = (String) cmbEspecialidad.getSelectedItem();
          int citasPorDia = Integer.parseInt(txtCitasPorDia.getText());
 
          if (edad < 18 || edad > 100) {
@@ -310,7 +313,7 @@ public class RegistrarMedico extends JDialog {
       txtEdad.setText("");
       txtTelefono.setText("");
       txtDireccion.setText("");
-      txtEspecialidad.setText("");
+      cmbEspecialidad.setSelectedItem(0);
       txtCitasPorDia.setText("");
    }
 }

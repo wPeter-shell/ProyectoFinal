@@ -72,6 +72,7 @@ public class Principal extends JFrame {
    private JMenuItem itemModificarCita;
    private JMenuItem itemEliminarCita;
    private JMenuItem itemAgregarEspecialidad;
+   private JMenuItem itemVerCuentas;
    
    
 
@@ -162,10 +163,10 @@ public class Principal extends JFrame {
       });
       menuAdmin.add(itemAgregarVacuna);
 
-      itemDefinirNumCitas = new JMenuItem("Modificar nº de citas por día");
+      itemDefinirNumCitas = new JMenuItem("Modificar Médico");
       itemDefinirNumCitas.addActionListener(e -> {
           if (usuarioLogueado instanceof Administrador) {
-              new DefinirNumCitas().setVisible(true);
+              new ModificarMedico(this).setVisible(true);
           } else {
               JOptionPane.showMessageDialog(
                   this,
@@ -178,7 +179,20 @@ public class Principal extends JFrame {
       menuAdmin.add(itemDefinirNumCitas);
       
       itemAgregarEspecialidad = new JMenuItem("Agregar Especialidad");
+      itemAgregarEspecialidad.addActionListener(new ActionListener() {
+      	public void actionPerformed(ActionEvent e) {
+      		new AgregarEspecialidad().setVisible(true);
+      	}
+      });
       menuAdmin.add(itemAgregarEspecialidad);
+      
+      itemVerCuentas = new JMenuItem("Ver Cuentas");
+      itemVerCuentas.addActionListener(new ActionListener() {
+      	public void actionPerformed(ActionEvent e) {
+      		new VerCuentas().setVisible(true);
+      	}
+      });
+      menuAdmin.add(itemVerCuentas);
 
       menuCitas = new JMenu("Citas");
       menuCitas.setFont(new Font("Segoe UI", Font.PLAIN, 14));
@@ -428,9 +442,17 @@ public class Principal extends JFrame {
    }
 
    public void actualizarCards() {
+	  int cantMeds  = 0;
       Hospital h = Hospital.getInstancia();
+      
+      for(Medico m : h.getMisMedicos()) {
+    	  if( !m.getDisponible() ) {
+    		  cantMeds++;
+    	  }
+      }
+      
       if (lblCantPacientes != null) {
-         lblCantPacientes.setText(String.valueOf(h.getMisPacientes().size()));
+         lblCantPacientes.setText(String.valueOf(cantMeds));
       }
       if (lblCantMedicos != null) {
          lblCantMedicos.setText(String.valueOf(h.getMisMedicos().size()));
@@ -484,6 +506,7 @@ public class Principal extends JFrame {
       itemListarPacientes.setEnabled(false);
       itemRespaldo.setEnabled(false);
       itemAgregarEspecialidad.setEnabled(false);
+      itemVerCuentas.setEnabled(false);
       
       if (usuarioLogueado instanceof Administrador) {
          itemRegistrarMedico.setEnabled(true);
@@ -493,6 +516,7 @@ public class Principal extends JFrame {
          itemDefinirNumCitas.setEnabled(true);
          itemListarPacientes.setEnabled(true);
          itemAgregarEspecialidad.setEnabled(true);
+         itemVerCuentas.setEnabled(true);
          
       } else if (usuarioLogueado instanceof Secretaria) {
          itemHacerCita.setEnabled(true);
