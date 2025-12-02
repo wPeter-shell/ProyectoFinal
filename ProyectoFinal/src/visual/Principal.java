@@ -452,6 +452,7 @@ public class Principal extends JFrame {
       itemGuardarArchivos.setEnabled(false);
       itemRespaldo.setEnabled(false);
       itemVerCuentas.setEnabled(false);
+      itemAtenderConsultas.setEnabled(false);
       
       
 
