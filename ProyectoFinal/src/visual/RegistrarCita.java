@@ -135,9 +135,14 @@ public class RegistrarCita extends JDialog {
       JLabel lblDia = new JLabel("DÃ­a:");
       lblDia.setFont(labelFont);
       contentPanel.add(lblDia);
-      cmbDias = new JComboBox<>(new String[]{
-         "Lunes", "Martes", "MiÃ©rcoles", "Jueves", "Viernes", "SÃ¡bado", "Domingo"
-      });
+      cmbDias = new JComboBox<String>();
+      cmbDias.addItem("Lunes");
+      cmbDias.addItem("Martes");
+      cmbDias.addItem("Miércoles");
+      cmbDias.addItem("Jueves");
+      cmbDias.addItem("Viernes");
+      cmbDias.addItem("Sábado");
+      cmbDias.addItem("Domingo");
       contentPanel.add(cmbDias);
 
       JPanel buttonPane = new JPanel();
@@ -152,17 +157,17 @@ public class RegistrarCita extends JDialog {
             dispose();
          }
       });
+      
+            JButton okButton = new JButton("Registrar Cita");
+            okButton.setFont(new Font("Segoe UI", Font.PLAIN, 13));
+            okButton.addActionListener(new ActionListener() {
+               public void actionPerformed(ActionEvent e) {
+                  registrarCita();
+               }
+            });
+            buttonPane.add(okButton);
+            getRootPane().setDefaultButton(okButton);
       buttonPane.add(cancelButton);
-
-      JButton okButton = new JButton("Registrar Cita");
-      okButton.setFont(new Font("Segoe UI", Font.PLAIN, 13));
-      okButton.addActionListener(new ActionListener() {
-         public void actionPerformed(ActionEvent e) {
-            registrarCita();
-         }
-      });
-      buttonPane.add(okButton);
-      getRootPane().setDefaultButton(okButton);
    }
 
    private void cargarMedicos() {

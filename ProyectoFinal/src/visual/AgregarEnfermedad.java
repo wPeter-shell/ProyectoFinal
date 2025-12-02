@@ -24,13 +24,14 @@ public class AgregarEnfermedad extends JDialog {
 	private final JPanel contentPanel = new JPanel();
 	private JTextField txtNombre;
 	private JCheckBox chkVigilancia;
+	private Principal principal;
 
 	/**
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
 		try {
-			AgregarEnfermedad dialog = new AgregarEnfermedad();
+			AgregarEnfermedad dialog = new AgregarEnfermedad(null);
 			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 			dialog.setVisible(true);
 		} catch (Exception e) {
@@ -41,7 +42,9 @@ public class AgregarEnfermedad extends JDialog {
 	/**
 	 * Create the dialog.
 	 */
-	public AgregarEnfermedad() {
+	public AgregarEnfermedad(Principal principal) {
+		this.principal = principal;
+
 		setTitle("Agregar Enfermedad");
 		setModal(true);
 		setBounds(100, 100, 400, 200);
@@ -124,6 +127,14 @@ public class AgregarEnfermedad extends JDialog {
 			// Si esta marcada como bajo vigilancia, agregarla a enfermedades vigiladas
 			if (bajoVigilancia) {
 				admin.marcarComoVigilada(nuevaEnfermedad);
+			}
+
+			// Guardar cambios en archivo
+			Hospital.getInstancia().guardarDatos();
+
+			// Actualizar cards del dashboard si hay referencia al principal
+			if (principal != null) {
+				principal.actualizarCards();
 			}
 
 			String mensaje = "Enfermedad agregada exitosamente:\n" +

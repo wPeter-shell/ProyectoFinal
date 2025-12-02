@@ -23,19 +23,19 @@ import logic.Enfermedad;
 import logic.Hospital;
 import logic.Administrador;
 
-
 public class AgregarVacuna extends JDialog {
 
    private final JPanel contentPanel = new JPanel();
    private JTextField txtNombre;
    private JComboBox<Enfermedad> cmbEnfermedad;
+   private Principal principal;
 
    /**
     * Launch the application.
     */
    public static void main(String[] args) {
       try {
-         AgregarVacuna dialog = new AgregarVacuna();
+         AgregarVacuna dialog = new AgregarVacuna(null);
          dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
          dialog.setVisible(true);
       } catch (Exception e) {
@@ -46,7 +46,8 @@ public class AgregarVacuna extends JDialog {
    /**
     * Create the dialog.
     */
-   public AgregarVacuna() {
+   public AgregarVacuna(Principal principal) {
+      this.principal = principal;
       setTitle("Agregar Vacuna");
       setModal(true);
       setSize(480, 260);
@@ -72,7 +73,8 @@ public class AgregarVacuna extends JDialog {
       lblSubtitulo.setHorizontalAlignment(SwingConstants.LEFT);
       headerPanel.add(lblSubtitulo, BorderLayout.SOUTH);
 
-      // ====== PANEL CENTRAL ======
+      // ====== PANEL CENTRAL =====
+      contentPanel.setBackground(Color.WHITE);
       contentPanel.setBorder(new EmptyBorder(20, 30, 10, 30));
       getContentPane().add(contentPanel, BorderLayout.CENTER);
       contentPanel.setLayout(new GridLayout(2, 2, 12, 15));
@@ -92,21 +94,19 @@ public class AgregarVacuna extends JDialog {
       lblEnfermedad.setFont(labelFont);
       contentPanel.add(lblEnfermedad);
 
-      cmbEnfermedad = new JComboBox<Enfermedad>();
-      // Cargar todas las enfermedades registradas en el Hospital
-      for (Enfermedad enf : Hospital.getInstancia().getMisEnfermedades()) {
-         cmbEnfermedad.addItem(enf);
-      }
+      cmbEnfermedad = new JComboBox<>();
       contentPanel.add(cmbEnfermedad);
+
+      // Cargar enfermedades al combo
+      cargarEnfermedades();
 
       // ====== PANEL DE BOTONES ======
       JPanel buttonPane = new JPanel();
-      buttonPane.setBorder(new EmptyBorder(10, 18, 10, 18));
-      buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT, 10, 5));
+      buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
+      buttonPane.setBorder(new EmptyBorder(10, 10, 10, 10));
       getContentPane().add(buttonPane, BorderLayout.SOUTH);
 
-      JButton okButton = new JButton("Agregar");
-      okButton.setFont(new Font("Segoe UI", Font.PLAIN, 13));
+      JButton okButton = new JButton("Registrar");
       okButton.addActionListener(new ActionListener() {
          public void actionPerformed(ActionEvent e) {
             agregarVacuna();
@@ -116,7 +116,6 @@ public class AgregarVacuna extends JDialog {
       getRootPane().setDefaultButton(okButton);
 
       JButton cancelButton = new JButton("Cancelar");
-      cancelButton.setFont(new Font("Segoe UI", Font.PLAIN, 13));
       cancelButton.addActionListener(new ActionListener() {
          public void actionPerformed(ActionEvent e) {
             dispose();
@@ -125,9 +124,13 @@ public class AgregarVacuna extends JDialog {
       buttonPane.add(cancelButton);
    }
 
-   /**
-    * Lógica para registrar la vacuna
-    */
+   private void cargarEnfermedades() {
+      cmbEnfermedad.removeAllItems();
+      for (Enfermedad enf : Hospital.getInstancia().getMisEnfermedades()) {
+         cmbEnfermedad.addItem(enf);
+      }
+   }
+
    private void agregarVacuna() {
       try {
          String nombre = txtNombre.getText().trim();
@@ -161,18 +164,19 @@ public class AgregarVacuna extends JDialog {
             return;
          }
 
-         // Validar que no exista vacuna con el mismo nombre
+         // Validar vacuna repetida
          for (Vacuna v : Hospital.getInstancia().getControlVacunas()) {
-            if (v.getNombre().equalsIgnoreCase(nombre)) {
+            if (v.getNombre().equalsIgnoreCase(nombre)
+                  && v.getEnfermedadPrevenida().equals(enfermedadSeleccionada)) {
                JOptionPane.showMessageDialog(this,
-                     "Ya existe una vacuna con este nombre.",
-                     "Error de registro",
+                     "Ya existe una vacuna con ese nombre para esa enfermedad.",
+                     "Registro duplicado",
                      JOptionPane.ERROR_MESSAGE);
                return;
             }
          }
 
-         // Crear la vacuna
+         // Crear y registrar
          Vacuna nuevaVacuna = new Vacuna(nombre, enfermedadSeleccionada);
 
          // Registrar en el sistema
@@ -180,6 +184,10 @@ public class AgregarVacuna extends JDialog {
          admin.agregarVacuna(nuevaVacuna);
 
          Hospital.getInstancia().guardarDatos();
+
+         if (principal != null) {
+            principal.actualizarCards();
+         }
 
          JOptionPane.showMessageDialog(this,
                "Vacuna registrada correctamente.",
