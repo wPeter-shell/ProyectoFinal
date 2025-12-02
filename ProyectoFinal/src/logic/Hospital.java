@@ -123,24 +123,24 @@ public class Hospital implements Serializable {
 	
 	public void cargarEspecialidadesPredeterminadas() {
 		String[] lista = {
-		        "Cardiología", "Pediatría", "Dermatología", "Ginecología",
-		        "Obstetricia", "Neurología", "Psiquiatría", "Oftalmología",
-		        "Otorrinolaringología", "Neumología", "Gastroenterología",
-		        "Endocrinología", "Urología", "Nefrología", "Hematología",
-		        "Oncología", "Reumatología", "Traumatología", "Ortopedia",
-		        "Medicina Interna", "Medicina General", "Cirugía General",
-		        "Cirugía Plástica", "Cirugía Cardiovascular",
-		        "Cirugía Pediátrica", "Cirugía Oncológica",
-		        "Cirugía Maxilofacial", "Anestesiología", "Radiología",
-		        "Medicina Nuclear", "Rehabilitación y Fisiatría",
-		        "Nutrición Clínica", "Infectología", "Alergología",
-		        "Inmunología", "Geriatría", "Neonatología",
-		        "Genética Médica", "Urgencias Médicas",
+		        "Cardiologï¿½a", "Pediatrï¿½a", "Dermatologï¿½a", "Ginecologï¿½a",
+		        "Obstetricia", "Neurologï¿½a", "Psiquiatrï¿½a", "Oftalmologï¿½a",
+		        "Otorrinolaringologï¿½a", "Neumologï¿½a", "Gastroenterologï¿½a",
+		        "Endocrinologï¿½a", "Urologï¿½a", "Nefrologï¿½a", "Hematologï¿½a",
+		        "Oncologï¿½a", "Reumatologï¿½a", "Traumatologï¿½a", "Ortopedia",
+		        "Medicina Interna", "Medicina General", "Cirugï¿½a General",
+		        "Cirugï¿½a Plï¿½stica", "Cirugï¿½a Cardiovascular",
+		        "Cirugï¿½a Pediï¿½trica", "Cirugï¿½a Oncolï¿½gica",
+		        "Cirugï¿½a Maxilofacial", "Anestesiologï¿½a", "Radiologï¿½a",
+		        "Medicina Nuclear", "Rehabilitaciï¿½n y Fisiatrï¿½a",
+		        "Nutriciï¿½n Clï¿½nica", "Infectologï¿½a", "Alergologï¿½a",
+		        "Inmunologï¿½a", "Geriatrï¿½a", "Neonatologï¿½a",
+		        "Genï¿½tica Mï¿½dica", "Urgencias Mï¿½dicas",
 		        "Terapia Intensiva", "Medicina Familiar",
-		        "Neurocirugía", "Proctología",
-		        "Coloproctología", "Angiología",
-		        "Podología Médica", "Sexología Clínica",
-		        "Toxicología", "Medicina del Trabajo"
+		        "Neurocirugï¿½a", "Proctologï¿½a",
+		        "Coloproctologï¿½a", "Angiologï¿½a",
+		        "Podologï¿½a Mï¿½dica", "Sexologï¿½a Clï¿½nica",
+		        "Toxicologï¿½a", "Medicina del Trabajo"
 		    };
 
 		    for (String esp : lista) {

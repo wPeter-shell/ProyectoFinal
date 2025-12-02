@@ -163,14 +163,14 @@ public class Principal extends JFrame {
       });
       menuAdmin.add(itemAgregarVacuna);
 
-      itemDefinirNumCitas = new JMenuItem("Modificar Médico");
+      itemDefinirNumCitas = new JMenuItem("Modificar Mï¿½dico");
       itemDefinirNumCitas.addActionListener(e -> {
           if (usuarioLogueado instanceof Administrador) {
               new ModificarMedico(this).setVisible(true);
           } else {
               JOptionPane.showMessageDialog(
                   this,
-                  "Solo un médico puede modificar el número de citas.",
+                  "Solo un mï¿½dico puede modificar el nï¿½mero de citas.",
                   "Acceso denegado",
                   JOptionPane.WARNING_MESSAGE
               );
@@ -206,12 +206,37 @@ public class Principal extends JFrame {
       
       itemModificarCita = new JMenuItem("Modificar Cita");
       itemModificarCita.setEnabled(false);
+      itemModificarCita.addActionListener(e -> {
+          if (usuarioLogueado instanceof Secretaria) {
+              new ModificarCita(this, usuarioLogueado).setVisible(true);  // CORRECCIÃ“N
+          } else {
+              JOptionPane.showMessageDialog(
+                  Principal.this,
+                  "Solo las secretarias pueden modificar citas.",
+                  "Acceso denegado",
+                  JOptionPane.WARNING_MESSAGE
+              );
+          }
+      });
       menuCitas.add(itemModificarCita);
       
       itemEliminarCita = new JMenuItem("Eliminar Cita");
       itemEliminarCita.setEnabled(false);
+      itemEliminarCita.addActionListener(e -> {
+          if (usuarioLogueado instanceof Secretaria || usuarioLogueado instanceof Administrador) {
+              new EliminarCita(this, usuarioLogueado).setVisible(true);
+          } else {
+              JOptionPane.showMessageDialog(
+                  Principal.this,
+                  "Solo secretarias y administradores pueden eliminar citas.",
+                  "Acceso denegado",
+                  JOptionPane.WARNING_MESSAGE
+              );
+          }
+      });
       menuCitas.add(itemEliminarCita);
-
+      
+      
       menuConsulta = new JMenu("Consultas");
       menuConsulta.setFont(new Font("Segoe UI", Font.PLAIN, 14));
       menuBar.add(menuConsulta);
@@ -295,8 +320,8 @@ public class Principal extends JFrame {
   	         ioe.printStackTrace();
   	         JOptionPane.showMessageDialog(
   	            Principal.this,
-  	            "Error en la comunicación con el servidor.",
-  	            "Error de conexión",
+  	            "Error en la comunicaciï¿½n con el servidor.",
+  	            "Error de conexiï¿½n",
   	            JOptionPane.ERROR_MESSAGE
   	         );
   	      } finally {
@@ -446,7 +471,7 @@ public class Principal extends JFrame {
       Hospital h = Hospital.getInstancia();
       
       for(Medico m : h.getMisMedicos()) {
-    	  if( !m.getDisponible() ) {
+    	  if( !m.getInhabilitado()) {
     		  cantMeds++;
     	  }
       }
@@ -478,18 +503,18 @@ public class Principal extends JFrame {
    private String obtenerTextoUsuario() {
 
       if (usuarioLogueado == null) {
-         return "Sesión sin usuario";
+         return "Sesiï¿½n sin usuario";
       }
 
       if (usuarioLogueado instanceof Administrador) {
          return "Administrador: " + ((Administrador) usuarioLogueado).getUsuario();
       } else if (usuarioLogueado instanceof Medico) {
-         return "Médico: " + ((Medico) usuarioLogueado).getNombre();
+         return "Mï¿½dico: " + ((Medico) usuarioLogueado).getNombre();
       } else if (usuarioLogueado instanceof Secretaria) {
          return "Secretaria: " + ((Secretaria) usuarioLogueado).getNombre();
       }
 
-      return "Sesión activa";
+      return "Sesiï¿½n activa";
    }
 
    private void configurarPermisos() {
@@ -520,6 +545,8 @@ public class Principal extends JFrame {
          
       } else if (usuarioLogueado instanceof Secretaria) {
          itemHacerCita.setEnabled(true);
+         itemModificarCita.setEnabled(true); 
+         itemEliminarCita.setEnabled(true);
       } else if (usuarioLogueado instanceof Medico) {
          itemHacerCita.setEnabled(false);
       }

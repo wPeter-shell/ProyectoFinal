@@ -28,13 +28,13 @@ public class Secretaria extends Persona implements Serializable {
 	            throw new IllegalArgumentException("Debe proporcionar un paciente.");
 
 	        if (medico == null)
-	            throw new IllegalArgumentException("Debe seleccionar un médico.");
+	            throw new IllegalArgumentException("Debe seleccionar un mï¿½dico.");
 
 	        if (dia == null)
-	            throw new IllegalArgumentException("Debe seleccionar un día.");
+	            throw new IllegalArgumentException("Debe seleccionar un dï¿½a.");
 
 	        if (!verificarDisponibilidad(medico, dia))
-	            throw new IllegalStateException("El médico no tiene disponibilidad ese día.");
+	            throw new IllegalStateException("El mï¿½dico no tiene disponibilidad ese dï¿½a.");
 
 	        Cita cita = new Cita(paciente, medico, dia);
 
