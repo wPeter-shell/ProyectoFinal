@@ -83,7 +83,7 @@ public class Hospital implements Serializable {
 		return enfermedadesVigiladas;
 	}
 	
-	public ArrayList<String> especialidades() {
+	public ArrayList<String> getEspecialidades() {
 		return especialidades;
 	}
 
@@ -114,6 +114,10 @@ public class Hospital implements Serializable {
 	public void setEnfermedadesVigiladas(ArrayList<Enfermedad> enfermedadesVigiladas) {
 		this.enfermedadesVigiladas = enfermedadesVigiladas;
 	}
+	
+	public void setAgregarEspecialidad(ArrayList<String> especialidades) {
+	    this.especialidades = especialidades;
+	}
 
 	public void agregarPaciente(Paciente p) {
 	    misPacientes.add(p);
@@ -137,6 +141,10 @@ public class Hospital implements Serializable {
 	
 	public void agregarEnfermedadVigilada(Enfermedad enfermedad) {
 	    enfermedadesVigiladas.add(enfermedad);
+	}
+	
+	public void agregarEspecialidad(String especialidad) {
+	    especialidades.add(especialidad);
 	}
 	
 	public Paciente buscarPacientePorCedula(String cedula) {

@@ -27,6 +27,7 @@ import logic.Hospital;
 import logic.Medico;
 import logic.Secretaria;
 
+
 public class Login_Inicial extends JFrame {
 
 

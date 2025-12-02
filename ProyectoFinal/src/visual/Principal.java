@@ -69,9 +69,9 @@ public class Principal extends JFrame {
 
    private JMenu menuConsulta;
    private JMenuItem itemAtenderConsultas;
-   private JMenuItem itemVerCuentas;
    private JMenuItem itemModificarCita;
    private JMenuItem itemEliminarCita;
+   private JMenuItem itemAgregarEspecialidad;
    
    
 
@@ -162,11 +162,23 @@ public class Principal extends JFrame {
       });
       menuAdmin.add(itemAgregarVacuna);
 
-      itemDefinirNumCitas = new JMenuItem("Modificar n\u00ba de citas por d\u00eda");
+      itemDefinirNumCitas = new JMenuItem("Modificar nº de citas por día");
       itemDefinirNumCitas.addActionListener(e -> {
-         new DefinirNumCitas().setVisible(true);
+          if (usuarioLogueado instanceof Administrador) {
+              new DefinirNumCitas().setVisible(true);
+          } else {
+              JOptionPane.showMessageDialog(
+                  this,
+                  "Solo un médico puede modificar el número de citas.",
+                  "Acceso denegado",
+                  JOptionPane.WARNING_MESSAGE
+              );
+          }
       });
       menuAdmin.add(itemDefinirNumCitas);
+      
+      itemAgregarEspecialidad = new JMenuItem("Agregar Especialidad");
+      menuAdmin.add(itemAgregarEspecialidad);
 
       menuCitas = new JMenu("Citas");
       menuCitas.setFont(new Font("Segoe UI", Font.PLAIN, 14));
@@ -211,9 +223,6 @@ public class Principal extends JFrame {
       menuArchivos = new JMenu("Archivos");
       menuArchivos.setFont(new Font("Segoe UI", Font.PLAIN, 14));
       menuBar.add(menuArchivos);
-
-      itemListarPacientes = new JMenuItem("Listar pacientes");
-      menuArchivos.add(itemListarPacientes);
 
       itemGuardarArchivos = new JMenuItem("Guardar Archivos");
       itemGuardarArchivos.addActionListener(new ActionListener() {
@@ -447,18 +456,18 @@ public class Principal extends JFrame {
    private String obtenerTextoUsuario() {
 
       if (usuarioLogueado == null) {
-         return "Sesi\u00f3n sin usuario";
+         return "Sesión sin usuario";
       }
 
       if (usuarioLogueado instanceof Administrador) {
          return "Administrador: " + ((Administrador) usuarioLogueado).getUsuario();
       } else if (usuarioLogueado instanceof Medico) {
-         return "M\u00e9dico: " + ((Medico) usuarioLogueado).getNombre();
+         return "Médico: " + ((Medico) usuarioLogueado).getNombre();
       } else if (usuarioLogueado instanceof Secretaria) {
          return "Secretaria: " + ((Secretaria) usuarioLogueado).getNombre();
       }
 
-      return "Sesi\u00f3n activa";
+      return "Sesión activa";
    }
 
    private void configurarPermisos() {
@@ -469,7 +478,12 @@ public class Principal extends JFrame {
       itemAgregarVacuna.setEnabled(false);
       itemDefinirNumCitas.setEnabled(false);
       itemHacerCita.setEnabled(false);
+      itemAtenderConsultas.setEnabled(false);
+      itemEliminarCita.setEnabled(false);
+      itemGuardarArchivos.setEnabled(false);
       itemListarPacientes.setEnabled(false);
+      itemRespaldo.setEnabled(false);
+      itemAgregarEspecialidad.setEnabled(false);
       
       if (usuarioLogueado instanceof Administrador) {
          itemRegistrarMedico.setEnabled(true);
@@ -478,8 +492,7 @@ public class Principal extends JFrame {
          itemAgregarVacuna.setEnabled(true);
          itemDefinirNumCitas.setEnabled(true);
          itemListarPacientes.setEnabled(true);
-         itemAtenderConsultas.setEnabled(true);
-         itemHacerCita.setEnabled(true);
+         itemAgregarEspecialidad.setEnabled(true);
          
       } else if (usuarioLogueado instanceof Secretaria) {
          itemHacerCita.setEnabled(true);

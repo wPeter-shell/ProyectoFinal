@@ -48,11 +48,11 @@ public class Administrador implements Serializable {
 	public void eliminarMedico(Medico medico) {
 	    hospital.getMisMedicos().remove(medico);
 	}
-
-	// MODIFICAR ESPECIALIDAD
-	public void modificarEspecialidad(Medico medico, String nuevaEspecialidad) {
-	    medico.setEspecialidad(nuevaEspecialidad);
+	
+	public void registrarEspecialidad(String especialidad) {
+		hospital.getEspecialidades().add(especialidad);
 	}
+
 
 	// DEFINIR CU�NTAS CITAS POR D�A PUEDE ATENDER UN M�DICO
 	public void definirCantCitas(Medico medico, int cantCitas) {

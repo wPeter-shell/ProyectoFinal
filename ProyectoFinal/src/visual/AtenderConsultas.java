@@ -1,10 +1,12 @@
 package visual;
 
 import javax.swing.*;
+
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
 import logic.*;
+
 
 import java.awt.*;
 import java.awt.event.*;

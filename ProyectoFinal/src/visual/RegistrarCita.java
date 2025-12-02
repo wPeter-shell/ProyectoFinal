@@ -25,6 +25,7 @@ import logic.Hospital;
 import logic.Medico;
 import logic.Paciente;
 import logic.Secretaria;
+import logic.Validaciones;
 
 public class RegistrarCita extends JDialog {
 
@@ -93,13 +94,13 @@ public class RegistrarCita extends JDialog {
       txtApellido = new JTextField();
       contentPanel.add(txtApellido);
 
-      JLabel lblCedula = new JLabel("CÃ©dula:");
+      JLabel lblCedula = new JLabel("Cédula:");
       lblCedula.setFont(labelFont);
       contentPanel.add(lblCedula);
       txtCedula = new JTextField();
       contentPanel.add(txtCedula);
 
-      JLabel lblGenero = new JLabel("GÃ©nero:");
+      JLabel lblGenero = new JLabel("Género:");
       lblGenero.setFont(labelFont);
       contentPanel.add(lblGenero);
       cmbGenero = new JComboBox<Character>();
@@ -113,26 +114,26 @@ public class RegistrarCita extends JDialog {
       txtEdad = new JTextField();
       contentPanel.add(txtEdad);
 
-      JLabel lblTelefono = new JLabel("TelÃ©fono:");
+      JLabel lblTelefono = new JLabel("Teléfono:");
       lblTelefono.setFont(labelFont);
       contentPanel.add(lblTelefono);
       txtTelefono = new JTextField();
       contentPanel.add(txtTelefono);
 
-      JLabel lblDireccion = new JLabel("DirecciÃ³n:");
+      JLabel lblDireccion = new JLabel("Dirección:");
       lblDireccion.setFont(labelFont);
       contentPanel.add(lblDireccion);
       txtDireccion = new JTextField();
       contentPanel.add(txtDireccion);
 
-      JLabel lblMedico = new JLabel("MÃ©dico:");
+      JLabel lblMedico = new JLabel("Médico:");
       lblMedico.setFont(labelFont);
       contentPanel.add(lblMedico);
       cmbMedicos = new JComboBox<>();
       cargarMedicos();
       contentPanel.add(cmbMedicos);
 
-      JLabel lblDia = new JLabel("DÃ­a:");
+      JLabel lblDia = new JLabel("Día:");
       lblDia.setFont(labelFont);
       contentPanel.add(lblDia);
       cmbDias = new JComboBox<String>();
@@ -189,7 +190,7 @@ public class RegistrarCita extends JDialog {
 
             JOptionPane.showMessageDialog(this,
                   "Todos los campos son obligatorios",
-                  "Error de validaciÃ³n",
+                  "Error de validación",
                   JOptionPane.ERROR_MESSAGE);
             return;
          }
@@ -204,7 +205,7 @@ public class RegistrarCita extends JDialog {
 
          if (edad < 0 || edad > 120) {
             JOptionPane.showMessageDialog(this,
-                  "La edad debe estar entre 0 y 120 aÃ±os",
+                  "La edad debe estar entre 0 y 120 años",
                   "Error de validaciÃ³n",
                   JOptionPane.ERROR_MESSAGE);
             return;
@@ -213,17 +214,54 @@ public class RegistrarCita extends JDialog {
          String diaSeleccionado = (String) cmbDias.getSelectedItem();
          if (diaSeleccionado == null || diaSeleccionado.isEmpty()) {
             JOptionPane.showMessageDialog(this,
-                  "Debe seleccionar un dÃ­a",
-                  "Error de validaciÃ³n",
+                  "Debe seleccionar un día",
+                  "Error de validación",
                   JOptionPane.ERROR_MESSAGE);
             return;
          }
+         
+         if(Validaciones.tieneNumero(nombre)) {
+        	 JOptionPane.showMessageDialog(this,
+                     "En nombre no se permiten números",
+                     "Error de validación",
+                     JOptionPane.ERROR_MESSAGE);
+               return;
+
+         }
+         
+         if(Validaciones.tieneNumero(apellido)) {
+        	 JOptionPane.showMessageDialog(this,
+                     "En apellido no se permiten números",
+                     "Error de validación",
+                     JOptionPane.ERROR_MESSAGE);
+               return;
+
+         }
+         
+         if(Validaciones.tieneLetra(telefono)) {
+        	 JOptionPane.showMessageDialog(this,
+                     "El teléfono solo debe tener números",
+                     "Error de validación",
+                     JOptionPane.ERROR_MESSAGE);
+               return;
+
+         }
+         
+         if(Validaciones.tieneLetra(cedula)) {
+        	 JOptionPane.showMessageDialog(this,
+                     "La cédula solo debe tener números",
+                     "Error de validación",
+                     JOptionPane.ERROR_MESSAGE);
+               return;
+
+         }
+         
 
          int selectedIndex = cmbMedicos.getSelectedIndex();
          if (selectedIndex < 0) {
             JOptionPane.showMessageDialog(this,
-                  "Debe seleccionar un mÃ©dico",
-                  "Error de validaciÃ³n",
+                  "Debe seleccionar un médico",
+                  "Error de validación",
                   JOptionPane.ERROR_MESSAGE);
             return;
          }
@@ -241,11 +279,13 @@ public class RegistrarCita extends JDialog {
 
          if (!secretaria.verificarDisponibilidad(medico, diaSeleccionado)) {
             JOptionPane.showMessageDialog(this,
-                  "El mÃ©dico no tiene disponibilidad para el dÃ­a seleccionado",
+                  "El médico no tiene disponibilidad para el día seleccionado",
                   "No hay disponibilidad",
                   JOptionPane.WARNING_MESSAGE);
             return;
          }
+         
+         
 
          Cita nuevaCita = secretaria.registrarCita(paciente, medico, diaSeleccionado);
          Hospital.getInstancia().guardarDatos();
@@ -253,8 +293,8 @@ public class RegistrarCita extends JDialog {
          JOptionPane.showMessageDialog(this,
                "Cita registrada exitosamente:\n" +
                "Paciente: " + nombre + " " + apellido + "\n" +
-               "MÃ©dico: Dr. " + medico.getApellido() + " (" + medico.getEspecialidad() + ")\n" +
-               "DÃ­a: " + diaSeleccionado + "\n" +
+               "Médico: Dr. " + medico.getApellido() + " (" + medico.getEspecialidad() + ")\n" +
+               "Día: " + diaSeleccionado + "\n" +
                "Estado: " + nuevaCita.getEstado(),
                "Registro Exitoso",
                JOptionPane.INFORMATION_MESSAGE);
@@ -264,7 +304,7 @@ public class RegistrarCita extends JDialog {
 
       } catch (NumberFormatException e) {
          JOptionPane.showMessageDialog(this,
-               "La edad debe ser un nÃºmero vÃ¡lido",
+               "La edad debe ser un número válido",
                "Error de formato",
                JOptionPane.ERROR_MESSAGE);
       } catch (Exception e) {

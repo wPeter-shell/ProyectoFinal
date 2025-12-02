@@ -50,7 +50,7 @@ public class VerCuentas extends JDialog {
         lblTitulo.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 20));
         headerPanel.add(lblTitulo, BorderLayout.WEST);
         
-        JLabel lblSubtitulo = new JLabel("Listado de mÃ©dicos y secretarias ordenados por registro");
+        JLabel lblSubtitulo = new JLabel("Listado de médicos y secretarias ordenados por registro");
         lblSubtitulo.setForeground(new Color(225, 240, 250));
         lblSubtitulo.setFont(new Font("Segoe UI", Font.PLAIN, 12));
         headerPanel.add(lblSubtitulo, BorderLayout.SOUTH);
@@ -61,7 +61,7 @@ public class VerCuentas extends JDialog {
         contentPanel.setLayout(new BorderLayout(0, 0));
         getContentPane().add(contentPanel, BorderLayout.CENTER);
         
-        String[] columnNames = {"Nombre", "Apellido", "Usuario", "ContraseÃ±a"};
+        String[] columnNames = {"Nombre", "Apellido", "Usuario", "Contraseña"};
         DefaultTableModel model = new DefaultTableModel(columnNames, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
