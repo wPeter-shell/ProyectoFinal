@@ -27,7 +27,10 @@ public class ModificarMedico extends JDialog {
    private Medico m;
    private List<Medico> listaMedicos;   // lista original de médicos
    private Principal principal;         // referencia al principal (para actualizar cards si quieres)
+   private JButton btnDesabilitar;
 
+   
+   
    // Constructor principal (lo usas desde Principal)
    public ModificarMedico(Principal principal) {
       this.principal = principal;
@@ -135,6 +138,7 @@ public class ModificarMedico extends JDialog {
          public boolean isCellEditable(int row, int column) {
             return false; // no editable desde la tabla
          }
+         
       };
 
       tableMedicos = new JTable(modeloTabla);
@@ -147,6 +151,29 @@ public class ModificarMedico extends JDialog {
       panelCentro.add(scroll, BorderLayout.CENTER);
 
       contentPane.add(panelCentro, BorderLayout.CENTER);
+      
+      tableMedicos.getSelectionModel().addListSelectionListener(e -> {
+    	   if (!e.getValueIsAdjusting()) {
+
+    	      int fila = tableMedicos.getSelectedRow();
+    	      if (fila == -1) return;
+
+    	      String cedula = (String) tableMedicos.getValueAt(fila, 2);
+
+    	      for (Medico m : listaMedicos) {
+    	         if (m.getCedula().equals(cedula)) {
+
+    	            if (m.getInhabilitado()) {
+    	               btnDesabilitar.setText("Habilitar");
+    	            } else {
+    	               btnDesabilitar.setText("Inhabilitar");
+    	            }
+
+    	            break;
+    	         }
+    	      }
+    	   }
+    	});
    }
 
    // ====== BOTONES ABAJO ======
@@ -164,7 +191,11 @@ public class ModificarMedico extends JDialog {
       btnCerrar.setFont(new Font("Segoe UI", Font.PLAIN, 13));
       btnCerrar.addActionListener(e -> dispose());
       
+<<<<<<< HEAD
       JButton btnDesabilitar = new JButton("Inhabilitar");
+=======
+      btnDesabilitar = new JButton("Inhabilitar");
+>>>>>>> branch 'master' of https://github.com/wPeter-shell/ProyectoFinal.git
       btnDesabilitar.setFont(new Font("Segoe UI", Font.PLAIN, 13));
 
       btnDesabilitar.addActionListener(new ActionListener() {
