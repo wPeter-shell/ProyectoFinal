@@ -178,7 +178,10 @@ public class Principal extends JFrame {
       menuBar.add(menuConsulta);
       
       itemAtenderConsultas = new JMenuItem("Atender Consultas");
-      menuConsulta.add(itemAtenderConsultas);
+      itemAtenderConsultas.addActionListener(e -> {
+    	    new AtenderConsultas((Medico) usuarioLogueado).setVisible(true);
+    	});
+    	menuConsulta.add(itemAtenderConsultas);
       
       menuListar = new JMenu("Listar");
       menuListar.setFont(new Font("Segoe UI", Font.PLAIN, 14));
