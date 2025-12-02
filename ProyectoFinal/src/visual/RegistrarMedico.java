@@ -90,13 +90,13 @@ public class RegistrarMedico extends JDialog {
       txtApellido = new JTextField();
       contentPanel.add(txtApellido);
 
-      JLabel lblCedula = new JLabel("Cédula:");
+      JLabel lblCedula = new JLabel("Cï¿½dula:");
       lblCedula.setFont(labelFont);
       contentPanel.add(lblCedula);
       txtCedula = new JTextField();
       contentPanel.add(txtCedula);
 
-      JLabel lblGenero = new JLabel("Género:");
+      JLabel lblGenero = new JLabel("Gï¿½nero:");
       lblGenero.setFont(labelFont);
       contentPanel.add(lblGenero);
       cmbGenero = new JComboBox<Character>();
@@ -110,13 +110,13 @@ public class RegistrarMedico extends JDialog {
       txtEdad = new JTextField();
       contentPanel.add(txtEdad);
 
-      JLabel lblTelefono = new JLabel("Teléfono:");
+      JLabel lblTelefono = new JLabel("Telï¿½fono:");
       lblTelefono.setFont(labelFont);
       contentPanel.add(lblTelefono);
       txtTelefono = new JTextField();
       contentPanel.add(txtTelefono);
 
-      JLabel lblDireccion = new JLabel("Dirección:");
+      JLabel lblDireccion = new JLabel("Direcciï¿½n:");
       lblDireccion.setFont(labelFont);
       contentPanel.add(lblDireccion);
       txtDireccion = new JTextField();
@@ -128,7 +128,7 @@ public class RegistrarMedico extends JDialog {
       txtEspecialidad = new JTextField();
       contentPanel.add(txtEspecialidad);
 
-      JLabel lblCitas = new JLabel("Citas por día:");
+      JLabel lblCitas = new JLabel("Citas por dï¿½a:");
       lblCitas.setFont(labelFont);
       contentPanel.add(lblCitas);
       txtCitasPorDia = new JTextField();
@@ -167,7 +167,7 @@ public class RegistrarMedico extends JDialog {
 
             JOptionPane.showMessageDialog(this,
                   "Todos los campos son obligatorios",
-                  "Error de validación",
+                  "Error de validaciï¿½n",
                   JOptionPane.ERROR_MESSAGE);
             return;
          }
@@ -176,7 +176,7 @@ public class RegistrarMedico extends JDialog {
          for (Medico medicoExistente : Hospital.getInstancia().getMisMedicos()) {
             if (medicoExistente.getCedula().equals(cedula)) {
                JOptionPane.showMessageDialog(this,
-                     "Ya existe un medico con esta cédula",
+                     "Ya existe un medico con esta cï¿½dula",
                      "Error de registro",
                      JOptionPane.ERROR_MESSAGE);
                return;
@@ -194,16 +194,16 @@ public class RegistrarMedico extends JDialog {
 
          if (edad < 18 || edad > 70) {
             JOptionPane.showMessageDialog(this,
-                  "La edad debe estar entre 18 y 70 años",
-                  "Error de validación",
+                  "La edad debe estar entre 18 y 70 aï¿½os",
+                  "Error de validaciï¿½n",
                   JOptionPane.ERROR_MESSAGE);
             return;
          }
 
          if (citasPorDia <= 0 || citasPorDia > 20) {
             JOptionPane.showMessageDialog(this,
-                  "Las citas por día deben estar entre 1 y 20",
-                  "Error de validación",
+                  "Las citas por dï¿½a deben estar entre 1 y 20",
+                  "Error de validaciï¿½n",
                   JOptionPane.ERROR_MESSAGE);
             return;
          }
@@ -223,9 +223,9 @@ public class RegistrarMedico extends JDialog {
                "Meddico registrado exitosamente:\n" +
                "Nombre: " + nombre + " " + apellido + "\n" +
                "Especialidad: " + especialidad + "\n" +
-               "Cédula: " + cedula + "\n" +
+               "Cï¿½dula: " + cedula + "\n" +
                "Usuario: " + nuevoMedico.getUsuario() + "\n" +
-               "Contraseña: " + nuevoMedico.getPassword(),
+               "Contraseï¿½a: " + nuevoMedico.getPassword(),
                "Registro Exitoso",
                JOptionPane.INFORMATION_MESSAGE);
          
@@ -234,8 +234,8 @@ public class RegistrarMedico extends JDialog {
 
       } catch (NumberFormatException e) {
          JOptionPane.showMessageDialog(this,
-               "Error en formato numérico:\n" +
-               "Edad y Citas por dia deben ser números validos",
+               "Error en formato numï¿½rico:\n" +
+               "Edad y Citas por dia deben ser nï¿½meros validos",
                "Error de formato",
                JOptionPane.ERROR_MESSAGE);
       } catch (Exception e) {
