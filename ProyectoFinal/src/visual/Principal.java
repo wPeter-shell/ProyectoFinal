@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.net.Socket;
 
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -73,7 +74,6 @@ public class Principal extends JFrame {
    private JMenuItem itemEliminarCita;
    private JMenuItem itemAgregarEspecialidad;
    private JMenuItem itemVerCuentas;
-   
    
 
    public static void main(String[] args) {
@@ -452,10 +452,11 @@ public class Principal extends JFrame {
       }
       
       if (lblCantPacientes != null) {
-         lblCantPacientes.setText(String.valueOf(cantMeds));
+          lblCantPacientes.setText(String.valueOf(h.getMisPacientes().size()));
+
       }
       if (lblCantMedicos != null) {
-         lblCantMedicos.setText(String.valueOf(h.getMisMedicos().size()));
+         lblCantMedicos.setText(String.valueOf(cantMeds));
       }
       if (lblCantEnfermedades != null) {
          lblCantEnfermedades.setText(String.valueOf(h.getMisEnfermedades().size()));
