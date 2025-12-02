@@ -195,29 +195,63 @@ public class Principal extends JFrame {
       
       itemRespaldo = new JMenuItem("Respaldo");
       itemRespaldo.addActionListener(new ActionListener() {
-      	public void actionPerformed(ActionEvent e) {
-      		try {
-      			sfd = new Socket("127.0.0.1", 7000);
-      			DataInputStream aux = new DataInputStream(new FileInputStream(new File("hospital_respaldo.dat")));
-      			SalidaSocket = new DataOutputStream((sfd.getOutputStream()));
-      			int unByte;
-      			try {
-      				while((unByte = aux.read()) != - 1) {
-      					SalidaSocket.write(unByte);
-      					SalidaSocket.flush();
-      				}
-      			}catch(IOException ioe) {
-      				System.out.println("Error: "+ioe);
-      			}
-      		}catch(UnknownHostException uhe) {
-      			System.out.println("No se puede acceder al servidor.");
-      			System.exit(1);
-      		}catch(IOException ioe) {
-      			System.out.println("Comunicación rechazada.");
-      			System.exit(1);
-      		}
-      	}
-      });
+    	   public void actionPerformed(ActionEvent e) {
+    	      Socket sfd = null;
+    	      DataInputStream inFile = null;
+    	      DataOutputStream outSocket = null;
+
+    	      try {
+    	         // 1. Conectarse al servidor
+    	         sfd = new Socket("127.0.0.1", 7000);
+
+    	         // 2. Abrir el archivo ORIGINAL que quieres respaldar
+    	         File archivoHospital = new File("hospital.dat");   // OJO: hospital.dat
+    	         if (!archivoHospital.exists()) {
+    	            JOptionPane.showMessageDialog(
+    	               Principal.this,
+    	               "El archivo hospital.dat no existe. Primero guarda los datos.",
+    	               "Error de respaldo",
+    	               JOptionPane.ERROR_MESSAGE
+    	            );
+    	            return;
+    	         }
+
+    	         // 3. Streams
+    	         inFile = new DataInputStream(new FileInputStream(archivoHospital));
+    	         outSocket = new DataOutputStream(sfd.getOutputStream());
+
+    	         int unByte;
+    	         int contador = 0;
+    	         while ((unByte = inFile.read()) != -1) {
+    	            outSocket.write(unByte);
+    	            contador++;
+    	         }
+    	         outSocket.flush();
+    	         System.out.println("Enviados " + contador + " bytes al servidor.");
+
+    	         JOptionPane.showMessageDialog(
+    	            Principal.this,
+    	            "Respaldo enviado correctamente al servidor.",
+    	            "Respaldo",
+    	            JOptionPane.INFORMATION_MESSAGE
+    	         );
+
+    	      } catch (IOException ioe) {
+    	         ioe.printStackTrace();
+    	         JOptionPane.showMessageDialog(
+    	            Principal.this,
+    	            "Error en la comunicación con el servidor.",
+    	            "Error de conexión",
+    	            JOptionPane.ERROR_MESSAGE
+    	         );
+    	      } finally {
+    	         try { if (inFile != null) inFile.close(); } catch (IOException ex) {}
+    	         try { if (outSocket != null) outSocket.close(); } catch (IOException ex) {}
+    	         try { if (sfd != null) sfd.close(); } catch (IOException ex) {}
+    	      }
+    	   }
+    	});
+
       menuArchivos.add(itemRespaldo);
    }
 
