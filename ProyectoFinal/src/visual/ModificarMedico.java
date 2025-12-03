@@ -191,11 +191,9 @@ public class ModificarMedico extends JDialog {
       btnCerrar.setFont(new Font("Segoe UI", Font.PLAIN, 13));
       btnCerrar.addActionListener(e -> dispose());
       
-<<<<<<< HEAD
       JButton btnDesabilitar = new JButton("Inhabilitar");
-=======
+
       btnDesabilitar = new JButton("Inhabilitar");
->>>>>>> branch 'master' of https://github.com/wPeter-shell/ProyectoFinal.git
       btnDesabilitar.setFont(new Font("Segoe UI", Font.PLAIN, 13));
 
       btnDesabilitar.addActionListener(new ActionListener() {
@@ -246,7 +244,7 @@ public class ModificarMedico extends JDialog {
                      "Cambio exitoso",
                      JOptionPane.INFORMATION_MESSAGE);
 
-               btnDesabilitar.setText("Inhabilitar");
+               //btnDesabilitar.setText("Inhabilitar");
                return;
             }
 
