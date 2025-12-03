@@ -516,6 +516,8 @@ public class Principal extends JFrame {
       itemRespaldo.setEnabled(false);
       itemAgregarEspecialidad.setEnabled(false);
       itemVerCuentas.setEnabled(false);
+      itemReporte.setEnabled(false);
+      itemListEnfermedadesBajoVigilancia.setEnabled(false);
       
       if (usuarioLogueado instanceof Administrador) {
          itemRegistrarMedico.setEnabled(true);
@@ -526,6 +528,10 @@ public class Principal extends JFrame {
          itemListarPacientes.setEnabled(true);
          itemAgregarEspecialidad.setEnabled(true);
          itemVerCuentas.setEnabled(true);
+         itemReporte.setEnabled(true);
+         itemListEnfermedadesBajoVigilancia.setEnabled(true);
+         itemGuardarArchivos.setEnabled(true);
+         itemRespaldo.setEnabled(true);
          
       } else if (usuarioLogueado instanceof Secretaria) {
          itemHacerCita.setEnabled(true);
