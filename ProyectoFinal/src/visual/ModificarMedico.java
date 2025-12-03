@@ -14,7 +14,6 @@ import java.util.List;
 import logic.Cita;
 import logic.Validaciones;
 
-
 public class ModificarMedico extends JDialog {
 
    private JPanel contentPane;
@@ -27,10 +26,8 @@ public class ModificarMedico extends JDialog {
    private Medico m;
    private List<Medico> listaMedicos;   // lista original de médicos
    private Principal principal;         // referencia al principal (para actualizar cards si quieres)
-   private JButton btnDesabilitar;
+   private JButton btnDesabilitar;  // Declarada como variable de instancia
 
-   
-   
    // Constructor principal (lo usas desde Principal)
    public ModificarMedico(Principal principal) {
       this.principal = principal;
@@ -55,7 +52,7 @@ public class ModificarMedico extends JDialog {
    // Constructor para probar esta ventana sola (opcional)
    public static void main(String[] args) {
       SwingUtilities.invokeLater(() -> {
-    	  ModificarMedico dialog = new ModificarMedico(null);
+         ModificarMedico dialog = new ModificarMedico(null);
          dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
          dialog.setVisible(true);
       });
@@ -138,7 +135,6 @@ public class ModificarMedico extends JDialog {
          public boolean isCellEditable(int row, int column) {
             return false; // no editable desde la tabla
          }
-         
       };
 
       tableMedicos = new JTable(modeloTabla);
@@ -152,28 +148,26 @@ public class ModificarMedico extends JDialog {
 
       contentPane.add(panelCentro, BorderLayout.CENTER);
       
+      // Listener para actualizar el texto del botón según el médico seleccionado
       tableMedicos.getSelectionModel().addListSelectionListener(e -> {
-    	   if (!e.getValueIsAdjusting()) {
+         if (!e.getValueIsAdjusting()) {
+            int fila = tableMedicos.getSelectedRow();
+            if (fila == -1) return;
 
-    	      int fila = tableMedicos.getSelectedRow();
-    	      if (fila == -1) return;
+            String cedula = (String) tableMedicos.getValueAt(fila, 2);
 
-    	      String cedula = (String) tableMedicos.getValueAt(fila, 2);
-
-    	      for (Medico m : listaMedicos) {
-    	         if (m.getCedula().equals(cedula)) {
-
-    	            if (m.getInhabilitado()) {
-    	               btnDesabilitar.setText("Habilitar");
-    	            } else {
-    	               btnDesabilitar.setText("Inhabilitar");
-    	            }
-
-    	            break;
-    	         }
-    	      }
-    	   }
-    	});
+            for (Medico m : listaMedicos) {
+               if (m.getCedula().equals(cedula)) {
+                  if (m.getInhabilitado()) {
+                     btnDesabilitar.setText("Habilitar");
+                  } else {
+                     btnDesabilitar.setText("Inhabilitar");
+                  }
+                  break;
+               }
+            }
+         }
+      });
    }
 
    // ====== BOTONES ABAJO ======
@@ -187,21 +181,13 @@ public class ModificarMedico extends JDialog {
       btnModificar.addActionListener(e -> modificarCitas());
       panelBotones.add(btnModificar);
 
-      JButton btnCerrar = new JButton("Cerrar");
-      btnCerrar.setFont(new Font("Segoe UI", Font.PLAIN, 13));
-      btnCerrar.addActionListener(e -> dispose());
-      
-<<<<<<< HEAD
-      JButton btnDesabilitar = new JButton("Inhabilitar");
-=======
+      // CORREGIDO: Declarar btnDesabilitar una sola vez
       btnDesabilitar = new JButton("Inhabilitar");
->>>>>>> branch 'master' of https://github.com/wPeter-shell/ProyectoFinal.git
       btnDesabilitar.setFont(new Font("Segoe UI", Font.PLAIN, 13));
 
       btnDesabilitar.addActionListener(new ActionListener() {
          @Override
          public void actionPerformed(ActionEvent e) {
-
             int fila = tableMedicos.getSelectedRow();
             if (fila == -1) {
                JOptionPane.showMessageDialog(ModificarMedico.this,
@@ -231,7 +217,6 @@ public class ModificarMedico extends JDialog {
 
             // 🔁 Si YA está INHABILITADO → ahora lo habilitamos
             if (medicoSeleccionado.getInhabilitado()) {
-
                medicoSeleccionado.habilitar();
 
                Hospital.getInstancia().guardarDatos();
@@ -290,7 +275,9 @@ public class ModificarMedico extends JDialog {
 
       panelBotones.add(btnDesabilitar);
 
-
+      JButton btnCerrar = new JButton("Cerrar");
+      btnCerrar.setFont(new Font("Segoe UI", Font.PLAIN, 13));
+      btnCerrar.addActionListener(e -> dispose());
       panelBotones.add(btnCerrar);
 
       contentPane.add(panelBotones, BorderLayout.SOUTH);
@@ -301,7 +288,6 @@ public class ModificarMedico extends JDialog {
       listaMedicos = new ArrayList<>(Hospital.getInstancia().getMisMedicos());
       cargarTabla(listaMedicos);
       aplicarColoresTabla();
-
    }
 
    private void cargarTabla(List<Medico> datos) {
@@ -352,170 +338,168 @@ public class ModificarMedico extends JDialog {
    }
 
    // ====== Acción del botón MODIFICAR ======
-// ====== Acción del botón MODIFICAR ======
-	private void modificarCitas() {
-	   int fila = tableMedicos.getSelectedRow();
-	   if (fila == -1) {
-	      JOptionPane.showMessageDialog(this,
-	            "Debe seleccionar un médico de la tabla.",
-	            "Sin selección",
-	            JOptionPane.WARNING_MESSAGE);
-	      return;
-	   }
-	
-	   // Identificar el médico según su cédula
-	   String cedulaSeleccionada = (String) tableMedicos.getValueAt(fila, 2);
-	
-	   Medico medicoSeleccionado = null;
-	   for (Medico med : listaMedicos) {
-	      if (med.getCedula().equals(cedulaSeleccionada)) {
-	         medicoSeleccionado = med;
-	         break;
-	      }
-	   }
-	
-	   if (medicoSeleccionado == null) {
-	      JOptionPane.showMessageDialog(this,
-	            "No se pudo identificar el médico seleccionado.",
-	            "Error",
-	            JOptionPane.ERROR_MESSAGE);
-	      return;
-	   }
-	
-	   // ================== CAMBIAR EDAD ==================
-	   String edadActual = String.valueOf(medicoSeleccionado.getEdad());
-	
-	   String inputEdad = JOptionPane.showInputDialog(
-	         this,
-	         "Ingrese la nueva edad para:\n" +
-	         medicoSeleccionado.getNombre() + " " + medicoSeleccionado.getApellido() +
-	         "\nEdad actual: " + edadActual,
-	         edadActual
-	   );
-	
-	   if (inputEdad == null) {
-	      return; // cancelado
-	   }
-	
-	   inputEdad = inputEdad.trim();
-	
-	   if (!inputEdad.matches("\\d+")) {
-	      JOptionPane.showMessageDialog(this,
-	            "La edad debe ser un número válido.",
-	            "Error de formato",
-	            JOptionPane.ERROR_MESSAGE);
-	      return;
-	   }
-	
-	   int nuevaEdad = Integer.parseInt(inputEdad);
-	
-	   if (nuevaEdad < 18 || nuevaEdad > 100) { // ajusta el rango si quieres
-	      JOptionPane.showMessageDialog(this,
-	            "La edad debe estar entre 18 y 100 años.",
-	            "Edad fuera de rango",
-	            JOptionPane.ERROR_MESSAGE);
-	      return;
-	   }
-	
-	   // ================== CAMBIAR CITAS POR DÍA ==================
-	   String actualCitas = String.valueOf(medicoSeleccionado.getCitasPorDia());
-	
-	   String inputCitas = JOptionPane.showInputDialog(
-	         this,
-	         "Ingrese el nuevo número de citas por día para:\n" +
-	         medicoSeleccionado.getNombre() + " " + medicoSeleccionado.getApellido() +
-	         "\nActual: " + actualCitas,
-	         actualCitas
-	   );
-	
-	   if (inputCitas == null) {
-	      return; // cancelado
-	   }
-	
-	   inputCitas = inputCitas.trim();
-	
-	   if (Validaciones.tieneLetra(inputCitas)) {
-	      JOptionPane.showMessageDialog(this,
-	            "Las citas por día deben ser un número válido.",
-	            "Error de formato",
-	            JOptionPane.ERROR_MESSAGE);
-	      return;
-	   }
-	
-	   int nuevoValor = Integer.parseInt(inputCitas);
-	
-	   if (nuevoValor < 1 || nuevoValor > 20) { // el rango que ya usabas
-	      JOptionPane.showMessageDialog(this,
-	            "Las citas por día deben estar entre 1 y 20.",
-	            "Valor fuera de rango",
-	            JOptionPane.ERROR_MESSAGE);
-	      return;
-	   }
-	
-	   // ================== APLICAR CAMBIOS ==================
-	   medicoSeleccionado.setEdad(nuevaEdad);
-	   medicoSeleccionado.setCitasPorDia(nuevoValor);
-	
-	   // Guardar
-	   Hospital.getInstancia().guardarDatos();
-	
-	   // Refrescar tabla
-	   cargarMedicos();
-	
-	   // Refrescar cards del dashboard (si quieres)
-	   if (principal != null) {
-	      principal.actualizarCards();
-	   }
-	
-	   JOptionPane.showMessageDialog(this,
-	         "Edad y citas por día actualizadas correctamente.",
-	         "Actualización exitosa",
-	         JOptionPane.INFORMATION_MESSAGE);
-	}
-	
-	private void aplicarColoresTabla() {
-		   tableMedicos.setDefaultRenderer(Object.class, new javax.swing.table.DefaultTableCellRenderer() {
-		      @Override
-		      public java.awt.Component getTableCellRendererComponent(
-		            javax.swing.JTable table,
-		            Object value,
-		            boolean isSelected,
-		            boolean hasFocus,
-		            int row,
-		            int column) {
+   private void modificarCitas() {
+      int fila = tableMedicos.getSelectedRow();
+      if (fila == -1) {
+         JOptionPane.showMessageDialog(this,
+               "Debe seleccionar un médico de la tabla.",
+               "Sin selección",
+               JOptionPane.WARNING_MESSAGE);
+         return;
+      }
 
-		         java.awt.Component comp = super.getTableCellRendererComponent(
-		               table, value, isSelected, hasFocus, row, column);
+      // Identificar el médico según su cédula
+      String cedulaSeleccionada = (String) tableMedicos.getValueAt(fila, 2);
 
-		         String cedula = (String) table.getValueAt(row, 2);
+      Medico medicoSeleccionado = null;
+      for (Medico med : listaMedicos) {
+         if (med.getCedula().equals(cedulaSeleccionada)) {
+            medicoSeleccionado = med;
+            break;
+         }
+      }
 
-		         Medico med = null;
-		         for (Medico x : listaMedicos) {
-		            if (x.getCedula().equals(cedula)) {
-		               med = x;
-		               break;
-		            }
-		         }
+      if (medicoSeleccionado == null) {
+         JOptionPane.showMessageDialog(this,
+               "No se pudo identificar el médico seleccionado.",
+               "Error",
+               JOptionPane.ERROR_MESSAGE);
+         return;
+      }
 
-		         if (med != null && med.getInhabilitado()) {
-		            // Fila sombreada si está inhabilitado
-		            comp.setBackground(new java.awt.Color(220, 220, 220));
-		            comp.setForeground(java.awt.Color.DARK_GRAY);
-		         } else {
-		            comp.setBackground(java.awt.Color.WHITE);
-		            comp.setForeground(java.awt.Color.BLACK);
-		         }
+      // ================== CAMBIAR EDAD ==================
+      String edadActual = String.valueOf(medicoSeleccionado.getEdad());
 
-		         if (isSelected) {
-		            comp.setBackground(new java.awt.Color(153, 204, 255));
-		            comp.setForeground(java.awt.Color.BLACK);
-		         }
+      String inputEdad = JOptionPane.showInputDialog(
+            this,
+            "Ingrese la nueva edad para:\n" +
+            medicoSeleccionado.getNombre() + " " + medicoSeleccionado.getApellido() +
+            "\nEdad actual: " + edadActual,
+            edadActual
+      );
 
-		         return comp;
-		      }
-		   });
+      if (inputEdad == null) {
+         return; // cancelado
+      }
 
-		   tableMedicos.repaint();
-		}
+      inputEdad = inputEdad.trim();
 
+      if (!inputEdad.matches("\\d+")) {
+         JOptionPane.showMessageDialog(this,
+               "La edad debe ser un número válido.",
+               "Error de formato",
+               JOptionPane.ERROR_MESSAGE);
+         return;
+      }
+
+      int nuevaEdad = Integer.parseInt(inputEdad);
+
+      if (nuevaEdad < 18 || nuevaEdad > 100) { // ajusta el rango si quieres
+         JOptionPane.showMessageDialog(this,
+               "La edad debe estar entre 18 y 100 años.",
+               "Edad fuera de rango",
+               JOptionPane.ERROR_MESSAGE);
+         return;
+      }
+
+      // ================== CAMBIAR CITAS POR DÍA ==================
+      String actualCitas = String.valueOf(medicoSeleccionado.getCitasPorDia());
+
+      String inputCitas = JOptionPane.showInputDialog(
+            this,
+            "Ingrese el nuevo número de citas por día para:\n" +
+            medicoSeleccionado.getNombre() + " " + medicoSeleccionado.getApellido() +
+            "\nActual: " + actualCitas,
+            actualCitas
+      );
+
+      if (inputCitas == null) {
+         return; // cancelado
+      }
+
+      inputCitas = inputCitas.trim();
+
+      if (Validaciones.tieneLetra(inputCitas)) {
+         JOptionPane.showMessageDialog(this,
+               "Las citas por día deben ser un número válido.",
+               "Error de formato",
+               JOptionPane.ERROR_MESSAGE);
+         return;
+      }
+
+      int nuevoValor = Integer.parseInt(inputCitas);
+
+      if (nuevoValor < 1 || nuevoValor > 20) { // el rango que ya usabas
+         JOptionPane.showMessageDialog(this,
+               "Las citas por día deben estar entre 1 y 20.",
+               "Valor fuera de rango",
+               JOptionPane.ERROR_MESSAGE);
+         return;
+      }
+
+      // ================== APLICAR CAMBIOS ==================
+      medicoSeleccionado.setEdad(nuevaEdad);
+      medicoSeleccionado.setCitasPorDia(nuevoValor);
+
+      // Guardar
+      Hospital.getInstancia().guardarDatos();
+
+      // Refrescar tabla
+      cargarMedicos();
+
+      // Refrescar cards del dashboard (si quieres)
+      if (principal != null) {
+         principal.actualizarCards();
+      }
+
+      JOptionPane.showMessageDialog(this,
+            "Edad y citas por día actualizadas correctamente.",
+            "Actualización exitosa",
+            JOptionPane.INFORMATION_MESSAGE);
+   }
+
+   private void aplicarColoresTabla() {
+      tableMedicos.setDefaultRenderer(Object.class, new javax.swing.table.DefaultTableCellRenderer() {
+         @Override
+         public java.awt.Component getTableCellRendererComponent(
+               javax.swing.JTable table,
+               Object value,
+               boolean isSelected,
+               boolean hasFocus,
+               int row,
+               int column) {
+
+            java.awt.Component comp = super.getTableCellRendererComponent(
+                  table, value, isSelected, hasFocus, row, column);
+
+            String cedula = (String) table.getValueAt(row, 2);
+
+            Medico med = null;
+            for (Medico x : listaMedicos) {
+               if (x.getCedula().equals(cedula)) {
+                  med = x;
+                  break;
+               }
+            }
+
+            if (med != null && med.getInhabilitado()) {
+               // Fila sombreada si está inhabilitado
+               comp.setBackground(new java.awt.Color(220, 220, 220));
+               comp.setForeground(java.awt.Color.DARK_GRAY);
+            } else {
+               comp.setBackground(java.awt.Color.WHITE);
+               comp.setForeground(java.awt.Color.BLACK);
+            }
+
+            if (isSelected) {
+               comp.setBackground(new java.awt.Color(153, 204, 255));
+               comp.setForeground(java.awt.Color.BLACK);
+            }
+
+            return comp;
+         }
+      });
+
+      tableMedicos.repaint();
+   }
 }
