@@ -94,7 +94,7 @@ public class Login_Inicial extends JFrame {
       panelForm.add(txtUser);
       txtUser.setColumns(10);
 
-      JLabel lblPassword = new JLabel("Contraseï¿½a:");
+      JLabel lblPassword = new JLabel("Contraseña:");
       lblPassword.setFont(new Font("Segoe UI", Font.PLAIN, 16));
       lblPassword.setBounds(70, 120, 100, 25);
       panelForm.add(lblPassword);
@@ -143,7 +143,7 @@ public class Login_Inicial extends JFrame {
             if (userVisual.isEmpty() || passwordVisual.isEmpty()) {
                 javax.swing.JOptionPane.showMessageDialog(
                       Login_Inicial.this,
-                      "Debe ingresar usuario y contraseÃ±a.",
+                      "Debe ingresar usuario y contraseña.",
                       "Campos requeridos",
                       javax.swing.JOptionPane.WARNING_MESSAGE
                 );

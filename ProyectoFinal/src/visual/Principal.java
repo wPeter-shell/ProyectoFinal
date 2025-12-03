@@ -74,6 +74,8 @@ public class Principal extends JFrame {
    private JMenuItem itemEliminarCita;
    private JMenuItem itemAgregarEspecialidad;
    private JMenuItem itemVerCuentas;
+   private JMenuItem itemReporte;
+   private JMenuItem itemListEnfermedadesBajoVigilancia;
    
 
    public static void main(String[] args) {
@@ -163,14 +165,14 @@ public class Principal extends JFrame {
       });
       menuAdmin.add(itemAgregarVacuna);
 
-      itemDefinirNumCitas = new JMenuItem("Modificar Mï¿½dico");
+      itemDefinirNumCitas = new JMenuItem("Modificar Médico");
       itemDefinirNumCitas.addActionListener(e -> {
           if (usuarioLogueado instanceof Administrador) {
               new ModificarMedico(this).setVisible(true);
           } else {
               JOptionPane.showMessageDialog(
                   this,
-                  "Solo un mï¿½dico puede modificar el nï¿½mero de citas.",
+                  "Solo un médico puede modificar el número de citas.",
                   "Acceso denegado",
                   JOptionPane.WARNING_MESSAGE
               );
@@ -206,37 +208,12 @@ public class Principal extends JFrame {
       
       itemModificarCita = new JMenuItem("Modificar Cita");
       itemModificarCita.setEnabled(false);
-      itemModificarCita.addActionListener(e -> {
-          if (usuarioLogueado instanceof Secretaria) {
-              new ModificarCita(this, usuarioLogueado).setVisible(true);  // CORRECCIÃ“N
-          } else {
-              JOptionPane.showMessageDialog(
-                  Principal.this,
-                  "Solo las secretarias pueden modificar citas.",
-                  "Acceso denegado",
-                  JOptionPane.WARNING_MESSAGE
-              );
-          }
-      });
       menuCitas.add(itemModificarCita);
       
       itemEliminarCita = new JMenuItem("Eliminar Cita");
       itemEliminarCita.setEnabled(false);
-      itemEliminarCita.addActionListener(e -> {
-          if (usuarioLogueado instanceof Secretaria || usuarioLogueado instanceof Administrador) {
-              new EliminarCita(this, usuarioLogueado).setVisible(true);
-          } else {
-              JOptionPane.showMessageDialog(
-                  Principal.this,
-                  "Solo secretarias y administradores pueden eliminar citas.",
-                  "Acceso denegado",
-                  JOptionPane.WARNING_MESSAGE
-              );
-          }
-      });
       menuCitas.add(itemEliminarCita);
-      
-      
+
       menuConsulta = new JMenu("Consultas");
       menuConsulta.setFont(new Font("Segoe UI", Font.PLAIN, 14));
       menuBar.add(menuConsulta);
@@ -272,7 +249,7 @@ public class Principal extends JFrame {
       });
       menuArchivos.add(itemGuardarArchivos);
 
-      itemRespaldo = new JMenuItem("Hacer Respaldo");
+      itemRespaldo = new JMenuItem("Respaldo");
       itemRespaldo.addActionListener(new ActionListener() {
 
   	   public void actionPerformed(ActionEvent e) {
@@ -320,8 +297,8 @@ public class Principal extends JFrame {
   	         ioe.printStackTrace();
   	         JOptionPane.showMessageDialog(
   	            Principal.this,
-  	            "Error en la comunicaciï¿½n con el servidor.",
-  	            "Error de conexiï¿½n",
+  	            "Error en la comunicación con el servidor.",
+  	            "Error de conexión",
   	            JOptionPane.ERROR_MESSAGE
   	         );
   	      } finally {
@@ -332,6 +309,12 @@ public class Principal extends JFrame {
   	   }
   	});
       menuArchivos.add(itemRespaldo);
+      
+      itemReporte = new JMenuItem("Hacer reporte");
+      menuArchivos.add(itemReporte);
+      
+      itemListEnfermedadesBajoVigilancia = new JMenuItem("Reporte de Enferm. Bajo Vili.");
+      menuArchivos.add(itemListEnfermedadesBajoVigilancia);
 
    }
 
@@ -504,18 +487,18 @@ public class Principal extends JFrame {
    private String obtenerTextoUsuario() {
 
       if (usuarioLogueado == null) {
-         return "Sesiï¿½n sin usuario";
+         return "Sesión sin usuario";
       }
 
       if (usuarioLogueado instanceof Administrador) {
          return "Administrador: " + ((Administrador) usuarioLogueado).getUsuario();
       } else if (usuarioLogueado instanceof Medico) {
-         return "Mï¿½dico: " + ((Medico) usuarioLogueado).getNombre();
+         return "Médico: " + ((Medico) usuarioLogueado).getNombre();
       } else if (usuarioLogueado instanceof Secretaria) {
          return "Secretaria: " + ((Secretaria) usuarioLogueado).getNombre();
       }
 
-      return "Sesiï¿½n activa";
+      return "Sesión activa";
    }
 
    private void configurarPermisos() {
@@ -546,8 +529,6 @@ public class Principal extends JFrame {
          
       } else if (usuarioLogueado instanceof Secretaria) {
          itemHacerCita.setEnabled(true);
-         itemModificarCita.setEnabled(true); 
-         itemEliminarCita.setEnabled(true);
       } else if (usuarioLogueado instanceof Medico) {
          itemHacerCita.setEnabled(false);
       }
