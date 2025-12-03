@@ -300,7 +300,7 @@ public class ModificarCita extends JDialog {
 
         JComboBox<Medico> cmbMedicos = new JComboBox<>();
         for (Medico medico : Hospital.getInstancia().getMisMedicos()) {
-            if (!medico.getInhabilitado()) {
+            if (!medico.getDisponibilidad()) {
                 cmbMedicos.addItem(medico);
             }
         }

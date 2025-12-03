@@ -158,7 +158,7 @@ public class ModificarMedico extends JDialog {
 
             for (Medico m : listaMedicos) {
                if (m.getCedula().equals(cedula)) {
-                  if (m.getInhabilitado()) {
+                  if (!m.getDisponibilidad()) {
                      btnDesabilitar.setText("Habilitar");
                   } else {
                      btnDesabilitar.setText("Inhabilitar");
@@ -184,9 +184,6 @@ public class ModificarMedico extends JDialog {
       JButton btnCerrar = new JButton("Cerrar");
       btnCerrar.setFont(new Font("Segoe UI", Font.PLAIN, 13));
       btnCerrar.addActionListener(e -> dispose());
-      
-      btnDesabilitar = new JButton("Inhabilitar");
-      panelBotones.add(btnDesabilitar);
 
 
       btnDesabilitar = new JButton("Inhabilitar");
@@ -223,7 +220,7 @@ public class ModificarMedico extends JDialog {
             }
 
             // 🔁 Si YA está INHABILITADO → ahora lo habilitamos
-            if (medicoSeleccionado.getInhabilitado()) {
+            if (!medicoSeleccionado.getDisponibilidad()) {
                medicoSeleccionado.habilitar();
 
                Hospital.getInstancia().guardarDatos();
@@ -256,7 +253,7 @@ public class ModificarMedico extends JDialog {
                JOptionPane.showMessageDialog(ModificarMedico.this,
                      "No se puede inhabilitar al Dr. " + medicoSeleccionado.getApellido() +
                      ". Tiene " + pendientes + " cita(s) pendiente(s).",
-                     "Acción no permitida",
+                     "Accion no permitida",
                      JOptionPane.ERROR_MESSAGE);
                return;
             }
@@ -489,7 +486,7 @@ public class ModificarMedico extends JDialog {
                }
             }
 
-            if (med != null && med.getInhabilitado()) {
+            if (med != null && !med.getDisponibilidad()) {
                // Fila sombreada si está inhabilitado
                comp.setBackground(new java.awt.Color(220, 220, 220));
                comp.setForeground(java.awt.Color.DARK_GRAY);

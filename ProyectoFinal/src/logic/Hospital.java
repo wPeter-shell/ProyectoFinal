@@ -2,8 +2,11 @@ package logic;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.PrintWriter;
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -24,7 +27,7 @@ public class Hospital implements Serializable {
 	private Hospital() {
         misPacientes = new ArrayList<>();
         misMedicos = new ArrayList<>();
-        secretaria = null;   // Se le asigna despues
+        secretaria = null;
         misCitas = new ArrayList<>();
         controlVacunas = new ArrayList<>();
         misEnfermedades = new ArrayList<>();
@@ -279,5 +282,82 @@ public class Hospital implements Serializable {
 		}
 	}
 	
+	
+	public ArrayList<String> getResumenEnfermedadesVigiladas() {
+		
+	   ArrayList<String> resumen = new ArrayList<String>();
+
+	   for (Enfermedad enfermedad : enfermedadesVigiladas) {
+
+	      int cantPacientes = 0;
+
+	      for (Paciente paciente : misPacientes) {
+
+	         if (paciente != null && paciente.getHistorial() != null) {
+
+	            boolean pacienteTieneEsaEnfermedad = false;
+	            HistorialClinico historial = paciente.getHistorial();
+	            ArrayList<Consulta> consultas = historial.getMisConsultas();
+
+	            for (Consulta consulta : consultas) {
+
+	               if (consulta != null && consulta.getDatos() != null) {
+
+	                  DatosConsulta datos = consulta.getDatos();
+	                  Enfermedad diag = datos.getDiagnostico();
+
+	                  if (!pacienteTieneEsaEnfermedad
+	                        && diag != null
+	                        && diag.getNombre() != null
+	                        && enfermedad.getNombre() != null
+	                        && diag.getNombre().equalsIgnoreCase(enfermedad.getNombre())) {
+
+	                     pacienteTieneEsaEnfermedad = true;
+	                  }
+	               }
+	            }
+
+	            if (pacienteTieneEsaEnfermedad) {
+	               cantPacientes++;
+	            }
+	         }
+	      }
+
+	      String linea = enfermedad.getNombre()
+	            + " - Pacientes en vigilancia: "
+	            + cantPacientes;
+
+	      resumen.add(linea);
+	   }
+
+	   return resumen;
+	}
+
+	
+	
+	public void generarArchivoEnfermedadesVigiladas(String nombreArchivo) {
+	   ArrayList<String> resumen = getResumenEnfermedadesVigiladas();
+
+	   PrintWriter writer = null;
+
+	   try {
+	      writer = new PrintWriter(new FileWriter(nombreArchivo));
+
+	      writer.println("REPORTE DE ENFERMEDADES BAJO VIGILANCIA");
+	      writer.println("=======================================");
+	      writer.println();
+
+	      for (String linea : resumen) {
+	         writer.println(linea);
+	      }
+
+	   } catch (IOException e) {
+	      e.printStackTrace();
+	   } finally {
+	      if (writer != null) {
+	         writer.close();
+	      }
+	   }
+	}
 	
 }

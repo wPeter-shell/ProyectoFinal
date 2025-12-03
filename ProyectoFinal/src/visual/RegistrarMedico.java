@@ -284,7 +284,8 @@ public class RegistrarMedico extends JDialog {
                "Nombre: " + nombre + " " + apellido + "\n" +
                "Especialidad: " + especialidad + "\n" +
                "Cédula: " + cedula + "\n" +
-               "Usuario: " + nuevoMedico.getUsuario(),
+               "Usuario: " + nuevoMedico.getUsuario()+ "\n" +
+               "Password: " + nuevoMedico.getPassword(),
                "Registro Exitoso",
                JOptionPane.INFORMATION_MESSAGE);
 

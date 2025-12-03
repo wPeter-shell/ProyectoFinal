@@ -154,11 +154,9 @@ public class AgregarEnfermedad extends JDialog {
 
          boolean bajoVigilancia = chkVigilancia.isSelected();
 
-         // Crear enfermedad (ajusta el constructor si tu clase tiene más parámetros)
-         Enfermedad nuevaEnfermedad = new Enfermedad(nombre, bajoVigilancia);
-
-         Administrador admin = Hospital.getInstancia().getAdministrador();
-         admin.agregarEnfermedad(nuevaEnfermedad);
+        	 Enfermedad nuevaEnfermedad = new Enfermedad(nombre, bajoVigilancia);
+	         Administrador admin = Hospital.getInstancia().getAdministrador();
+	         admin.agregarEnfermedad(nuevaEnfermedad);
 
          // Si está marcada como bajo vigilancia, añadirla a la lista correspondiente
          if (bajoVigilancia) {

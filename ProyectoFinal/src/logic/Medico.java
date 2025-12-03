@@ -34,17 +34,17 @@ public class Medico extends Persona implements Serializable {
 		return password;
 	}
 	
-	public boolean getInhabilitado() {
+	public boolean getDisponibilidad() {
 	   return disponible;
 	}
 
 	// 👉 NUEVOS MÉTODOS CLAROS
 	public void inhabilitar() {
-	   this.disponible = true;
+	   this.disponible = false;
 	}
 
 	public void habilitar() {
-	   this.disponible = false;
+	   this.disponible = true;
 	}
 	
 

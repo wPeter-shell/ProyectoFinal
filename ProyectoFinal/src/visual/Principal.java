@@ -311,9 +311,20 @@ public class Principal extends JFrame {
       menuArchivos.add(itemRespaldo);
       
       itemReporte = new JMenuItem("Hacer reporte");
+      itemReporte.addActionListener(e -> new Reportes().setVisible(true));
+
       menuArchivos.add(itemReporte);
       
       itemListEnfermedadesBajoVigilancia = new JMenuItem("Reporte de Enferm. Bajo Vili.");
+      itemListEnfermedadesBajoVigilancia.addActionListener(new ActionListener() {
+    	  public void actionPerformed(ActionEvent e) {
+    	      Hospital.getInstancia().generarArchivoEnfermedadesVigiladas("enfermedades_vigiladas.txt");
+    	      JOptionPane.showMessageDialog(null,
+    	            "Reporte generado como 'enfermedades_vigiladas.txt' en la carpeta del proyecto.",
+    	            "Reporte generado",
+    	            JOptionPane.INFORMATION_MESSAGE);
+    	   }
+      });
       menuArchivos.add(itemListEnfermedadesBajoVigilancia);
 
    }
@@ -454,7 +465,7 @@ public class Principal extends JFrame {
       Hospital h = Hospital.getInstancia();
       
       for(Medico m : h.getMisMedicos()) {
-    	  if( !m.getInhabilitado()) {
+    	  if( m.getDisponibilidad()) {
     		  cantMeds++;
     	  }
       }
@@ -539,4 +550,6 @@ public class Principal extends JFrame {
          itemHacerCita.setEnabled(false);
       }
    }
+
+   
 }

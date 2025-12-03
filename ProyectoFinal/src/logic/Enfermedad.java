@@ -41,7 +41,7 @@ public class Enfermedad implements Serializable {
 	
 	@Override
 	public String toString() {
-	   return nombre;   // o como se llame tu atributo de nombre
+	   return nombre;
 	}
 
 	
