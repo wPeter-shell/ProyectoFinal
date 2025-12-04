@@ -55,6 +55,7 @@ public class Principal extends JFrame {
    private JMenuItem itemListarPaciente;
    private JMenuItem itemGuardarArchivos;
    private JMenuItem itemRespaldo;
+   private JMenuItem itemListarMedicos;
    private JMenu menuCitas;
    private JMenu menuAdmin;
    private JMenu menuSistema;
@@ -228,9 +229,18 @@ public class Principal extends JFrame {
       menuListar.setFont(new Font("Segoe UI", Font.PLAIN, 14));
       menuBar.add(menuListar);
       
-      
       itemListarPaciente = new JMenuItem("ListarPacientes");
       menuListar.add(itemListarPaciente);
+      
+      JMenuItem itemListarMedicos = new JMenuItem("Listar Médicos");
+      menuListar.add(itemListarMedicos);
+
+      itemListarMedicos.addActionListener(new ActionListener() {
+          public void actionPerformed(ActionEvent e) {
+              new ListarMedicos(Hospital.getInstancia()).setVisible(true);
+          }
+      });
+
   
       itemListarPaciente.addActionListener(new ActionListener() {
           public void actionPerformed(ActionEvent e) {
@@ -536,6 +546,7 @@ public class Principal extends JFrame {
       itemReporte.setEnabled(false);
       itemModificarCita.setEnabled(false);
       itemListEnfermedadesBajoVigilancia.setEnabled(false);
+      itemListarMedicos.setEnabled(false);
       
       if (usuarioLogueado instanceof Administrador) {
          itemRegistrarMedico.setEnabled(true);
@@ -550,12 +561,14 @@ public class Principal extends JFrame {
          itemListEnfermedadesBajoVigilancia.setEnabled(true);
          itemGuardarArchivos.setEnabled(true);
          itemRespaldo.setEnabled(true);
+         itemListarMedicos.setEnabled(true);
          
       } else if (usuarioLogueado instanceof Secretaria) {
     	 itemEliminarCita.setEnabled(true);
          itemHacerCita.setEnabled(true);
          itemModificarCita.setEnabled(true);
          itemListarPaciente.setEnabled(true);
+         itemListarMedicos.setEnabled(true);
          
       } else if (usuarioLogueado instanceof Medico) {
          itemAtenderConsultas.setEnabled(true);
