@@ -28,10 +28,7 @@ import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
 import logic.Medico;
-import logic.Paciente;
 import logic.Administrador;
-import logic.Enfermedad;
-import logic.Vacuna;
 import logic.Secretaria;
 import logic.Hospital;
 import java.awt.event.ActionListener;
@@ -169,14 +166,14 @@ public class Principal extends JFrame {
       });
       menuAdmin.add(itemAgregarVacuna);
 
-      itemDefinirNumCitas = new JMenuItem("Modificar Médico");
+      itemDefinirNumCitas = new JMenuItem("Modificar Mï¿½dico");
       itemDefinirNumCitas.addActionListener(e -> {
           if (usuarioLogueado instanceof Administrador) {
               new ModificarMedico(this).setVisible(true);
           } else {
               JOptionPane.showMessageDialog(
                   this,
-                  "Solo un médico puede modificar el número de citas.",
+                  "Solo un mï¿½dico puede modificar el nï¿½mero de citas.",
                   "Acceso denegado",
                   JOptionPane.WARNING_MESSAGE
               );
@@ -211,11 +208,15 @@ public class Principal extends JFrame {
       menuCitas.add(itemHacerCita);
       
       itemModificarCita = new JMenuItem("Modificar Cita");
-      itemModificarCita.setEnabled(false);
+      itemModificarCita.addActionListener(e -> {
+          new ModificarCita(this, usuarioLogueado).setVisible(true);
+      });
       menuCitas.add(itemModificarCita);
-      
+
       itemEliminarCita = new JMenuItem("Eliminar Cita");
-      itemEliminarCita.setEnabled(false);
+      itemEliminarCita.addActionListener(e -> {
+          new EliminarCita(this, usuarioLogueado).setVisible(true);
+      });
       menuCitas.add(itemEliminarCita);
 
       menuConsulta = new JMenu("Consultas");
@@ -241,7 +242,7 @@ public class Principal extends JFrame {
           }
       });
       
-      itemListarMedicos = new JMenuItem("Listar Médicos");
+      itemListarMedicos = new JMenuItem("Listar Mï¿½dicos");
       menuListar.add(itemListarMedicos);
 
       itemListarMedicos.addActionListener(new ActionListener() {
@@ -335,8 +336,8 @@ public class Principal extends JFrame {
   	         ioe.printStackTrace();
   	         JOptionPane.showMessageDialog(
   	            Principal.this,
-  	            "Error en la comunicación con el servidor.",
-  	            "Error de conexión",
+  	            "Error en la comunicaciï¿½n con el servidor.",
+  	            "Error de conexiï¿½n",
   	            JOptionPane.ERROR_MESSAGE
   	         );
   	      } finally {
@@ -536,18 +537,18 @@ public class Principal extends JFrame {
    private String obtenerTextoUsuario() {
 
       if (usuarioLogueado == null) {
-         return "Sesión sin usuario";
+         return "Sesiï¿½n sin usuario";
       }
 
       if (usuarioLogueado instanceof Administrador) {
          return "Administrador: " + ((Administrador) usuarioLogueado).getUsuario();
       } else if (usuarioLogueado instanceof Medico) {
-         return "Médico: " + ((Medico) usuarioLogueado).getNombre();
+         return "Mï¿½dico: " + ((Medico) usuarioLogueado).getNombre();
       } else if (usuarioLogueado instanceof Secretaria) {
          return "Secretaria: " + ((Secretaria) usuarioLogueado).getNombre();
       }
 
-      return "Sesión activa";
+      return "Sesiï¿½n activa";
    }
 
    private void configurarPermisos() {
