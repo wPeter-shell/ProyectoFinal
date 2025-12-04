@@ -19,16 +19,6 @@ public class EliminarCita extends JDialog {
     private Principal principal;
     private Object usuarioLogueado;
 
-    public static void main(String[] args) {
-        try {
-            EliminarCita dialog = new EliminarCita(null, null);
-            dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-            dialog.setVisible(true);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
     public EliminarCita(Principal principal, Object usuarioLogueado) {
         this.principal = principal;
         this.usuarioLogueado = usuarioLogueado;
@@ -39,7 +29,6 @@ public class EliminarCita extends JDialog {
         setLocationRelativeTo(null);
         getContentPane().setLayout(new BorderLayout());
 
-        // ====== HEADER ======
         JPanel headerPanel = new JPanel();
         headerPanel.setBackground(new Color(0, 128, 128));
         headerPanel.setBorder(new EmptyBorder(12, 18, 12, 18));
@@ -51,7 +40,7 @@ public class EliminarCita extends JDialog {
         lblTitulo.setHorizontalAlignment(SwingConstants.LEFT);
         headerPanel.add(lblTitulo, BorderLayout.WEST);
 
-        JLabel lblSubtitulo = new JLabel("Seleccione una o mÃ¡s citas para eliminar");
+        JLabel lblSubtitulo = new JLabel("Seleccione una o más citas para eliminar");
         lblSubtitulo.setForeground(new Color(225, 240, 250));
         lblSubtitulo.setFont(new Font("Segoe UI", Font.PLAIN, 12));
         lblSubtitulo.setHorizontalAlignment(SwingConstants.LEFT);
@@ -64,8 +53,8 @@ public class EliminarCita extends JDialog {
         panelFiltro.setBackground(new Color(245, 247, 250));
         panelFiltro.setBorder(new EmptyBorder(10, 20, 10, 20));
 
-        // Filtro por cÃ©dula
-        JLabel lblFiltroCedula = new JLabel("CÃ©dula paciente:");
+        // Filtro por cédula
+        JLabel lblFiltroCedula = new JLabel("Cédula paciente:");
         lblFiltroCedula.setFont(new Font("Segoe UI", Font.PLAIN, 13));
         panelFiltro.add(lblFiltroCedula);
 
@@ -100,7 +89,7 @@ public class EliminarCita extends JDialog {
         getContentPane().add(panelFiltro, BorderLayout.NORTH);
 
         // ====== TABLA DE CITAS ======
-        String[] columnas = {"", "Paciente", "CÃ©dula", "MÃ©dico", "DÃ­a", "Estado"};
+        String[] columnas = {"", "Paciente", "Cédula", "Médico", "Día", "Estado"};
         modeloTabla = new DefaultTableModel(columnas, 0) {
             @Override
             public Class<?> getColumnClass(int columnIndex) {
@@ -124,16 +113,16 @@ public class EliminarCita extends JDialog {
         // Configurar ancho de columnas
         tablaCitas.getColumnModel().getColumn(0).setPreferredWidth(30); // Checkbox
         tablaCitas.getColumnModel().getColumn(1).setPreferredWidth(150); // Paciente
-        tablaCitas.getColumnModel().getColumn(2).setPreferredWidth(100); // CÃ©dula
-        tablaCitas.getColumnModel().getColumn(3).setPreferredWidth(180); // MÃ©dico
-        tablaCitas.getColumnModel().getColumn(4).setPreferredWidth(100); // DÃ­a
+        tablaCitas.getColumnModel().getColumn(2).setPreferredWidth(100); // Cédula
+        tablaCitas.getColumnModel().getColumn(3).setPreferredWidth(180); // Médico
+        tablaCitas.getColumnModel().getColumn(4).setPreferredWidth(100); // Día
         tablaCitas.getColumnModel().getColumn(5).setPreferredWidth(100); // Estado
 
         JScrollPane scrollPane = new JScrollPane(tablaCitas);
         scrollPane.setBorder(new EmptyBorder(10, 20, 10, 20));
         getContentPane().add(scrollPane, BorderLayout.CENTER);
 
-        // ====== PANEL DE INFORMACIÃ“N ======
+        // ====== PANEL DE INFORMACIÓN ======
         JPanel panelInfo = new JPanel(new FlowLayout(FlowLayout.LEFT));
         panelInfo.setBackground(new Color(255, 255, 200));
         panelInfo.setBorder(new EmptyBorder(5, 20, 5, 20));
@@ -150,13 +139,13 @@ public class EliminarCita extends JDialog {
         panelBotones.setBorder(new EmptyBorder(10, 18, 10, 18));
         panelBotones.setBackground(Color.WHITE);
 
-        // BotÃ³n para seleccionar/deseleccionar todos
+        // Botón para seleccionar/deseleccionar todos
         JButton btnSeleccionarTodos = new JButton("Seleccionar todas");
         btnSeleccionarTodos.setFont(new Font("Segoe UI", Font.PLAIN, 13));
         btnSeleccionarTodos.addActionListener(e -> seleccionarTodasCitas());
         panelBotones.add(btnSeleccionarTodos);
 
-        // BotÃ³n para eliminar seleccionadas
+        // Botón para eliminar seleccionadas
         JButton btnEliminar = new JButton("Eliminar Seleccionadas");
         btnEliminar.setFont(new Font("Segoe UI", Font.PLAIN, 13));
         btnEliminar.setForeground(Color.WHITE);
@@ -177,20 +166,35 @@ public class EliminarCita extends JDialog {
 
     private void cargarTodasLasCitas() {
         modeloTabla.setRowCount(0);
-        ArrayList<Cita> citas = Hospital.getInstancia().getMisCitas();
+        
+        // Obtener todas las citas del hospital
+        ArrayList<Cita> citas = obtenerTodasLasCitas();
 
         for (Cita cita : citas) {
             modeloTabla.addRow(new Object[]{
                 false, // Checkbox desmarcado por defecto
                 cita.getPaciente().getNombre() + " " + cita.getPaciente().getApellido(),
                 cita.getPaciente().getCedula(),
-                "Dr. " + cita.getMedico().getApellido() + " (" + cita.getMedico().getEspecialidad() + ")",
+                "Dr. " + cita.getMedico().getNombre() + " " + cita.getMedico().getApellido() + 
+                " (" + cita.getMedico().getEspecialidad() + ")",
                 cita.getDia(),
                 cita.getEstado()
             });
         }
         
         aplicarColoresPorEstado();
+    }
+
+    private ArrayList<Cita> obtenerTodasLasCitas() {
+        ArrayList<Cita> todasLasCitas = new ArrayList<>();
+        Hospital hospital = Hospital.getInstancia();
+        
+        // Obtener citas de todos los médicos
+        for (Medico medico : hospital.getMisMedicos()) {
+            todasLasCitas.addAll(medico.getMisCitas());
+        }
+        
+        return todasLasCitas;
     }
 
     private void aplicarColoresPorEstado() {
@@ -231,7 +235,7 @@ public class EliminarCita extends JDialog {
         String filtroEstado = (String) cmbFiltroEstado.getSelectedItem();
         
         modeloTabla.setRowCount(0);
-        ArrayList<Cita> citas = Hospital.getInstancia().getMisCitas();
+        ArrayList<Cita> citas = obtenerTodasLasCitas();
 
         for (Cita cita : citas) {
             boolean coincideCedula = filtroCedula.isEmpty() || 
@@ -245,7 +249,8 @@ public class EliminarCita extends JDialog {
                     false,
                     cita.getPaciente().getNombre() + " " + cita.getPaciente().getApellido(),
                     cita.getPaciente().getCedula(),
-                    "Dr. " + cita.getMedico().getApellido() + " (" + cita.getMedico().getEspecialidad() + ")",
+                    "Dr. " + cita.getMedico().getNombre() + " " + cita.getMedico().getApellido() + 
+                    " (" + cita.getMedico().getEspecialidad() + ")",
                     cita.getDia(),
                     cita.getEstado()
                 });
@@ -259,7 +264,7 @@ public class EliminarCita extends JDialog {
         int rowCount = modeloTabla.getRowCount();
         boolean allSelected = true;
         
-        // Verificar si todas estÃ¡n seleccionadas
+        // Verificar si todas están seleccionadas
         for (int i = 0; i < rowCount; i++) {
             if (!(Boolean) modeloTabla.getValueAt(i, 0)) {
                 allSelected = false;
@@ -267,7 +272,7 @@ public class EliminarCita extends JDialog {
             }
         }
         
-        // Invertir selecciÃ³n
+        // Invertir selección
         boolean newValue = !allSelected;
         for (int i = 0; i < rowCount; i++) {
             modeloTabla.setValueAt(newValue, i, 0);
@@ -280,33 +285,29 @@ public class EliminarCita extends JDialog {
         
         // Obtener citas seleccionadas
         for (int i = 0; i < modeloTabla.getRowCount(); i++) {
-            if ((Boolean) modeloTabla.getValueAt(i, 0)) { // Si el checkbox estÃ¡ marcado
+            if ((Boolean) modeloTabla.getValueAt(i, 0)) { // Si el checkbox está marcado
                 String cedula = (String) modeloTabla.getValueAt(i, 2);
                 String dia = (String) modeloTabla.getValueAt(i, 4);
                 String estado = (String) modeloTabla.getValueAt(i, 5);
                 
                 // Buscar la cita correspondiente
-                for (Cita cita : Hospital.getInstancia().getMisCitas()) {
-                    if (cita.getPaciente().getCedula().equals(cedula) &&
-                        cita.getDia().equals(dia) &&
-                        cita.getEstado().equalsIgnoreCase(estado)) {
-                        
-                        // Verificar permisos para eliminar citas atendidas
-                        if ("Atendida".equalsIgnoreCase(estado)) {
-                            if (!(usuarioLogueado instanceof Administrador)) {
-                                JOptionPane.showMessageDialog(this,
-                                    "No tiene permisos para eliminar citas ya atendidas.\n" +
-                                    "Solo el administrador puede eliminar citas atendidas.",
-                                    "Permiso denegado",
-                                    JOptionPane.WARNING_MESSAGE);
-                                return;
-                            }
+                Cita citaEncontrada = buscarCitaPorDatos(cedula, dia, estado);
+                
+                if (citaEncontrada != null) {
+                    // Verificar permisos para eliminar citas atendidas
+                    if ("Atendida".equalsIgnoreCase(citaEncontrada.getEstado())) {
+                        if (!(usuarioLogueado instanceof Administrador)) {
+                            JOptionPane.showMessageDialog(this,
+                                "No tiene permisos para eliminar citas ya atendidas.\n" +
+                                "Solo el administrador puede eliminar citas atendidas.",
+                                "Permiso denegado",
+                                JOptionPane.WARNING_MESSAGE);
+                            return;
                         }
-                        
-                        citasAEliminar.add(cita);
-                        indicesSeleccionados.add(i);
-                        break;
                     }
+                    
+                    citasAEliminar.add(citaEncontrada);
+                    indicesSeleccionados.add(i);
                 }
             }
         }
@@ -314,17 +315,17 @@ public class EliminarCita extends JDialog {
         if (citasAEliminar.isEmpty()) {
             JOptionPane.showMessageDialog(this,
                 "No ha seleccionado ninguna cita para eliminar.",
-                "Sin selecciÃ³n",
+                "Sin selección",
                 JOptionPane.WARNING_MESSAGE);
             return;
         }
         
-        // Mostrar confirmaciÃ³n
+        // Mostrar confirmación
         StringBuilder mensajeConfirmacion = new StringBuilder();
-        mensajeConfirmacion.append("Â¿EstÃ¡ seguro de que desea eliminar las siguientes citas?\n\n");
+        mensajeConfirmacion.append("¿Está seguro de que desea eliminar las siguientes citas?\n\n");
         
         for (Cita cita : citasAEliminar) {
-            mensajeConfirmacion.append("â€¢ ").append(cita.getPaciente().getNombre())
+            mensajeConfirmacion.append("• ").append(cita.getPaciente().getNombre())
                 .append(" ").append(cita.getPaciente().getApellido())
                 .append(" - Dr. ").append(cita.getMedico().getApellido())
                 .append(" (").append(cita.getDia()).append(") - ")
@@ -335,22 +336,37 @@ public class EliminarCita extends JDialog {
         
         int confirmacion = JOptionPane.showConfirmDialog(this,
             mensajeConfirmacion.toString(),
-            "Confirmar eliminaciÃ³n mÃºltiple",
+            "Confirmar eliminación múltiple",
             JOptionPane.YES_NO_OPTION,
             JOptionPane.WARNING_MESSAGE);
         
         if (confirmacion == JOptionPane.YES_OPTION) {
             try {
                 int eliminadasConExito = 0;
+                StringBuilder errores = new StringBuilder();
                 
                 for (Cita cita : citasAEliminar) {
-                    // Eliminar de la lista del mÃ©dico
-                    cita.getMedico().getMisCitas().remove(cita);
-                    
-                    // Eliminar de la lista general
-                    Hospital.getInstancia().getMisCitas().remove(cita);
-                    
-                    eliminadasConExito++;
+                    try {
+                        // 1. Eliminar de la lista del médico
+                        boolean eliminadoDeMedico = cita.getMedico().getMisCitas().remove(cita);
+                        
+                        if (eliminadoDeMedico) {
+                            eliminadasConExito++;
+                        } else {
+                            errores.append("• No se pudo eliminar la cita del médico: ")
+                                   .append(cita.getPaciente().getNombre())
+                                   .append(" - ")
+                                   .append(cita.getDia())
+                                   .append("\n");
+                        }
+                        
+                    } catch (Exception ex) {
+                        errores.append("• Error al eliminar cita de ")
+                               .append(cita.getPaciente().getNombre())
+                               .append(": ")
+                               .append(ex.getMessage())
+                               .append("\n");
+                    }
                 }
                 
                 // Guardar cambios
@@ -361,15 +377,27 @@ public class EliminarCita extends JDialog {
                     modeloTabla.removeRow(indicesSeleccionados.get(i));
                 }
                 
-                // Actualizar cards en Principal si estÃ¡ disponible
+                // Actualizar cards en Principal si está disponible
                 if (principal != null) {
                     principal.actualizarCards();
                 }
                 
-                JOptionPane.showMessageDialog(this,
-                    eliminadasConExito + " cita(s) eliminada(s) exitosamente.",
-                    "EliminaciÃ³n completada",
-                    JOptionPane.INFORMATION_MESSAGE);
+                // Mostrar resultados
+                StringBuilder mensajeResultado = new StringBuilder();
+                mensajeResultado.append(eliminadasConExito).append(" cita(s) eliminada(s) exitosamente.");
+                
+                if (errores.length() > 0) {
+                    mensajeResultado.append("\n\nErrores encontrados:\n").append(errores.toString());
+                    JOptionPane.showMessageDialog(this,
+                        mensajeResultado.toString(),
+                        "Resultado de eliminación",
+                        JOptionPane.WARNING_MESSAGE);
+                } else {
+                    JOptionPane.showMessageDialog(this,
+                        mensajeResultado.toString(),
+                        "Eliminación completada",
+                        JOptionPane.INFORMATION_MESSAGE);
+                }
                 
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(this,
@@ -379,5 +407,20 @@ public class EliminarCita extends JDialog {
                 e.printStackTrace();
             }
         }
+    }
+
+    private Cita buscarCitaPorDatos(String cedulaPaciente, String dia, String estado) {
+        // Buscar en todos los médicos
+        for (Medico medico : Hospital.getInstancia().getMisMedicos()) {
+            for (Cita cita : medico.getMisCitas()) {
+                if (cita.getPaciente().getCedula().equals(cedulaPaciente) &&
+                    cita.getDia().equals(dia) &&
+                    cita.getEstado().equalsIgnoreCase(estado)) {
+                    return cita;
+                }
+            }
+        }
+        
+        return null;
     }
 }
