@@ -52,7 +52,7 @@ public class Principal extends JFrame {
    private JMenuItem itemHacerCita;
    private JMenuItem menuListar;
    private JMenuItem menuArchivos;
-   private JMenuItem itemListarPacientes;
+   private JMenuItem itemListarPaciente;
    private JMenuItem itemGuardarArchivos;
    private JMenuItem itemRespaldo;
    private JMenu menuCitas;
@@ -228,9 +228,15 @@ public class Principal extends JFrame {
       menuListar.setFont(new Font("Segoe UI", Font.PLAIN, 14));
       menuBar.add(menuListar);
       
-      itemListarPacientes = new JMenuItem("ListarPacientes");
-      menuListar.add(itemListarPacientes);
       
+      itemListarPaciente = new JMenuItem("ListarPacientes");
+      menuListar.add(itemListarPaciente);
+  
+      itemListarPaciente.addActionListener(new ActionListener() {
+          public void actionPerformed(ActionEvent e) {
+              new ListarPaciente(Hospital.getInstancia()).setVisible(true);
+          }
+      });
 
       menuConsulta.add(itemAtenderConsultas);
 
@@ -523,11 +529,12 @@ public class Principal extends JFrame {
       itemAtenderConsultas.setEnabled(false);
       itemEliminarCita.setEnabled(false);
       itemGuardarArchivos.setEnabled(false);
-      itemListarPacientes.setEnabled(false);
+      itemListarPaciente.setEnabled(false);
       itemRespaldo.setEnabled(false);
       itemAgregarEspecialidad.setEnabled(false);
       itemVerCuentas.setEnabled(false);
       itemReporte.setEnabled(false);
+      itemModificarCita.setEnabled(false);
       itemListEnfermedadesBajoVigilancia.setEnabled(false);
       
       if (usuarioLogueado instanceof Administrador) {
@@ -536,7 +543,7 @@ public class Principal extends JFrame {
          itemAgregarEnfermedad.setEnabled(true);
          itemAgregarVacuna.setEnabled(true);
          itemDefinirNumCitas.setEnabled(true);
-         itemListarPacientes.setEnabled(true);
+         itemListarPaciente.setEnabled(true);
          itemAgregarEspecialidad.setEnabled(true);
          itemVerCuentas.setEnabled(true);
          itemReporte.setEnabled(true);
@@ -545,9 +552,14 @@ public class Principal extends JFrame {
          itemRespaldo.setEnabled(true);
          
       } else if (usuarioLogueado instanceof Secretaria) {
+    	 itemEliminarCita.setEnabled(true);
          itemHacerCita.setEnabled(true);
+         itemModificarCita.setEnabled(true);
+         itemListarPaciente.setEnabled(true);
+         
       } else if (usuarioLogueado instanceof Medico) {
-         itemHacerCita.setEnabled(false);
+         itemAtenderConsultas.setEnabled(true);
+         itemListarPaciente.setEnabled(true);
       }
    }
 
