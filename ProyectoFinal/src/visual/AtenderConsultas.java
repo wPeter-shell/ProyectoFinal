@@ -37,7 +37,6 @@ public class AtenderConsultas extends JFrame {
         lblTitulo.setBorder(new EmptyBorder(10, 10, 10, 10));
         contentPane.add(lblTitulo, BorderLayout.NORTH);
 
-        // Tabla
         String[] columnas = {"Paciente", "Cédula", "Fecha", "Estado"};
         modeloTabla = new DefaultTableModel(columnas, 0) {
             public boolean isCellEditable(int row, int column) { return false; }
@@ -52,7 +51,6 @@ public class AtenderConsultas extends JFrame {
         JScrollPane scroll = new JScrollPane(tablaCitas);
         contentPane.add(scroll, BorderLayout.CENTER);
 
-        // Botón atender
         JButton btnAtender = new JButton("Atender Consulta");
         btnAtender.setFont(new Font("Segoe UI", Font.PLAIN, 16));
         btnAtender.setBackground(new Color(0, 128, 128));
@@ -62,7 +60,6 @@ public class AtenderConsultas extends JFrame {
         contentPane.add(btnAtender, BorderLayout.SOUTH);
     }
 
-    // Carga las citas pendientes del médico
     private void cargarCitasPendientes() {
         modeloTabla.setRowCount(0);
 
@@ -79,7 +76,6 @@ public class AtenderConsultas extends JFrame {
         }
     }
 
-    // Obtiene la cita seleccionada
     private Cita getCitaSeleccionada() {
         int fila = tablaCitas.getSelectedRow();
         if (fila == -1) {
@@ -99,7 +95,6 @@ public class AtenderConsultas extends JFrame {
         return null;
     }
 
-    // Abre formulario para atender consulta
     private void abrirFormularioConsulta() {
         Cita cita = getCitaSeleccionada();
         if (cita == null) {
@@ -110,7 +105,6 @@ public class AtenderConsultas extends JFrame {
         new FormularioAtencion(cita, this).setVisible(true);
     }
 
-    // Recargar tabla cuando se cierra el formulario
     public void refrescar() {
         cargarCitasPendientes();
     }

@@ -33,9 +33,6 @@ public class ListarCitas extends JFrame {
         setLayout(new BorderLayout());
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
-        // ----------------------------
-        // PANEL SUPERIOR (FILTROS)
-        // ----------------------------
         JPanel panelTop = new JPanel();
         panelTop.setLayout(null);
         panelTop.setPreferredSize(new java.awt.Dimension(950, 120));
@@ -66,9 +63,6 @@ public class ListarCitas extends JFrame {
 
         add(panelTop, BorderLayout.NORTH);
 
-        // ----------------------------
-        // TABLA
-        // ----------------------------
         modelo = new DefaultTableModel(
                 new Object[]{
                         "Paciente", "Cédula", "Médico", "Especialidad",
@@ -83,9 +77,6 @@ public class ListarCitas extends JFrame {
 
         add(new JScrollPane(tabla), BorderLayout.CENTER);
 
-        // ----------------------------
-        // EVENTOS DE BOTONES
-        // ----------------------------
         btnBuscar.addActionListener(e -> cargarCitasFiltradas());
 
         btnLimpiar.addActionListener(e -> {
@@ -94,13 +85,8 @@ public class ListarCitas extends JFrame {
             cargarCitas();
         });
 
-        // CARGA INICIAL
         cargarCitas();
     }
-
-    // --------------------------------------------------------------------
-    // MÉTODOS PRINCIPALES
-    // --------------------------------------------------------------------
 
     private void cargarCitas() {
         modelo.setRowCount(0);
@@ -139,12 +125,10 @@ public class ListarCitas extends JFrame {
             String nombrePaciente = c.getPaciente().getNombre() + " " + c.getPaciente().getApellido();
             String nombreMedico = c.getMedico().getNombre() + " " + c.getMedico().getApellido();
 
-            // FILTRO PACIENTE
             if (!pacFiltro.isEmpty() && !nombrePaciente.toLowerCase().contains(pacFiltro)) {
                 coincide = false;
             }
 
-            // FILTRO MEDICO
             if (!medFiltro.isEmpty() && !nombreMedico.toLowerCase().contains(medFiltro)) {
                 coincide = false;
             }

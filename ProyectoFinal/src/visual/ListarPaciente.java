@@ -115,24 +115,22 @@ public class ListarPaciente extends JFrame {
         }
     }
 
-    /**
-     * SOLO pacientes que tengan al menos UNA cita registrada
-     */
     private ArrayList<Paciente> obtenerPacientesConCita() {
         ArrayList<Paciente> lista = new ArrayList<>();
 
         for (Cita c : hospital.getMisCitas()) {
             Paciente p = c.getPaciente();
-            if (!lista.contains(p)) {
-                lista.add(p);
+            if(c.getEstado().equalsIgnoreCase("cancelada")) {
+            	
+            
+	            if (!lista.contains(p)) {
+	                lista.add(p);
+	            }
             }
         }
         return lista;
     }
 
-    /**
-     * Carga completa sin filtros
-     */
     private void cargarPacientes() {
         modelo.setRowCount(0);
         ArrayList<Paciente> lista = obtenerPacientesConCita();
@@ -157,9 +155,6 @@ public class ListarPaciente extends JFrame {
         }
     }
 
-    /**
-     * Carga con filtros
-     */
     private void cargarPacientesFiltrados() {
         modelo.setRowCount(0);
 

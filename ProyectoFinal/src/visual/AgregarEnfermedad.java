@@ -42,9 +42,7 @@ public class AgregarEnfermedad extends JDialog {
       }
    }
 
-   /**
-    * Create the dialog.
-    */
+
    public AgregarEnfermedad(Principal principal) {
       this.principal = principal;
 
@@ -54,7 +52,6 @@ public class AgregarEnfermedad extends JDialog {
       setLocationRelativeTo(null);
       getContentPane().setLayout(new BorderLayout(0, 0));
 
-      // ====== HEADER LINDO ARRIBA (igual estilo que AgregarVacuna) ======
       JPanel headerPanel = new JPanel();
       headerPanel.setBackground(new Color(0, 128, 128));
       headerPanel.setBorder(new EmptyBorder(12, 18, 12, 18));
@@ -73,7 +70,6 @@ public class AgregarEnfermedad extends JDialog {
       lblSubtitulo.setHorizontalAlignment(SwingConstants.LEFT);
       headerPanel.add(lblSubtitulo, BorderLayout.SOUTH);
 
-      // ====== PANEL CENTRAL ======
       contentPanel.setBackground(Color.WHITE);
       contentPanel.setBorder(new EmptyBorder(20, 30, 10, 30));
       getContentPane().add(contentPanel, BorderLayout.CENTER);
@@ -81,7 +77,6 @@ public class AgregarEnfermedad extends JDialog {
 
       Font labelFont = new Font("Segoe UI", Font.PLAIN, 13);
 
-      // Nombre
       JLabel lblNombre = new JLabel("Nombre de la enfermedad:");
       lblNombre.setFont(labelFont);
       contentPanel.add(lblNombre);
@@ -89,7 +84,6 @@ public class AgregarEnfermedad extends JDialog {
       txtNombre = new JTextField();
       contentPanel.add(txtNombre);
 
-      // Bajo vigilancia
       JLabel lblVigilancia = new JLabel("Bajo vigilancia:");
       lblVigilancia.setFont(labelFont);
       contentPanel.add(lblVigilancia);
@@ -99,7 +93,6 @@ public class AgregarEnfermedad extends JDialog {
       chkVigilancia.setFont(new Font("Segoe UI", Font.PLAIN, 12));
       contentPanel.add(chkVigilancia);
 
-      // ====== PANEL DE BOTONES ======
       JPanel buttonPane = new JPanel();
       buttonPane.setBorder(new EmptyBorder(10, 10, 10, 10));
       buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT, 10, 5));
@@ -125,14 +118,10 @@ public class AgregarEnfermedad extends JDialog {
       buttonPane.add(cancelButton);
    }
 
-   /**
-    * Método para agregar una enfermedad al sistema
-    */
    private void agregarEnfermedad() {
       try {
          String nombre = txtNombre.getText().trim();
 
-         // Validar campo obligatorio
          if (nombre.isEmpty()) {
             JOptionPane.showMessageDialog(this,
                   "El nombre de la enfermedad es obligatorio.",
@@ -141,7 +130,6 @@ public class AgregarEnfermedad extends JDialog {
             return;
          }
 
-         // Validar que no exista una enfermedad con el mismo nombre
          for (Enfermedad enfermedadExistente : Hospital.getInstancia().getMisEnfermedades()) {
             if (enfermedadExistente.getNombre().equalsIgnoreCase(nombre)) {
                JOptionPane.showMessageDialog(this,
@@ -158,15 +146,12 @@ public class AgregarEnfermedad extends JDialog {
 	         Administrador admin = Hospital.getInstancia().getAdministrador();
 	         admin.agregarEnfermedad(nuevaEnfermedad);
 
-         // Si está marcada como bajo vigilancia, añadirla a la lista correspondiente
          if (bajoVigilancia) {
             admin.marcarComoVigilada(nuevaEnfermedad);
          }
 
-         // Guardar cambios en archivo
          Hospital.getInstancia().guardarDatos();
 
-         // Actualizar cards en Principal
          if (principal != null) {
             principal.actualizarCards();
          }
@@ -192,9 +177,6 @@ public class AgregarEnfermedad extends JDialog {
       }
    }
 
-   /**
-    * Método para limpiar todos los campos del formulario
-    */
    private void limpiarCampos() {
       txtNombre.setText("");
       chkVigilancia.setSelected(false);

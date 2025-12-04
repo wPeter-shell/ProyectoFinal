@@ -86,7 +86,7 @@ public class ListarEnfermedades extends JFrame {
                 String estado = table.getValueAt(row, 1).toString();
 
                 if (estado.equals("Sí")) {
-                    c.setBackground(new Color(255, 230, 230));  // light red
+                    c.setBackground(new Color(255, 230, 230));
                 } else {
                     c.setBackground(Color.WHITE);
                 }

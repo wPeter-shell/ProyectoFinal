@@ -45,5 +45,4 @@ public class Enfermedad implements Serializable {
 	}
 
 	
-	
 }

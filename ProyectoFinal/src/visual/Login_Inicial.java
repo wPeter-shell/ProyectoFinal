@@ -35,9 +35,6 @@ public class Login_Inicial extends JFrame {
    private JTextField txtUser;
    private JPasswordField fieldPassword;
 
-   /**
-    * Launch the application.
-    */
    public static void main(String[] args) {
       EventQueue.invokeLater(new Runnable() {
          public void run() {
@@ -51,9 +48,6 @@ public class Login_Inicial extends JFrame {
       });
    }
 
-   /**
-    * Create the frame.
-    */
    public Login_Inicial() {
       setResizable(false);
       setTitle("Log-In - Sistema Hospital");

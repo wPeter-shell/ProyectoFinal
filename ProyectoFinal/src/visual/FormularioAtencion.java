@@ -61,16 +61,13 @@ public class FormularioAtencion extends JFrame {
         txtTratamiento = crearTextArea();
         contentPane.add(crearPanelCampo("Tratamiento:", txtTratamiento));
 
-        // ================== MULTI-SELECCIÓN DE VACUNAS ==================
         cbVacunas = new JComboBox<Object>();
         cbVacunas.setRenderer(new CheckBoxComboRenderer());
         cbVacunas.setEditable(false);
         cbVacunas.setBorder(new LineBorder(Color.GRAY, 1));
 
-        // Placeholder SIN checkbox
         cbVacunas.addItem("Seleccione vacunas...");
 
-        // Items seleccionables (con checkbox)
         for (Vacuna v : Hospital.getInstancia().getControlVacunas()) {
             cbVacunas.addItem(new CheckableItem(v.getNombre()));
         }
@@ -78,7 +75,6 @@ public class FormularioAtencion extends JFrame {
         cbVacunas.addActionListener(e -> {
             Object selected = cbVacunas.getSelectedItem();
 
-            // IGNORAR EL PRIMER ELEMENTO (placeholder)
             if (!(selected instanceof CheckableItem)) {
                 return;
             }
@@ -91,7 +87,6 @@ public class FormularioAtencion extends JFrame {
         });
 
         contentPane.add(crearPanelCampo("Vacunas aplicadas:", cbVacunas));
-        // =================================================================
 
         JButton btnGuardar = new JButton("Guardar Consulta");
         btnGuardar.setBackground(new Color(0, 128, 128));
@@ -102,7 +97,6 @@ public class FormularioAtencion extends JFrame {
         contentPane.add(btnGuardar);
     }
 
-    // =================== MÉTODOS DE UI ===================
 
     private JTextField crearTextField() {
         JTextField t = new JTextField();
@@ -127,19 +121,17 @@ public class FormularioAtencion extends JFrame {
         return panel;
     }
 
-    // =================== MULTI SELECCIÓN ===================
 
     private void actualizarVacunasSeleccionadas() {
         vacunasSeleccionadas.clear();
 
-        for (int i = 1; i < cbVacunas.getItemCount(); i++) { // empezamos en 1 para saltar placeholder
+        for (int i = 1; i < cbVacunas.getItemCount(); i++) {
             Object element = cbVacunas.getItemAt(i);
 
             if (element instanceof CheckableItem) {
                 CheckableItem item = (CheckableItem) element;
 
                 if (item.isSelected()) {
-                    // Buscar vacuna real por nombre
                     for (Vacuna v : Hospital.getInstancia().getControlVacunas()) {
                         if (v.getNombre().equals(item.getLabel())) {
                             vacunasSeleccionadas.add(v);
@@ -167,7 +159,6 @@ public class FormularioAtencion extends JFrame {
         cbVacunas.setSelectedItem(texto);
     }
 
-    // =================== GUARDAR CONSULTA ===================
 
     private void guardarConsulta() {
 
@@ -204,34 +195,33 @@ public class FormularioAtencion extends JFrame {
     }
 }
 
-// =================== CLASES PARA MULTI-SELECCIÓN ===================
 
-class CheckableItem {
-    private String label;
-    private boolean selected;
-
-    public CheckableItem(String label) {
-        this.label = label;
-        this.selected = false;
-    }
-
-    public String getLabel() {
-        return label;
-    }
-
-    public boolean isSelected() {
-        return selected;
-    }
-
-    public void setSelected(boolean val) {
-        selected = val;
-    }
-
-    @Override
-    public String toString() {
-        return label;
-    }
-}
+	class CheckableItem {
+	    private String label;
+	    private boolean selected;
+	
+	    public CheckableItem(String label) {
+	        this.label = label;
+	        this.selected = false;
+	    }
+	
+	    public String getLabel() {
+	        return label;
+	    }
+	
+	    public boolean isSelected() {
+	        return selected;
+	    }
+	
+	    public void setSelected(boolean val) {
+	        selected = val;
+	    }
+	
+	    @Override
+	    public String toString() {
+	        return label;
+	    }
+	}
 
 class CheckBoxComboRenderer implements ListCellRenderer<Object> {
 
@@ -250,7 +240,7 @@ class CheckBoxComboRenderer implements ListCellRenderer<Object> {
             chk.setForeground(isSelected ? list.getSelectionForeground() : list.getForeground());
             return chk;
 
-        } else { // PLACEHOLDER SIN CHECKBOX
+        } else {
             JLabel lbl = new JLabel(value.toString());
             lbl.setOpaque(true);
             lbl.setBackground(isSelected ? list.getSelectionBackground() : list.getBackground());

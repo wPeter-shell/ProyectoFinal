@@ -107,10 +107,6 @@ public class ListarMedicos extends JFrame {
         cargarMedicos();
     }
 
-    /**
-     * Llena el combo de especialidades leyendo las especialidades
-     * de los médicos registrados en el hospital.
-     */
     private void cargarEspecialidadesDesdeMedicos() {
         Set<String> nombres = new LinkedHashSet<>();
 

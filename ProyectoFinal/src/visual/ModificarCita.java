@@ -22,7 +22,6 @@ public class ModificarCita extends JDialog {
         this.usuarioLogueado = usuarioLogueado;
         this.principal = principal;
         
-        // Verificar que el usuario sea secretaria
         if (!(usuarioLogueado instanceof Secretaria)) {
             JOptionPane.showMessageDialog(null,
                 "Solo las secretarias pueden modificar citas.",
@@ -38,7 +37,6 @@ public class ModificarCita extends JDialog {
         setLocationRelativeTo(null);
         getContentPane().setLayout(new BorderLayout());
 
-        // ====== HEADER ======
         JPanel headerPanel = new JPanel();
         headerPanel.setBackground(new Color(0, 128, 128));
         headerPanel.setBorder(new EmptyBorder(12, 18, 12, 18));
@@ -58,12 +56,11 @@ public class ModificarCita extends JDialog {
 
         getContentPane().add(headerPanel, BorderLayout.NORTH);
 
-        // ====== PANEL DE FILTRO ======
         JPanel panelFiltro = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 10));
         panelFiltro.setBackground(new Color(245, 247, 250));
         panelFiltro.setBorder(new EmptyBorder(10, 20, 10, 20));
 
-        JLabel lblFiltro = new JLabel("Filtrar por cédula paciente:");
+        JLabel lblFiltro = new JLabel("Filtrar por c�dula paciente:");
         lblFiltro.setFont(new Font("Segoe UI", Font.PLAIN, 13));
         panelFiltro.add(lblFiltro);
 
@@ -86,8 +83,7 @@ public class ModificarCita extends JDialog {
 
         getContentPane().add(panelFiltro, BorderLayout.NORTH);
 
-        // ====== TABLA DE CITAS ======
-        String[] columnas = {"Paciente", "Cédula", "Médico", "Día", "Estado"};
+        String[] columnas = {"Paciente", "C�dula", "M�dico", "D�a", "Estado"};
         modeloTabla = new DefaultTableModel(columnas, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -100,14 +96,12 @@ public class ModificarCita extends JDialog {
         tablaCitas.setFont(new Font("Segoe UI", Font.PLAIN, 13));
         tablaCitas.getTableHeader().setFont(new Font("Segoe UI Semibold", Font.PLAIN, 13));
         
-        // Configurar ancho de columnas
-        tablaCitas.getColumnModel().getColumn(0).setPreferredWidth(150); // Paciente
-        tablaCitas.getColumnModel().getColumn(1).setPreferredWidth(100); // Cédula
-        tablaCitas.getColumnModel().getColumn(2).setPreferredWidth(180); // Médico
-        tablaCitas.getColumnModel().getColumn(3).setPreferredWidth(100); // Día
-        tablaCitas.getColumnModel().getColumn(4).setPreferredWidth(100); // Estado
+        tablaCitas.getColumnModel().getColumn(0).setPreferredWidth(150);
+        tablaCitas.getColumnModel().getColumn(1).setPreferredWidth(100); 
+        tablaCitas.getColumnModel().getColumn(2).setPreferredWidth(180);
+        tablaCitas.getColumnModel().getColumn(3).setPreferredWidth(100); 
+        tablaCitas.getColumnModel().getColumn(4).setPreferredWidth(100); 
 
-        // Aplicar colores según estado
         tablaCitas.setDefaultRenderer(Object.class, new javax.swing.table.DefaultTableCellRenderer() {
             @Override
             public Component getTableCellRendererComponent(
@@ -121,13 +115,13 @@ public class ModificarCita extends JDialog {
                 Component comp = super.getTableCellRendererComponent(
                         table, value, isSelected, hasFocus, row, column);
                 
-                String estado = (String) table.getValueAt(row, 4); // Columna de estado
+                String estado = (String) table.getValueAt(row, 4); 
                 
                 if (!isSelected) {
                     if ("Pendiente".equalsIgnoreCase(estado)) {
-                        comp.setBackground(new Color(220, 230, 255)); // Azul claro para pendientes
+                        comp.setBackground(new Color(220, 230, 255));
                     } else if ("Confirmada".equalsIgnoreCase(estado)) {
-                        comp.setBackground(new Color(255, 255, 200)); // Amarillo claro para confirmadas
+                        comp.setBackground(new Color(255, 255, 200));
                     } else {
                         comp.setBackground(Color.WHITE);
                     }
@@ -137,7 +131,6 @@ public class ModificarCita extends JDialog {
             }
         });
 
-        // Doble clic para modificar
         tablaCitas.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -151,20 +144,18 @@ public class ModificarCita extends JDialog {
         scrollPane.setBorder(new EmptyBorder(10, 20, 10, 20));
         getContentPane().add(scrollPane, BorderLayout.CENTER);
 
-        // ====== PANEL DE INFORMACIÓN ======
         JPanel panelInfo = new JPanel(new FlowLayout(FlowLayout.LEFT));
         panelInfo.setBackground(new Color(220, 230, 255));
         panelInfo.setBorder(new EmptyBorder(5, 20, 5, 20));
         
         JLabel lblInfo = new JLabel("<html>Se muestran citas <b>Pendientes</b> y <b>Confirmadas</b>. " +
-                                  "Haga doble clic sobre una cita o use el botón para modificarla.</html>");
+                                  "Haga doble clic sobre una cita o use el bot�n para modificarla.</html>");
         lblInfo.setFont(new Font("Segoe UI", Font.PLAIN, 12));
         lblInfo.setForeground(new Color(0, 0, 139));
         panelInfo.add(lblInfo);
         
         getContentPane().add(panelInfo, BorderLayout.SOUTH);
 
-        // ====== PANEL DE BOTONES ======
         JPanel panelBotones = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 10));
         panelBotones.setBorder(new EmptyBorder(10, 18, 10, 18));
         panelBotones.setBackground(Color.WHITE);
@@ -183,18 +174,15 @@ public class ModificarCita extends JDialog {
 
         getContentPane().add(panelBotones, BorderLayout.SOUTH);
 
-        // Cargar citas iniciales
         cargarCitasModificables();
     }
 
     private void cargarCitasModificables() {
         modeloTabla.setRowCount(0);
         
-        // Obtener todas las citas del sistema
         ArrayList<Cita> todasLasCitas = obtenerTodasLasCitas();
 
         for (Cita cita : todasLasCitas) {
-            // Mostrar citas que se pueden modificar (Pendientes o Confirmadas)
             String estado = cita.getEstado();
             if ("Pendiente".equalsIgnoreCase(estado) || 
                 "Confirmada".equalsIgnoreCase(estado)) {
@@ -220,7 +208,6 @@ public class ModificarCita extends JDialog {
         ArrayList<Cita> todasLasCitas = new ArrayList<>();
         Hospital hospital = Hospital.getInstancia();
         
-        // Obtener citas de todos los médicos
         for (Medico medico : hospital.getMisMedicos()) {
             todasLasCitas.addAll(medico.getMisCitas());
         }
@@ -268,12 +255,11 @@ public class ModificarCita extends JDialog {
         if (filaSeleccionada == -1) {
             JOptionPane.showMessageDialog(this,
                 "Por favor, seleccione una cita de la tabla.",
-                "Selección requerida",
+                "Selecci�n requerida",
                 JOptionPane.WARNING_MESSAGE);
             return null;
         }
 
-        // Verificar si la fila es el mensaje "No hay citas"
         Object valor = tablaCitas.getValueAt(filaSeleccionada, 0);
         if (valor.toString().contains("No hay citas") || 
             valor.toString().contains("No se encontraron")) {
@@ -284,7 +270,6 @@ public class ModificarCita extends JDialog {
         String diaCita = (String) tablaCitas.getValueAt(filaSeleccionada, 3);
         String estadoCita = (String) tablaCitas.getValueAt(filaSeleccionada, 4);
 
-        // Buscar la cita específica
         return buscarCitaEspecifica(cedulaPaciente, diaCita, estadoCita);
     }
 
@@ -310,7 +295,7 @@ public class ModificarCita extends JDialog {
             citaSeleccionada.getPaciente().getApellido(), true);
         dialogModificar.setSize(500, 450);
         dialogModificar.setLocationRelativeTo(this);
-        dialogModificar.setLayout(new BorderLayout());
+        dialogModificar.getContentPane().setLayout(new BorderLayout());
 
         JPanel panelInfoCita = new JPanel(new GridLayout(5, 1, 5, 5));
         panelInfoCita.setBorder(new EmptyBorder(15, 20, 15, 20));
@@ -322,18 +307,18 @@ public class ModificarCita extends JDialog {
         lblPaciente.setFont(new Font("Segoe UI", Font.BOLD, 14));
         panelInfoCita.add(lblPaciente);
 
-        JLabel lblCedula = new JLabel("Cédula: " + citaSeleccionada.getPaciente().getCedula());
+        JLabel lblCedula = new JLabel("C�dula: " + citaSeleccionada.getPaciente().getCedula());
         lblCedula.setFont(new Font("Segoe UI", Font.PLAIN, 13));
         panelInfoCita.add(lblCedula);
 
-        JLabel lblMedicoActual = new JLabel("Médico actual: Dr. " + 
+        JLabel lblMedicoActual = new JLabel("M�dico actual: Dr. " + 
             citaSeleccionada.getMedico().getNombre() + " " + 
             citaSeleccionada.getMedico().getApellido() + " (" + 
             citaSeleccionada.getMedico().getEspecialidad() + ")");
         lblMedicoActual.setFont(new Font("Segoe UI", Font.PLAIN, 13));
         panelInfoCita.add(lblMedicoActual);
 
-        JLabel lblDiaActual = new JLabel("Día actual: " + citaSeleccionada.getDia());
+        JLabel lblDiaActual = new JLabel("D�a actual: " + citaSeleccionada.getDia());
         lblDiaActual.setFont(new Font("Segoe UI", Font.PLAIN, 13));
         panelInfoCita.add(lblDiaActual);
 
@@ -344,20 +329,17 @@ public class ModificarCita extends JDialog {
             "Confirmada".equals(citaSeleccionada.getEstado()) ? new Color(255, 140, 0) : Color.BLACK);
         panelInfoCita.add(lblEstadoActual);
 
-        dialogModificar.add(panelInfoCita, BorderLayout.NORTH);
+        dialogModificar.getContentPane().add(panelInfoCita, BorderLayout.NORTH);
 
-        // ====== PANEL DE MODIFICACIÓN ======
         JPanel panelModificacion = new JPanel(new GridLayout(3, 2, 15, 15));
         panelModificacion.setBorder(new EmptyBorder(20, 30, 20, 30));
         panelModificacion.setBackground(Color.WHITE);
 
-        // Médico
-        JLabel lblNuevoMedico = new JLabel("Nuevo médico:");
+        JLabel lblNuevoMedico = new JLabel("Nuevo m�dico:");
         lblNuevoMedico.setFont(new Font("Segoe UI", Font.PLAIN, 13));
         panelModificacion.add(lblNuevoMedico);
 
         JComboBox<Medico> cmbMedicos = new JComboBox<>();
-        // Configurar renderer personalizado para mostrar nombre del médico
         cmbMedicos.setRenderer(new DefaultListCellRenderer() {
             @Override
             public Component getListCellRendererComponent(JList<?> list, Object value, 
@@ -369,13 +351,13 @@ public class ModificarCita extends JDialog {
                     setText(medico.getNombre() + " " + medico.getApellido() + 
                            " - " + medico.getEspecialidad());
                 } else if (value == null) {
-                    setText("Seleccione un médico");
+                    setText("Seleccione un m�dico");
                 }
                 return this;
             }
         });
 
-        cmbMedicos.addItem(citaSeleccionada.getMedico()); // Agregar médico actual primero
+        cmbMedicos.addItem(citaSeleccionada.getMedico());
         for (Medico medico : Hospital.getInstancia().getMisMedicos()) {
             if (medico.getDisponibilidad() && !medico.equals(citaSeleccionada.getMedico())) {
                 cmbMedicos.addItem(medico);
@@ -385,33 +367,21 @@ public class ModificarCita extends JDialog {
         cmbMedicos.setSelectedItem(citaSeleccionada.getMedico());
         panelModificacion.add(cmbMedicos);
 
-        // Día
-        JLabel lblNuevoDia = new JLabel("Nuevo día:");
+        JLabel lblNuevoDia = new JLabel("Nuevo d�a:");
         lblNuevoDia.setFont(new Font("Segoe UI", Font.PLAIN, 13));
         panelModificacion.add(lblNuevoDia);
 
         JComboBox<String> cmbDias = new JComboBox<>(new String[]{
-            "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"
+            "Lunes", "Martes", "Mi�rcoles", "Jueves", "Viernes", "S�bado"
         });
         cmbDias.setFont(new Font("Segoe UI", Font.PLAIN, 13));
         cmbDias.setSelectedItem(citaSeleccionada.getDia());
         panelModificacion.add(cmbDias);
 
-        // Estado
-        JLabel lblNuevoEstado = new JLabel("Nuevo estado:");
-        lblNuevoEstado.setFont(new Font("Segoe UI", Font.PLAIN, 13));
-        panelModificacion.add(lblNuevoEstado);
+     
 
-        JComboBox<String> cmbEstado = new JComboBox<>(new String[]{
-            "Pendiente", "Confirmada", "Cancelada"
-        });
-        cmbEstado.setFont(new Font("Segoe UI", Font.PLAIN, 13));
-        cmbEstado.setSelectedItem(citaSeleccionada.getEstado());
-        panelModificacion.add(cmbEstado);
+        dialogModificar.getContentPane().add(panelModificacion, BorderLayout.CENTER);
 
-        dialogModificar.add(panelModificacion, BorderLayout.CENTER);
-
-        // ====== PANEL DE DISPONIBILIDAD ======
         JPanel panelDisponibilidad = new JPanel(new FlowLayout(FlowLayout.LEFT));
         panelDisponibilidad.setBorder(new EmptyBorder(5, 30, 5, 30));
         panelDisponibilidad.setBackground(new Color(240, 248, 255));
@@ -422,7 +392,6 @@ public class ModificarCita extends JDialog {
             (Medico) cmbMedicos.getSelectedItem(), 
             (String) cmbDias.getSelectedItem());
         
-        // Listeners para actualizar disponibilidad cuando cambien los combos
         cmbMedicos.addActionListener(e -> actualizarEtiquetaDisponibilidad(
             lblDisponibilidad, 
             (Medico) cmbMedicos.getSelectedItem(), 
@@ -434,9 +403,8 @@ public class ModificarCita extends JDialog {
             (String) cmbDias.getSelectedItem()));
         
         panelDisponibilidad.add(lblDisponibilidad);
-        dialogModificar.add(panelDisponibilidad, BorderLayout.SOUTH);
+        dialogModificar.getContentPane().add(panelDisponibilidad, BorderLayout.SOUTH);
 
-        // ====== PANEL DE BOTONES ======
         JPanel panelBotonesDialog = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 15));
         panelBotonesDialog.setBackground(Color.WHITE);
         panelBotonesDialog.setBorder(new EmptyBorder(10, 10, 20, 10));
@@ -446,7 +414,7 @@ public class ModificarCita extends JDialog {
         btnGuardar.setBackground(new Color(0, 128, 128));
         btnGuardar.setForeground(Color.WHITE);
         btnGuardar.addActionListener(e -> guardarCambiosCita(
-            dialogModificar, citaSeleccionada, cmbMedicos, cmbDias, cmbEstado));
+            dialogModificar, citaSeleccionada, cmbMedicos, cmbDias));
 
         JButton btnCancelar = new JButton("Cancelar");
         btnCancelar.setFont(new Font("Segoe UI", Font.PLAIN, 13));
@@ -454,7 +422,7 @@ public class ModificarCita extends JDialog {
 
         panelBotonesDialog.add(btnGuardar);
         panelBotonesDialog.add(btnCancelar);
-        dialogModificar.add(panelBotonesDialog, BorderLayout.SOUTH);
+        dialogModificar.getContentPane().add(panelBotonesDialog, BorderLayout.SOUTH);
 
         dialogModificar.setVisible(true);
     }
@@ -476,21 +444,18 @@ public class ModificarCita extends JDialog {
     }
 
     private void guardarCambiosCita(JDialog dialog, Cita cita, JComboBox<Medico> cmbMedicos, 
-                                   JComboBox<String> cmbDias, JComboBox<String> cmbEstado) {
+                                   JComboBox<String> cmbDias) {
         Medico nuevoMedico = (Medico) cmbMedicos.getSelectedItem();
         String nuevoDia = (String) cmbDias.getSelectedItem();
-        String nuevoEstado = (String) cmbEstado.getSelectedItem();
 
-        // Validar cambios
-        if (nuevoMedico == null || nuevoDia == null || nuevoEstado == null) {
+        if (nuevoMedico == null || nuevoDia == null) {
             JOptionPane.showMessageDialog(dialog,
                 "Todos los campos son obligatorios.",
-                "Error de validación",
+                "Error de validaci�n",
                 JOptionPane.ERROR_MESSAGE);
             return;
         }
 
-        // Verificar si el médico tiene disponibilidad (excepto si es el mismo médico y mismo día)
         boolean mismoMedicoYMismoDia = nuevoMedico.equals(cita.getMedico()) && 
                                       nuevoDia.equals(cita.getDia());
         
@@ -498,7 +463,7 @@ public class ModificarCita extends JDialog {
             int disponibles = nuevoMedico.cantCitasDisp(nuevoDia);
             if (disponibles <= 0) {
                 JOptionPane.showMessageDialog(dialog,
-                    "El médico no tiene disponibilidad para el día seleccionado.\n" +
+                    "El m�dico no tiene disponibilidad para el d�a seleccionado.\n" +
                     "Citas disponibles: " + disponibles,
                     "Sin disponibilidad",
                     JOptionPane.WARNING_MESSAGE);
@@ -507,38 +472,31 @@ public class ModificarCita extends JDialog {
         }
 
         try {
-            // Si el médico cambió, eliminar de la lista del médico anterior
             if (!nuevoMedico.equals(cita.getMedico())) {
                 cita.getMedico().getMisCitas().remove(cita);
             }
 
-            // Actualizar la cita
             cita.setMedico(nuevoMedico);
             cita.setDia(nuevoDia);
-            cita.setEstado(nuevoEstado);
 
-            // Añadir a la lista del nuevo médico si es diferente
             if (!nuevoMedico.getMisCitas().contains(cita)) {
                 nuevoMedico.getMisCitas().add(cita);
             }
 
-            // Guardar cambios
             Hospital.getInstancia().guardarDatos();
 
             JOptionPane.showMessageDialog(dialog,
                 "Cita modificada exitosamente.\n\n" +
                 "Resumen de cambios:\n" +
                 "Paciente: " + cita.getPaciente().getNombre() + " " + cita.getPaciente().getApellido() + "\n" +
-                "Médico: Dr. " + nuevoMedico.getNombre() + " " + nuevoMedico.getApellido() + "\n" +
-                "Día: " + nuevoDia + "\n" +
-                "Estado: " + nuevoEstado,
-                "Modificación exitosa",
-                JOptionPane.INFORMATION_MESSAGE);
+                "M�dico: Dr. " + nuevoMedico.getNombre() + " " + nuevoMedico.getApellido() + "\n" +
+                "D�a: " + nuevoDia + "\n" +
+                "Modificaci�n exitosa"
+                );
 
             dialog.dispose();
-            cargarCitasModificables(); // Actualizar tabla
+            cargarCitasModificables(); 
             
-            // Actualizar Principal si está disponible
             if (principal != null) {
                 principal.actualizarCards();
             }

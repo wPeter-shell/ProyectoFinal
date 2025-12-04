@@ -209,17 +209,17 @@ public class RegistrarMedico extends JDialog {
          String especialidad = (String) cmbEspecialidad.getSelectedItem();
          int citasPorDia = Integer.parseInt(txtCitasPorDia.getText());
 
-         if (edad < 18 || edad > 100) {
+         if (edad < 25 || edad > 65) {
             JOptionPane.showMessageDialog(this,
-                  "La edad debe estar entre 18 y 100 años",
+                  "La edad debe estar entre 25 y 65 años",
                   "Error de validación",
                   JOptionPane.ERROR_MESSAGE);
             return;
          }
 
-         if (citasPorDia <= 0 || citasPorDia > 20) {
+         if (citasPorDia <= 4 || citasPorDia > 20) {
             JOptionPane.showMessageDialog(this,
-                  "Las citas por día deben estar entre 1 y 20",
+                  "Las citas por día deben estar entre 4 y 20",
                   "Error de validación",
                   JOptionPane.ERROR_MESSAGE);
             return;
@@ -260,8 +260,6 @@ public class RegistrarMedico extends JDialog {
                return;
 
          }
-         
-        
          
 
          Medico nuevoMedico = new Medico(

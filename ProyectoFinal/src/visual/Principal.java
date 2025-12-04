@@ -64,7 +64,6 @@ public class Principal extends JFrame {
    static DataInputStream EntradaSocket;
    static DataOutputStream SalidaSocket;
 
-   // Labels para las cantidades en los cards del dashboard
    private JLabel lblCantMedicos;
    private JLabel lblCantPacientes;
    private JLabel lblCantVacunas;
@@ -143,31 +142,31 @@ public class Principal extends JFrame {
       menuAdmin.setFont(new Font("Segoe UI", Font.PLAIN, 14));
       menuBar.add(menuAdmin);
 
-      itemRegistrarMedico = new JMenuItem("Registrar m\u00e9dico");
+      itemRegistrarMedico = new JMenuItem("Registrar M\u00E9dico");
       itemRegistrarMedico.addActionListener(e -> {
          new RegistrarMedico(this).setVisible(true);
       });
       menuAdmin.add(itemRegistrarMedico);
 
-      itemRegistrarSecretaria = new JMenuItem("Registrar secretaria");
+      itemRegistrarSecretaria = new JMenuItem("Registrar Secretaria/o");
       itemRegistrarSecretaria.addActionListener(e -> {
          new RegistrarSecretaria().setVisible(true);
       });
       menuAdmin.add(itemRegistrarSecretaria);
       
-      itemAgregarEnfermedad = new JMenuItem("Agregar enfermedad");
+      itemAgregarEnfermedad = new JMenuItem("Agregar Enfermedad");
       itemAgregarEnfermedad.addActionListener(e -> {
          new AgregarEnfermedad(this).setVisible(true);
       });
       menuAdmin.add(itemAgregarEnfermedad);
 
-      itemAgregarVacuna = new JMenuItem("Agregar vacuna");
+      itemAgregarVacuna = new JMenuItem("Agregar Vacuna");
       itemAgregarVacuna.addActionListener(e -> {
          new AgregarVacuna(this).setVisible(true);
       });
       menuAdmin.add(itemAgregarVacuna);
 
-      itemDefinirNumCitas = new JMenuItem("Modificar M�dico");
+      itemDefinirNumCitas = new JMenuItem("Modificar M\u00E9dico");
       itemDefinirNumCitas.addActionListener(e -> {
           if (usuarioLogueado instanceof Administrador) {
               new ModificarMedico(this).setVisible(true);
@@ -243,7 +242,7 @@ public class Principal extends JFrame {
           }
       });
       
-      itemListarMedicos = new JMenuItem("Listar M�dicos");
+      itemListarMedicos = new JMenuItem("Listar M\u00E9dicos");
       menuListar.add(itemListarMedicos);
 
       itemListarMedicos.addActionListener(new ActionListener() {
@@ -309,11 +308,9 @@ public class Principal extends JFrame {
   	      DataOutputStream outSocket = null;
 
   	      try {
-  	         // 1. Conectarse al servidor
   	         sfd = new Socket("127.0.0.1", 7000);
 
-  	         // 2. Abrir el archivo ORIGINAL que quieres respaldar
-  	         File archivoHospital = new File("hospital.dat");   // OJO: hospital.dat
+  	         File archivoHospital = new File("hospital.dat"); 
   	         if (!archivoHospital.exists()) {
   	            JOptionPane.showMessageDialog(
   	               Principal.this,
@@ -440,7 +437,6 @@ public class Principal extends JFrame {
       gbc.weightx = 0.5;
       gbc.weighty = 0.5;
 
-      // Inicializar labels de cantidades
       lblCantPacientes = new JLabel("0");
       lblCantMedicos = new JLabel("0");
       lblCantEnfermedades = new JLabel("0");
@@ -482,7 +478,6 @@ public class Principal extends JFrame {
       gbc.gridy = 1;
       panelCentro.add(cardVacunas, gbc);
 
-      // Cargar valores reales desde Hospital
       actualizarCards();
    }
 

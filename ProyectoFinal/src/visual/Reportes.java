@@ -23,9 +23,7 @@ public class Reportes extends JFrame {
 
 	private JPanel contentPane;
 
-	/**
-	 * Launch the application.
-	 */
+
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -39,9 +37,6 @@ public class Reportes extends JFrame {
 		});
 	}
 
-	/**
-	 * Create the frame.
-	 */
 	public Reportes() {
 		setTitle("Reportes del hospital");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -53,7 +48,6 @@ public class Reportes extends JFrame {
 		contentPane.setLayout(new BorderLayout(0, 0));
 		setContentPane(contentPane);
 
-		// Calcula los valores y agrega el panel de gráfica
 		int[] valores = calcularValores();
 		String[] etiquetas = new String[] {
 				"Pacientes",
@@ -71,9 +65,7 @@ public class Reportes extends JFrame {
 		contentPane.add(grafica, BorderLayout.CENTER);
 	}
 
-	/**
-	 * Devuelve los valores estadísticos a mostrar.
-	 */
+
 	private int[] calcularValores() {
 
 		Hospital h = Hospital.getInstancia();
@@ -138,9 +130,7 @@ public class Reportes extends JFrame {
 		};
 	}
 
-	/**
-	 * Panel interno que dibuja la gráfica de barras.
-	 */
+
 	private static class BarChartPanel extends JPanel {
 
 		private final String[] labels;
@@ -156,7 +146,7 @@ public class Reportes extends JFrame {
 					max = v;
 				}
 			}
-			this.maxValue = max == 0 ? 1 : max; // evita división entre 0
+			this.maxValue = max == 0 ? 1 : max;
 		}
 
 		@Override
@@ -182,13 +172,11 @@ public class Reportes extends JFrame {
 
 			int barWidth = availableWidth / n;
 
-			// Ejes
 			int ejeYFin = height - padding - labelPadding;
 			g2.setColor(Color.BLACK);
-			g2.drawLine(padding, ejeYFin, padding + availableWidth, ejeYFin); // eje X
-			g2.drawLine(padding, padding, padding, ejeYFin); // eje Y
+			g2.drawLine(padding, ejeYFin, padding + availableWidth, ejeYFin); 
+			g2.drawLine(padding, padding, padding, ejeYFin); 
 
-			// Líneas de referencia horizontales y valores aproximados
 			int lineas = 5;
 			for (int i = 0; i <= lineas; i++) {
 				int y = padding + i * availableHeight / lineas;
@@ -200,7 +188,6 @@ public class Reportes extends JFrame {
 				g2.drawString(String.valueOf(valorReferencia), 5, y + 5);
 			}
 
-			// Barras
 			for (int i = 0; i < n; i++) {
 
 				int v = values[i];
@@ -216,13 +203,11 @@ public class Reportes extends JFrame {
 				g2.setColor(Color.BLACK);
 				g2.drawRect(x, y, barWidth - barWidth / 5, barHeight);
 
-				// Valor encima de la barra
 				String valorTexto = String.valueOf(v);
 				FontMetrics fm = g2.getFontMetrics();
 				int valorAncho = fm.stringWidth(valorTexto);
 				g2.drawString(valorTexto, x + (barWidth - barWidth / 5 - valorAncho) / 2, y - 5);
 
-				// Etiquetas debajo (separadas por espacios en varias líneas)
 				String etiqueta = labels[i];
 				String[] partes = etiqueta.split(" ");
 				int labelX = x + (barWidth - barWidth / 5) / 2;

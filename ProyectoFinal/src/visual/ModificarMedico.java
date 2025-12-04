@@ -24,11 +24,11 @@ public class ModificarMedico extends JDialog {
    private JComboBox<String> cmbCriterio;
 
    private Medico m;
-   private List<Medico> listaMedicos;   // lista original de médicos
-   private Principal principal;         // referencia al principal (para actualizar cards si quieres)
-   private JButton btnDesabilitar;  // Declarada como variable de instancia
+   private List<Medico> listaMedicos;   
+   private Principal principal;        
+   private JButton btnDesabilitar; 
 
-   // Constructor principal (lo usas desde Principal)
+
    public ModificarMedico(Principal principal) {
       this.principal = principal;
 
@@ -49,7 +49,6 @@ public class ModificarMedico extends JDialog {
       cargarMedicos();
    }
 
-   // Constructor para probar esta ventana sola (opcional)
    public static void main(String[] args) {
       SwingUtilities.invokeLater(() -> {
          ModificarMedico dialog = new ModificarMedico(null);
@@ -58,7 +57,7 @@ public class ModificarMedico extends JDialog {
       });
    }
 
-   // ====== HEADER TURQUESA (título bonito) ======
+  
    private void crearHeader() {
       JPanel header = new JPanel();
       header.setBackground(new Color(0, 128, 128));
@@ -80,13 +79,13 @@ public class ModificarMedico extends JDialog {
       contentPane.add(header, BorderLayout.NORTH);
    }
 
-   // ====== PANEL CENTRAL: filtro + tabla ======
+   
    private void crearCentro() {
       JPanel panelCentro = new JPanel(new BorderLayout());
       panelCentro.setBorder(new EmptyBorder(15, 20, 15, 20));
       panelCentro.setBackground(new Color(245, 247, 250));
 
-      // -------- PANEL FILTRO ARRIBA --------
+      
       JPanel panelFiltro = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 5));
       panelFiltro.setOpaque(false);
 
@@ -114,11 +113,10 @@ public class ModificarMedico extends JDialog {
       btnLimpiar.setFont(new Font("Segoe UI", Font.PLAIN, 13));
       btnLimpiar.addActionListener(e -> {
          txtFiltro.setText("");
-         cargarTabla(listaMedicos); // recarga todos
+         cargarTabla(listaMedicos);
       });
       panelFiltro.add(btnLimpiar);
 
-      // Que filtre mientras escribes
       txtFiltro.addKeyListener(new KeyAdapter() {
          @Override
          public void keyReleased(KeyEvent e) {
@@ -128,12 +126,11 @@ public class ModificarMedico extends JDialog {
 
       panelCentro.add(panelFiltro, BorderLayout.NORTH);
 
-      // -------- TABLA DE MÉDICOS --------
       String[] columnas = { "Nombre", "Apellido", "Cédula", "Especialidad", "Citas por día" };
       modeloTabla = new DefaultTableModel(columnas, 0) {
          @Override
          public boolean isCellEditable(int row, int column) {
-            return false; // no editable desde la tabla
+            return false;
          }
       };
 
@@ -148,7 +145,6 @@ public class ModificarMedico extends JDialog {
 
       contentPane.add(panelCentro, BorderLayout.CENTER);
       
-      // Listener para actualizar el texto del botón según el médico seleccionado
       tableMedicos.getSelectionModel().addListSelectionListener(e -> {
          if (!e.getValueIsAdjusting()) {
             int fila = tableMedicos.getSelectedRow();
@@ -170,7 +166,6 @@ public class ModificarMedico extends JDialog {
       });
    }
 
-   // ====== BOTONES ABAJO ======
    private void crearBotonera() {
       JPanel panelBotones = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 8));
       panelBotones.setBorder(new EmptyBorder(10, 18, 10, 18));
@@ -219,12 +214,11 @@ public class ModificarMedico extends JDialog {
                return;
             }
 
-            // 🔁 Si YA está INHABILITADO → ahora lo habilitamos
             if (!medicoSeleccionado.getDisponibilidad()) {
                medicoSeleccionado.habilitar();
 
                Hospital.getInstancia().guardarDatos();
-               cargarMedicos();          // recarga lista + colores
+               cargarMedicos();        
                if (principal != null) {
                   principal.actualizarCards();
                }
@@ -235,11 +229,10 @@ public class ModificarMedico extends JDialog {
                      "Cambio exitoso",
                      JOptionPane.INFORMATION_MESSAGE);
 
-               //btnDesabilitar.setText("Inhabilitar");
+               btnDesabilitar.setText("Inhabilitar");
                return;
             }
 
-            // 🧮 Si está HABILITADO → verificar si tiene citas pendientes
             int pendientes = 0;
             if (medicoSeleccionado.getMisCitas() != null) {
                for (Cita c : medicoSeleccionado.getMisCitas()) {
@@ -258,7 +251,6 @@ public class ModificarMedico extends JDialog {
                return;
             }
 
-            // ✅ No tiene citas pendientes → se puede inhabilitar
             medicoSeleccionado.inhabilitar();
 
             Hospital.getInstancia().guardarDatos();
@@ -287,7 +279,6 @@ public class ModificarMedico extends JDialog {
       contentPane.add(panelBotones, BorderLayout.SOUTH);
    }
 
-   // ====== Cargar médicos desde Hospital ======
    private void cargarMedicos() {
       listaMedicos = new ArrayList<>(Hospital.getInstancia().getMisMedicos());
       cargarTabla(listaMedicos);
@@ -295,7 +286,7 @@ public class ModificarMedico extends JDialog {
    }
 
    private void cargarTabla(List<Medico> datos) {
-      modeloTabla.setRowCount(0); // limpia
+      modeloTabla.setRowCount(0);
 
       for (Medico m : datos) {
          Object[] fila = new Object[] {
@@ -309,7 +300,6 @@ public class ModificarMedico extends JDialog {
       }
    }
 
-   // ====== Filtro por nombre / cédula / especialidad ======
    private void aplicarFiltro() {
       if (listaMedicos == null) return;
 
@@ -341,7 +331,6 @@ public class ModificarMedico extends JDialog {
       cargarTabla(filtrados);
    }
 
-   // ====== Acción del botón MODIFICAR ======
    private void modificarCitas() {
       int fila = tableMedicos.getSelectedRow();
       if (fila == -1) {
@@ -352,7 +341,6 @@ public class ModificarMedico extends JDialog {
          return;
       }
 
-      // Identificar el médico según su cédula
       String cedulaSeleccionada = (String) tableMedicos.getValueAt(fila, 2);
 
       Medico medicoSeleccionado = null;
@@ -371,7 +359,6 @@ public class ModificarMedico extends JDialog {
          return;
       }
 
-      // ================== CAMBIAR EDAD ==================
       String edadActual = String.valueOf(medicoSeleccionado.getEdad());
 
       String inputEdad = JOptionPane.showInputDialog(
@@ -383,7 +370,7 @@ public class ModificarMedico extends JDialog {
       );
 
       if (inputEdad == null) {
-         return; // cancelado
+         return; 
       }
 
       inputEdad = inputEdad.trim();
@@ -398,7 +385,7 @@ public class ModificarMedico extends JDialog {
 
       int nuevaEdad = Integer.parseInt(inputEdad);
 
-      if (nuevaEdad < 18 || nuevaEdad > 100) { // ajusta el rango si quieres
+      if (nuevaEdad < 18 || nuevaEdad > 100) {
          JOptionPane.showMessageDialog(this,
                "La edad debe estar entre 18 y 100 años.",
                "Edad fuera de rango",
@@ -406,7 +393,6 @@ public class ModificarMedico extends JDialog {
          return;
       }
 
-      // ================== CAMBIAR CITAS POR DÍA ==================
       String actualCitas = String.valueOf(medicoSeleccionado.getCitasPorDia());
 
       String inputCitas = JOptionPane.showInputDialog(
@@ -418,7 +404,7 @@ public class ModificarMedico extends JDialog {
       );
 
       if (inputCitas == null) {
-         return; // cancelado
+         return; 
       }
 
       inputCitas = inputCitas.trim();
@@ -433,7 +419,7 @@ public class ModificarMedico extends JDialog {
 
       int nuevoValor = Integer.parseInt(inputCitas);
 
-      if (nuevoValor < 1 || nuevoValor > 20) { // el rango que ya usabas
+      if (nuevoValor < 1 || nuevoValor > 20) { 
          JOptionPane.showMessageDialog(this,
                "Las citas por día deben estar entre 1 y 20.",
                "Valor fuera de rango",
@@ -441,17 +427,13 @@ public class ModificarMedico extends JDialog {
          return;
       }
 
-      // ================== APLICAR CAMBIOS ==================
       medicoSeleccionado.setEdad(nuevaEdad);
       medicoSeleccionado.setCitasPorDia(nuevoValor);
 
-      // Guardar
       Hospital.getInstancia().guardarDatos();
 
-      // Refrescar tabla
       cargarMedicos();
 
-      // Refrescar cards del dashboard (si quieres)
       if (principal != null) {
          principal.actualizarCards();
       }
@@ -487,7 +469,6 @@ public class ModificarMedico extends JDialog {
             }
 
             if (med != null && !med.getDisponibilidad()) {
-               // Fila sombreada si está inhabilitado
                comp.setBackground(new java.awt.Color(220, 220, 220));
                comp.setForeground(java.awt.Color.DARK_GRAY);
             } else {

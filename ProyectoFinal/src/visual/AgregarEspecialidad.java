@@ -58,11 +58,7 @@ public class AgregarEspecialidad extends JDialog {
       this.principal = principal;
    }
 
-   /**
-    * Create the dialog.
-    */
    public AgregarEspecialidad() {
-      //this.principal = principal;
 
       setTitle("Agregar Especialidad");
       setModal(true);
@@ -70,7 +66,6 @@ public class AgregarEspecialidad extends JDialog {
       setLocationRelativeTo(null);
       getContentPane().setLayout(new BorderLayout(0, 0));
 
-      // ====== HEADER LINDO ARRIBA ======
       JPanel headerPanel = new JPanel();
       headerPanel.setBackground(new Color(0, 128, 128));
       headerPanel.setBorder(new EmptyBorder(12, 18, 12, 18));
@@ -83,7 +78,6 @@ public class AgregarEspecialidad extends JDialog {
       lblTitulo.setHorizontalAlignment(SwingConstants.LEFT);
       headerPanel.add(lblTitulo, BorderLayout.WEST);
 
-      // ====== PANEL CENTRAL ======
       contentPanel.setBackground(Color.WHITE);
       contentPanel.setBorder(new EmptyBorder(20, 30, 10, 30));
       getContentPane().add(contentPanel, BorderLayout.CENTER);
@@ -91,7 +85,6 @@ public class AgregarEspecialidad extends JDialog {
 
       Font labelFont = new Font("Segoe UI", Font.PLAIN, 13);
 
-      // Nombre
       JLabel lblNombre = new JLabel("Nombre de la especialidad:");
       lblNombre.setFont(labelFont);
       contentPanel.add(lblNombre);
@@ -99,14 +92,12 @@ public class AgregarEspecialidad extends JDialog {
       txtNombre = new JTextField();
       contentPanel.add(txtNombre);
 
-      // Espacio de relleno
       JLabel lblDummy1 = new JLabel("");
       contentPanel.add(lblDummy1);
 
       JLabel lblDummy2 = new JLabel("");
       contentPanel.add(lblDummy2);
 
-      // ====== PANEL DE BOTONES ======
       JPanel buttonPane = new JPanel();
       buttonPane.setBorder(new EmptyBorder(10, 10, 10, 10));
       buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT, 10, 5));
@@ -132,14 +123,10 @@ public class AgregarEspecialidad extends JDialog {
       buttonPane.add(cancelButton);
    }
 
-   /**
-    * Método para agregar una especialidad al sistema
-    */
    private void agregarEnfermedad() {
       try {
          String nombre = txtNombre.getText().trim();
 
-         // Validar campo obligatorio
          if (nombre.isEmpty()) {
             JOptionPane.showMessageDialog(this,
                   "El nombre de la especialidad es obligatorio.",
@@ -148,10 +135,8 @@ public class AgregarEspecialidad extends JDialog {
             return;
          }
 
-         // Normalizar el nombre para comparar sin acentos ni mayúsculas
          String nombreNormalizado = normalizarNombreEspecialidad(nombre);
 
-         // Validar que no exista una especialidad con el mismo nombre (ignorando acentos)
          for (String esp : Hospital.getInstancia().getEspecialidades()) {
             String espNormalizada = normalizarNombreEspecialidad(esp);
 
@@ -167,10 +152,8 @@ public class AgregarEspecialidad extends JDialog {
          Administrador admin = Hospital.getInstancia().getAdministrador();
          admin.registrarEspecialidad(nombre);
 
-         // Guardar cambios en archivo
          Hospital.getInstancia().guardarDatos();
 
-         // Actualizar cards en Principal
          if (principal != null) {
             principal.actualizarCards();
          }
@@ -195,9 +178,6 @@ public class AgregarEspecialidad extends JDialog {
       }
    }
 
-   /**
-    * Método para limpiar todos los campos del formulario
-    */
    private void limpiarCampos() {
       txtNombre.setText("");
    }

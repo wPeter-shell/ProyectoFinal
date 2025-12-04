@@ -40,7 +40,7 @@ public class EliminarCita extends JDialog {
         lblTitulo.setHorizontalAlignment(SwingConstants.LEFT);
         headerPanel.add(lblTitulo, BorderLayout.WEST);
 
-        JLabel lblSubtitulo = new JLabel("Seleccione una o más citas para eliminar");
+        JLabel lblSubtitulo = new JLabel("Seleccione una o m�s citas para eliminar");
         lblSubtitulo.setForeground(new Color(225, 240, 250));
         lblSubtitulo.setFont(new Font("Segoe UI", Font.PLAIN, 12));
         lblSubtitulo.setHorizontalAlignment(SwingConstants.LEFT);
@@ -48,13 +48,11 @@ public class EliminarCita extends JDialog {
 
         getContentPane().add(headerPanel, BorderLayout.NORTH);
 
-        // ====== PANEL DE FILTRO ======
         JPanel panelFiltro = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 10));
         panelFiltro.setBackground(new Color(245, 247, 250));
         panelFiltro.setBorder(new EmptyBorder(10, 20, 10, 20));
 
-        // Filtro por cédula
-        JLabel lblFiltroCedula = new JLabel("Cédula paciente:");
+        JLabel lblFiltroCedula = new JLabel("C�dula paciente:");
         lblFiltroCedula.setFont(new Font("Segoe UI", Font.PLAIN, 13));
         panelFiltro.add(lblFiltroCedula);
 
@@ -62,7 +60,6 @@ public class EliminarCita extends JDialog {
         txtFiltroCedula.setFont(new Font("Segoe UI", Font.PLAIN, 13));
         panelFiltro.add(txtFiltroCedula);
 
-        // Filtro por estado
         JLabel lblFiltroEstado = new JLabel("Estado:");
         lblFiltroEstado.setFont(new Font("Segoe UI", Font.PLAIN, 13));
         panelFiltro.add(lblFiltroEstado);
@@ -71,7 +68,6 @@ public class EliminarCita extends JDialog {
         cmbFiltroEstado.setFont(new Font("Segoe UI", Font.PLAIN, 13));
         panelFiltro.add(cmbFiltroEstado);
 
-        // Botones de filtro
         JButton btnFiltrar = new JButton("Filtrar");
         btnFiltrar.setFont(new Font("Segoe UI", Font.PLAIN, 13));
         btnFiltrar.addActionListener(e -> filtrarCitas());
@@ -88,8 +84,7 @@ public class EliminarCita extends JDialog {
 
         getContentPane().add(panelFiltro, BorderLayout.NORTH);
 
-        // ====== TABLA DE CITAS ======
-        String[] columnas = {"", "Paciente", "Cédula", "Médico", "Día", "Estado"};
+        String[] columnas = {"", "Paciente", "C�dula", "M�dico", "D�a", "Estado"};
         modeloTabla = new DefaultTableModel(columnas, 0) {
             @Override
             public Class<?> getColumnClass(int columnIndex) {
@@ -101,7 +96,7 @@ public class EliminarCita extends JDialog {
             
             @Override
             public boolean isCellEditable(int row, int column) {
-                return column == 0; // Solo la columna de checkbox es editable
+                return column == 0;
             }
         };
 
@@ -110,19 +105,17 @@ public class EliminarCita extends JDialog {
         tablaCitas.setFont(new Font("Segoe UI", Font.PLAIN, 13));
         tablaCitas.getTableHeader().setFont(new Font("Segoe UI Semibold", Font.PLAIN, 13));
         
-        // Configurar ancho de columnas
-        tablaCitas.getColumnModel().getColumn(0).setPreferredWidth(30); // Checkbox
-        tablaCitas.getColumnModel().getColumn(1).setPreferredWidth(150); // Paciente
-        tablaCitas.getColumnModel().getColumn(2).setPreferredWidth(100); // Cédula
-        tablaCitas.getColumnModel().getColumn(3).setPreferredWidth(180); // Médico
-        tablaCitas.getColumnModel().getColumn(4).setPreferredWidth(100); // Día
-        tablaCitas.getColumnModel().getColumn(5).setPreferredWidth(100); // Estado
+        tablaCitas.getColumnModel().getColumn(0).setPreferredWidth(30); 
+        tablaCitas.getColumnModel().getColumn(1).setPreferredWidth(150); 
+        tablaCitas.getColumnModel().getColumn(2).setPreferredWidth(100);
+        tablaCitas.getColumnModel().getColumn(3).setPreferredWidth(180); 
+        tablaCitas.getColumnModel().getColumn(4).setPreferredWidth(100); 
+        tablaCitas.getColumnModel().getColumn(5).setPreferredWidth(100);
 
         JScrollPane scrollPane = new JScrollPane(tablaCitas);
         scrollPane.setBorder(new EmptyBorder(10, 20, 10, 20));
         getContentPane().add(scrollPane, BorderLayout.CENTER);
 
-        // ====== PANEL DE INFORMACIÓN ======
         JPanel panelInfo = new JPanel(new FlowLayout(FlowLayout.LEFT));
         panelInfo.setBackground(new Color(255, 255, 200));
         panelInfo.setBorder(new EmptyBorder(5, 20, 5, 20));
@@ -134,18 +127,15 @@ public class EliminarCita extends JDialog {
         
         getContentPane().add(panelInfo, BorderLayout.SOUTH);
 
-        // ====== PANEL DE BOTONES ======
         JPanel panelBotones = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 10));
         panelBotones.setBorder(new EmptyBorder(10, 18, 10, 18));
         panelBotones.setBackground(Color.WHITE);
 
-        // Botón para seleccionar/deseleccionar todos
         JButton btnSeleccionarTodos = new JButton("Seleccionar todas");
         btnSeleccionarTodos.setFont(new Font("Segoe UI", Font.PLAIN, 13));
         btnSeleccionarTodos.addActionListener(e -> seleccionarTodasCitas());
         panelBotones.add(btnSeleccionarTodos);
 
-        // Botón para eliminar seleccionadas
         JButton btnEliminar = new JButton("Eliminar Seleccionadas");
         btnEliminar.setFont(new Font("Segoe UI", Font.PLAIN, 13));
         btnEliminar.setForeground(Color.WHITE);
@@ -160,19 +150,17 @@ public class EliminarCita extends JDialog {
 
         getContentPane().add(panelBotones, BorderLayout.SOUTH);
 
-        // Cargar citas iniciales
         cargarTodasLasCitas();
     }
 
     private void cargarTodasLasCitas() {
         modeloTabla.setRowCount(0);
         
-        // Obtener todas las citas del hospital
         ArrayList<Cita> citas = obtenerTodasLasCitas();
 
         for (Cita cita : citas) {
             modeloTabla.addRow(new Object[]{
-                false, // Checkbox desmarcado por defecto
+                false, 
                 cita.getPaciente().getNombre() + " " + cita.getPaciente().getApellido(),
                 cita.getPaciente().getCedula(),
                 "Dr. " + cita.getMedico().getNombre() + " " + cita.getMedico().getApellido() + 
@@ -189,7 +177,6 @@ public class EliminarCita extends JDialog {
         ArrayList<Cita> todasLasCitas = new ArrayList<>();
         Hospital hospital = Hospital.getInstancia();
         
-        // Obtener citas de todos los médicos
         for (Medico medico : hospital.getMisMedicos()) {
             todasLasCitas.addAll(medico.getMisCitas());
         }
@@ -211,15 +198,15 @@ public class EliminarCita extends JDialog {
                 Component comp = super.getTableCellRendererComponent(
                         table, value, isSelected, hasFocus, row, column);
                 
-                String estado = (String) table.getValueAt(row, 5); // Columna de estado
+                String estado = (String) table.getValueAt(row, 5);
                 
                 if (!isSelected) {
                     if ("Atendida".equalsIgnoreCase(estado)) {
-                        comp.setBackground(new Color(220, 255, 220)); // Verde claro
+                        comp.setBackground(new Color(220, 255, 220));
                     } else if ("Cancelada".equalsIgnoreCase(estado)) {
-                        comp.setBackground(new Color(255, 220, 220)); // Rojo claro
+                        comp.setBackground(new Color(255, 220, 220)); 
                     } else if ("Pendiente".equalsIgnoreCase(estado)) {
-                        comp.setBackground(new Color(220, 230, 255)); // Azul claro
+                        comp.setBackground(new Color(220, 230, 255)); 
                     } else {
                         comp.setBackground(Color.WHITE);
                     }
@@ -264,7 +251,6 @@ public class EliminarCita extends JDialog {
         int rowCount = modeloTabla.getRowCount();
         boolean allSelected = true;
         
-        // Verificar si todas están seleccionadas
         for (int i = 0; i < rowCount; i++) {
             if (!(Boolean) modeloTabla.getValueAt(i, 0)) {
                 allSelected = false;
@@ -272,7 +258,6 @@ public class EliminarCita extends JDialog {
             }
         }
         
-        // Invertir selección
         boolean newValue = !allSelected;
         for (int i = 0; i < rowCount; i++) {
             modeloTabla.setValueAt(newValue, i, 0);
@@ -283,18 +268,15 @@ public class EliminarCita extends JDialog {
         ArrayList<Cita> citasAEliminar = new ArrayList<>();
         ArrayList<Integer> indicesSeleccionados = new ArrayList<>();
         
-        // Obtener citas seleccionadas
         for (int i = 0; i < modeloTabla.getRowCount(); i++) {
-            if ((Boolean) modeloTabla.getValueAt(i, 0)) { // Si el checkbox está marcado
+            if ((Boolean) modeloTabla.getValueAt(i, 0)) { 
                 String cedula = (String) modeloTabla.getValueAt(i, 2);
                 String dia = (String) modeloTabla.getValueAt(i, 4);
                 String estado = (String) modeloTabla.getValueAt(i, 5);
                 
-                // Buscar la cita correspondiente
                 Cita citaEncontrada = buscarCitaPorDatos(cedula, dia, estado);
                 
                 if (citaEncontrada != null) {
-                    // Verificar permisos para eliminar citas atendidas
                     if ("Atendida".equalsIgnoreCase(citaEncontrada.getEstado())) {
                         if (!(usuarioLogueado instanceof Administrador)) {
                             JOptionPane.showMessageDialog(this,
@@ -315,14 +297,13 @@ public class EliminarCita extends JDialog {
         if (citasAEliminar.isEmpty()) {
             JOptionPane.showMessageDialog(this,
                 "No ha seleccionado ninguna cita para eliminar.",
-                "Sin selección",
+                "Sin selecci�n",
                 JOptionPane.WARNING_MESSAGE);
             return;
         }
         
-        // Mostrar confirmación
         StringBuilder mensajeConfirmacion = new StringBuilder();
-        mensajeConfirmacion.append("¿Está seguro de que desea eliminar las siguientes citas?\n\n");
+        mensajeConfirmacion.append("�Estas seguro de que desea eliminar las siguientes citas?\n\n");
         
         for (Cita cita : citasAEliminar) {
             mensajeConfirmacion.append("• ").append(cita.getPaciente().getNombre())
@@ -336,7 +317,7 @@ public class EliminarCita extends JDialog {
         
         int confirmacion = JOptionPane.showConfirmDialog(this,
             mensajeConfirmacion.toString(),
-            "Confirmar eliminación múltiple",
+            "Confirmar eliminaci�n m�ltiple",
             JOptionPane.YES_NO_OPTION,
             JOptionPane.WARNING_MESSAGE);
         
@@ -347,7 +328,6 @@ public class EliminarCita extends JDialog {
                 
                 for (Cita cita : citasAEliminar) {
                     try {
-                        // 1. Eliminar de la lista del médico
                         boolean eliminadoDeMedico = cita.getMedico().getMisCitas().remove(cita);
                         
                         if (eliminadoDeMedico) {
@@ -369,20 +349,16 @@ public class EliminarCita extends JDialog {
                     }
                 }
                 
-                // Guardar cambios
                 Hospital.getInstancia().guardarDatos();
                 
-                // Actualizar tabla (eliminar filas)
                 for (int i = indicesSeleccionados.size() - 1; i >= 0; i--) {
                     modeloTabla.removeRow(indicesSeleccionados.get(i));
                 }
                 
-                // Actualizar cards en Principal si está disponible
                 if (principal != null) {
                     principal.actualizarCards();
                 }
                 
-                // Mostrar resultados
                 StringBuilder mensajeResultado = new StringBuilder();
                 mensajeResultado.append(eliminadasConExito).append(" cita(s) eliminada(s) exitosamente.");
                 
@@ -390,12 +366,12 @@ public class EliminarCita extends JDialog {
                     mensajeResultado.append("\n\nErrores encontrados:\n").append(errores.toString());
                     JOptionPane.showMessageDialog(this,
                         mensajeResultado.toString(),
-                        "Resultado de eliminación",
+                        "Resultado de eliminaci�n",
                         JOptionPane.WARNING_MESSAGE);
                 } else {
                     JOptionPane.showMessageDialog(this,
                         mensajeResultado.toString(),
-                        "Eliminación completada",
+                        "Eliminaci�n completada",
                         JOptionPane.INFORMATION_MESSAGE);
                 }
                 
@@ -410,7 +386,6 @@ public class EliminarCita extends JDialog {
     }
 
     private Cita buscarCitaPorDatos(String cedulaPaciente, String dia, String estado) {
-        // Buscar en todos los médicos
         for (Medico medico : Hospital.getInstancia().getMisMedicos()) {
             for (Cita cita : medico.getMisCitas()) {
                 if (cita.getPaciente().getCedula().equals(cedulaPaciente) &&

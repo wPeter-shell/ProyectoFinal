@@ -136,7 +136,6 @@ public class AgregarVacuna extends JDialog {
       try {
          String nombre = txtNombre.getText().trim();
 
-         // Validar nombre
          if (nombre.isEmpty()) {
             JOptionPane.showMessageDialog(this,
                   "El nombre de la vacuna es obligatorio.",
@@ -145,7 +144,6 @@ public class AgregarVacuna extends JDialog {
             return;
          }
 
-         // Validar que exista al menos una enfermedad
          if (cmbEnfermedad.getItemCount() == 0) {
             JOptionPane.showMessageDialog(this,
                   "No hay enfermedades registradas. Registre una enfermedad primero.",
@@ -177,10 +175,8 @@ public class AgregarVacuna extends JDialog {
             }
          }
 
-         // Crear y registrar
          Vacuna nuevaVacuna = new Vacuna(nombre, enfermedadSeleccionada);
 
-         // Registrar en el sistema
          Administrador admin = Hospital.getInstancia().getAdministrador();
          admin.agregarVacuna(nuevaVacuna);
 
