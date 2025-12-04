@@ -55,6 +55,9 @@ public class Principal extends JFrame {
    private JMenuItem itemGuardarArchivos;
    private JMenuItem itemRespaldo;
    private JMenuItem itemListarMedicos;
+   private JMenuItem itemListarEnfermedades;
+   private JMenuItem itemListarVacunas;
+   private JMenuItem itemListarCitas;
    private JMenu menuListar;
    private JMenu menuCitas;
    private JMenu menuAdmin;
@@ -232,6 +235,12 @@ public class Principal extends JFrame {
       itemListarPaciente = new JMenuItem("ListarPacientes");
       menuListar.add(itemListarPaciente);
       
+      itemListarPaciente.addActionListener(new ActionListener() {
+          public void actionPerformed(ActionEvent e) {
+              new ListarPaciente(Hospital.getInstancia()).setVisible(true);
+          }
+      });
+      
       itemListarMedicos = new JMenuItem("Listar Médicos");
       menuListar.add(itemListarMedicos);
 
@@ -240,17 +249,30 @@ public class Principal extends JFrame {
               new ListarMedicos(Hospital.getInstancia()).setVisible(true);
           }
       });
+      
+      itemListarEnfermedades = new JMenuItem("Listar Enfermedades");
+      menuListar.add(itemListarEnfermedades);
 
-  
-      itemListarPaciente.addActionListener(new ActionListener() {
-          public void actionPerformed(ActionEvent e) {
-              new ListarPaciente(Hospital.getInstancia()).setVisible(true);
-          }
+      itemListarEnfermedades.addActionListener(e -> {
+          new ListarEnfermedades(Hospital.getInstancia()).setVisible(true);
       });
+      
+      itemListarVacunas = new JMenuItem("Listar Vacunas");
+      menuListar.add(itemListarVacunas);
 
+      itemListarVacunas.addActionListener(e -> {
+          new ListarVacunas(Hospital.getInstancia()).setVisible(true);
+      });
+      
+      itemListarCitas = new JMenuItem("Listar Citas");
+      menuListar.add(itemListarCitas);
+
+      itemListarCitas.addActionListener(e -> {
+          new ListarCitas(Hospital.getInstancia()).setVisible(true);
+      });
+      
       menuConsulta.add(itemAtenderConsultas);
 
- 
 
       menuArchivos = new JMenu("Archivos");
       menuArchivos.setFont(new Font("Segoe UI", Font.PLAIN, 14));
@@ -547,6 +569,9 @@ public class Principal extends JFrame {
       itemModificarCita.setEnabled(false);
       itemListEnfermedadesBajoVigilancia.setEnabled(false);
       itemListarMedicos.setEnabled(false);
+      itemListarEnfermedades.setEnabled(false);
+      itemListarVacunas.setEnabled(false);
+      itemListarCitas.setEnabled(false);
       
       if (usuarioLogueado instanceof Administrador) {
          itemRegistrarMedico.setEnabled(true);
@@ -562,6 +587,9 @@ public class Principal extends JFrame {
          itemGuardarArchivos.setEnabled(true);
          itemRespaldo.setEnabled(true);
          itemListarMedicos.setEnabled(true);
+         itemListarEnfermedades.setEnabled(true);
+         itemListarVacunas.setEnabled(true);
+         itemListarCitas.setEnabled(true);
          
       } else if (usuarioLogueado instanceof Secretaria) {
     	 itemEliminarCita.setEnabled(true);
@@ -569,10 +597,13 @@ public class Principal extends JFrame {
          itemModificarCita.setEnabled(true);
          itemListarPaciente.setEnabled(true);
          itemListarMedicos.setEnabled(true);
+         itemListarCitas.setEnabled(true);
          
       } else if (usuarioLogueado instanceof Medico) {
          itemAtenderConsultas.setEnabled(true);
          itemListarPaciente.setEnabled(true);
+         itemListarEnfermedades.setEnabled(true);
+         itemListarVacunas.setEnabled(true);
       }
    }
 
