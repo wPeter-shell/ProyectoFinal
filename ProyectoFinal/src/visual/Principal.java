@@ -49,13 +49,13 @@ public class Principal extends JFrame {
    private JMenuItem itemAgregarEnfermedad;
    private JMenuItem itemAgregarVacuna;
    private JMenuItem itemDefinirNumCitas;
-   private JMenuItem itemHacerCita;
-   private JMenuItem menuListar;
+   private JMenuItem itemHacerCita; 
    private JMenuItem menuArchivos;
    private JMenuItem itemListarPaciente;
    private JMenuItem itemGuardarArchivos;
    private JMenuItem itemRespaldo;
    private JMenuItem itemListarMedicos;
+   private JMenu menuListar;
    private JMenu menuCitas;
    private JMenu menuAdmin;
    private JMenu menuSistema;
@@ -232,7 +232,7 @@ public class Principal extends JFrame {
       itemListarPaciente = new JMenuItem("ListarPacientes");
       menuListar.add(itemListarPaciente);
       
-      JMenuItem itemListarMedicos = new JMenuItem("Listar Médicos");
+      itemListarMedicos = new JMenuItem("Listar Médicos");
       menuListar.add(itemListarMedicos);
 
       itemListarMedicos.addActionListener(new ActionListener() {
