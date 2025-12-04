@@ -81,8 +81,5 @@ public class Paciente extends Persona implements Serializable {
 	public void setDefectoAlNacer(String defectoAlNacer) {
 		this.defectoAlNacer = defectoAlNacer;
 	}
-	
-	
-	
 
 }

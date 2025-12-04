@@ -19,16 +19,6 @@ public class EliminarCita extends JDialog {
     private Principal principal;
     private Object usuarioLogueado;
 
-    public static void main(String[] args) {
-        try {
-            EliminarCita dialog = new EliminarCita(null, null);
-            dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-            dialog.setVisible(true);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
     public EliminarCita(Principal principal, Object usuarioLogueado) {
         this.principal = principal;
         this.usuarioLogueado = usuarioLogueado;
@@ -177,20 +167,35 @@ public class EliminarCita extends JDialog {
 
     private void cargarTodasLasCitas() {
         modeloTabla.setRowCount(0);
-        ArrayList<Cita> citas = Hospital.getInstancia().getMisCitas();
+        
+        // Obtener todas las citas del hospital
+        ArrayList<Cita> citas = obtenerTodasLasCitas();
 
         for (Cita cita : citas) {
             modeloTabla.addRow(new Object[]{
                 false, // Checkbox desmarcado por defecto
                 cita.getPaciente().getNombre() + " " + cita.getPaciente().getApellido(),
                 cita.getPaciente().getCedula(),
-                "Dr. " + cita.getMedico().getApellido() + " (" + cita.getMedico().getEspecialidad() + ")",
+                "Dr. " + cita.getMedico().getNombre() + " " + cita.getMedico().getApellido() + 
+                " (" + cita.getMedico().getEspecialidad() + ")",
                 cita.getDia(),
                 cita.getEstado()
             });
         }
         
         aplicarColoresPorEstado();
+    }
+
+    private ArrayList<Cita> obtenerTodasLasCitas() {
+        ArrayList<Cita> todasLasCitas = new ArrayList<>();
+        Hospital hospital = Hospital.getInstancia();
+        
+        // Obtener citas de todos los médicos
+        for (Medico medico : hospital.getMisMedicos()) {
+            todasLasCitas.addAll(medico.getMisCitas());
+        }
+        
+        return todasLasCitas;
     }
 
     private void aplicarColoresPorEstado() {
@@ -231,7 +236,7 @@ public class EliminarCita extends JDialog {
         String filtroEstado = (String) cmbFiltroEstado.getSelectedItem();
         
         modeloTabla.setRowCount(0);
-        ArrayList<Cita> citas = Hospital.getInstancia().getMisCitas();
+        ArrayList<Cita> citas = obtenerTodasLasCitas();
 
         for (Cita cita : citas) {
             boolean coincideCedula = filtroCedula.isEmpty() || 
@@ -245,7 +250,8 @@ public class EliminarCita extends JDialog {
                     false,
                     cita.getPaciente().getNombre() + " " + cita.getPaciente().getApellido(),
                     cita.getPaciente().getCedula(),
-                    "Dr. " + cita.getMedico().getApellido() + " (" + cita.getMedico().getEspecialidad() + ")",
+                    "Dr. " + cita.getMedico().getNombre() + " " + cita.getMedico().getApellido() + 
+                    " (" + cita.getMedico().getEspecialidad() + ")",
                     cita.getDia(),
                     cita.getEstado()
                 });
@@ -286,27 +292,23 @@ public class EliminarCita extends JDialog {
                 String estado = (String) modeloTabla.getValueAt(i, 5);
                 
                 // Buscar la cita correspondiente
-                for (Cita cita : Hospital.getInstancia().getMisCitas()) {
-                    if (cita.getPaciente().getCedula().equals(cedula) &&
-                        cita.getDia().equals(dia) &&
-                        cita.getEstado().equalsIgnoreCase(estado)) {
-                        
-                        // Verificar permisos para eliminar citas atendidas
-                        if ("Atendida".equalsIgnoreCase(estado)) {
-                            if (!(usuarioLogueado instanceof Administrador)) {
-                                JOptionPane.showMessageDialog(this,
-                                    "No tiene permisos para eliminar citas ya atendidas.\n" +
-                                    "Solo el administrador puede eliminar citas atendidas.",
-                                    "Permiso denegado",
-                                    JOptionPane.WARNING_MESSAGE);
-                                return;
-                            }
+                Cita citaEncontrada = buscarCitaPorDatos(cedula, dia, estado);
+                
+                if (citaEncontrada != null) {
+                    // Verificar permisos para eliminar citas atendidas
+                    if ("Atendida".equalsIgnoreCase(citaEncontrada.getEstado())) {
+                        if (!(usuarioLogueado instanceof Administrador)) {
+                            JOptionPane.showMessageDialog(this,
+                                "No tiene permisos para eliminar citas ya atendidas.\n" +
+                                "Solo el administrador puede eliminar citas atendidas.",
+                                "Permiso denegado",
+                                JOptionPane.WARNING_MESSAGE);
+                            return;
                         }
-                        
-                        citasAEliminar.add(cita);
-                        indicesSeleccionados.add(i);
-                        break;
                     }
+                    
+                    citasAEliminar.add(citaEncontrada);
+                    indicesSeleccionados.add(i);
                 }
             }
         }
@@ -342,15 +344,30 @@ public class EliminarCita extends JDialog {
         if (confirmacion == JOptionPane.YES_OPTION) {
             try {
                 int eliminadasConExito = 0;
+                StringBuilder errores = new StringBuilder();
                 
                 for (Cita cita : citasAEliminar) {
-                    // Eliminar de la lista del médico
-                    cita.getMedico().getMisCitas().remove(cita);
-                    
-                    // Eliminar de la lista general
-                    Hospital.getInstancia().getMisCitas().remove(cita);
-                    
-                    eliminadasConExito++;
+                    try {
+                        // 1. Eliminar de la lista del médico
+                        boolean eliminadoDeMedico = cita.getMedico().getMisCitas().remove(cita);
+                        
+                        if (eliminadoDeMedico) {
+                            eliminadasConExito++;
+                        } else {
+                            errores.append("• No se pudo eliminar la cita del médico: ")
+                                   .append(cita.getPaciente().getNombre())
+                                   .append(" - ")
+                                   .append(cita.getDia())
+                                   .append("\n");
+                        }
+                        
+                    } catch (Exception ex) {
+                        errores.append("• Error al eliminar cita de ")
+                               .append(cita.getPaciente().getNombre())
+                               .append(": ")
+                               .append(ex.getMessage())
+                               .append("\n");
+                    }
                 }
                 
                 // Guardar cambios
@@ -366,10 +383,22 @@ public class EliminarCita extends JDialog {
                     principal.actualizarCards();
                 }
                 
-                JOptionPane.showMessageDialog(this,
-                    eliminadasConExito + " cita(s) eliminada(s) exitosamente.",
-                    "Eliminación completada",
-                    JOptionPane.INFORMATION_MESSAGE);
+                // Mostrar resultados
+                StringBuilder mensajeResultado = new StringBuilder();
+                mensajeResultado.append(eliminadasConExito).append(" cita(s) eliminada(s) exitosamente.");
+                
+                if (errores.length() > 0) {
+                    mensajeResultado.append("\n\nErrores encontrados:\n").append(errores.toString());
+                    JOptionPane.showMessageDialog(this,
+                        mensajeResultado.toString(),
+                        "Resultado de eliminación",
+                        JOptionPane.WARNING_MESSAGE);
+                } else {
+                    JOptionPane.showMessageDialog(this,
+                        mensajeResultado.toString(),
+                        "Eliminación completada",
+                        JOptionPane.INFORMATION_MESSAGE);
+                }
                 
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(this,
@@ -379,5 +408,20 @@ public class EliminarCita extends JDialog {
                 e.printStackTrace();
             }
         }
+    }
+
+    private Cita buscarCitaPorDatos(String cedulaPaciente, String dia, String estado) {
+        // Buscar en todos los médicos
+        for (Medico medico : Hospital.getInstancia().getMisMedicos()) {
+            for (Cita cita : medico.getMisCitas()) {
+                if (cita.getPaciente().getCedula().equals(cedulaPaciente) &&
+                    cita.getDia().equals(dia) &&
+                    cita.getEstado().equalsIgnoreCase(estado)) {
+                    return cita;
+                }
+            }
+        }
+        
+        return null;
     }
 }
