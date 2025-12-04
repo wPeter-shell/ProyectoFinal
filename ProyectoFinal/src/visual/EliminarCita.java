@@ -29,7 +29,6 @@ public class EliminarCita extends JDialog {
         setLocationRelativeTo(null);
         getContentPane().setLayout(new BorderLayout());
 
-        // ====== HEADER ======
         JPanel headerPanel = new JPanel();
         headerPanel.setBackground(new Color(0, 128, 128));
         headerPanel.setBorder(new EmptyBorder(12, 18, 12, 18));

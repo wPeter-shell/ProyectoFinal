@@ -305,7 +305,6 @@ public class ModificarCita extends JDialog {
         Cita citaSeleccionada = obtenerCitaSeleccionada();
         if (citaSeleccionada == null) return;
 
-        // Crear diálogo de modificación
         JDialog dialogModificar = new JDialog(this, "Modificar Cita - " + 
             citaSeleccionada.getPaciente().getNombre() + " " + 
             citaSeleccionada.getPaciente().getApellido(), true);
@@ -313,7 +312,6 @@ public class ModificarCita extends JDialog {
         dialogModificar.setLocationRelativeTo(this);
         dialogModificar.setLayout(new BorderLayout());
 
-        // ====== PANEL INFORMACIÓN ======
         JPanel panelInfoCita = new JPanel(new GridLayout(5, 1, 5, 5));
         panelInfoCita.setBorder(new EmptyBorder(15, 20, 15, 20));
         panelInfoCita.setBackground(Color.WHITE);
@@ -528,12 +526,12 @@ public class ModificarCita extends JDialog {
             Hospital.getInstancia().guardarDatos();
 
             JOptionPane.showMessageDialog(dialog,
-                "✅ Cita modificada exitosamente.\n\n" +
-                "📋 Resumen de cambios:\n" +
-                "• Paciente: " + cita.getPaciente().getNombre() + " " + cita.getPaciente().getApellido() + "\n" +
-                "• Médico: Dr. " + nuevoMedico.getNombre() + " " + nuevoMedico.getApellido() + "\n" +
-                "• Día: " + nuevoDia + "\n" +
-                "• Estado: " + nuevoEstado,
+                "Cita modificada exitosamente.\n\n" +
+                "Resumen de cambios:\n" +
+                "Paciente: " + cita.getPaciente().getNombre() + " " + cita.getPaciente().getApellido() + "\n" +
+                "Médico: Dr. " + nuevoMedico.getNombre() + " " + nuevoMedico.getApellido() + "\n" +
+                "Día: " + nuevoDia + "\n" +
+                "Estado: " + nuevoEstado,
                 "Modificación exitosa",
                 JOptionPane.INFORMATION_MESSAGE);
 
@@ -547,7 +545,7 @@ public class ModificarCita extends JDialog {
 
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(dialog,
-                "❌ Error al modificar cita: " + ex.getMessage(),
+                "Error al modificar cita: " + ex.getMessage(),
                 "Error del sistema",
                 JOptionPane.ERROR_MESSAGE);
             ex.printStackTrace();
