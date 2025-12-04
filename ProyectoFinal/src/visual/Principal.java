@@ -55,6 +55,7 @@ public class Principal extends JFrame {
    private JMenuItem itemListarEnfermedades;
    private JMenuItem itemListarVacunas;
    private JMenuItem itemListarCitas;
+   private JMenuItem itemListarHistorial;
    private JMenu menuListar;
    private JMenu menuCitas;
    private JMenu menuAdmin;
@@ -270,6 +271,17 @@ public class Principal extends JFrame {
 
       itemListarCitas.addActionListener(e -> {
           new ListarCitas(Hospital.getInstancia()).setVisible(true);
+      });
+      
+      itemListarHistorial = new JMenuItem("Historial Clínico");
+      menuListar.add(itemListarHistorial);
+
+      itemListarHistorial.addActionListener(e -> {
+          if (usuarioLogueado instanceof Medico) {
+              new ListarHistorialClinico((Medico) usuarioLogueado, Hospital.getInstancia()).setVisible(true);
+          } else {
+              JOptionPane.showMessageDialog(this, "Solo los médicos pueden ver el historial clínico.");
+          }
       });
       
       menuConsulta.add(itemAtenderConsultas);
@@ -573,6 +585,7 @@ public class Principal extends JFrame {
       itemListarEnfermedades.setEnabled(false);
       itemListarVacunas.setEnabled(false);
       itemListarCitas.setEnabled(false);
+      itemListarHistorial.setEnabled(false);
       
       if (usuarioLogueado instanceof Administrador) {
          itemRegistrarMedico.setEnabled(true);
@@ -591,6 +604,7 @@ public class Principal extends JFrame {
          itemListarEnfermedades.setEnabled(true);
          itemListarVacunas.setEnabled(true);
          itemListarCitas.setEnabled(true);
+         itemListarHistorial.setEnabled(true);
          
       } else if (usuarioLogueado instanceof Secretaria) {
     	 itemEliminarCita.setEnabled(true);
@@ -605,6 +619,7 @@ public class Principal extends JFrame {
          itemListarPaciente.setEnabled(true);
          itemListarEnfermedades.setEnabled(true);
          itemListarVacunas.setEnabled(true);
+         itemListarHistorial.setEnabled(true);
       }
    }
 
